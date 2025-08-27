@@ -13,7 +13,7 @@ class IdentificationType extends Model
         'description',
     ];
 
-    public function scopeDniRuc(Builder  $query)
+    public function scopeDniRuc(Builder $query)
     {
         return $query->whereIn('code', ['1', '6'])->pluck('id')->toArray();
     }

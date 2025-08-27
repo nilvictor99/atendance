@@ -107,7 +107,7 @@ class UserResource extends Resource
                                     ->live(),
                                 Forms\Components\TextInput::make('document_number')
                                     ->translateLabel()
-                                    ->disabled(fn(callable $get) => $get('is_disabled') ?? false)
+                                    ->disabled(fn (callable $get) => $get('is_disabled') ?? false)
                                     ->afterStateHydrated(function (mixed $component, mixed $state, callable $set, string $context) {
                                         if ($context === 'edit') {
                                             $set('is_disabled', true);
@@ -115,12 +115,12 @@ class UserResource extends Resource
                                     })
                                     ->prefixAction(
                                         Forms\Components\Actions\Action::make('toggleEdit')
-                                            ->icon(fn(callable $get) => $get('is_disabled') ? 'heroicon-m-lock-closed' : 'heroicon-m-lock-open')
-                                            ->tooltip(fn(callable $get) => $get('is_disabled') ? 'Habilitar edición' : 'Deshabilitar edición')
+                                            ->icon(fn (callable $get) => $get('is_disabled') ? 'heroicon-m-lock-closed' : 'heroicon-m-lock-open')
+                                            ->tooltip(fn (callable $get) => $get('is_disabled') ? 'Habilitar edición' : 'Deshabilitar edición')
                                             ->action(function (callable $set, callable $get) {
                                                 $set('is_disabled', ! $get('is_disabled'));
                                             })
-                                            ->visible(fn(string $context): bool => $context === 'edit')
+                                            ->visible(fn (string $context): bool => $context === 'edit')
                                     )
                                     ->live()
                                     ->unique(ignoreRecord: true)
@@ -131,11 +131,11 @@ class UserResource extends Resource
                                                 app(IdentificationService::class)->setFullName($state, $set);
                                             })
                                             ->visible(
-                                                fn(callable $get, string $context): bool => in_array($get('identification_type_id'), IdentificationType::dniRuc()) &&
+                                                fn (callable $get, string $context): bool => in_array($get('identification_type_id'), IdentificationType::dniRuc()) &&
                                                     $context !== 'view' &&
                                                     ($context !== 'edit' || ! ($get('is_disabled') ?? true))
                                             ),
-                                    )->extraAttributes(fn(Forms\Components\TextInput $component) => [
+                                    )->extraAttributes(fn (Forms\Components\TextInput $component) => [
                                         'wire:keydown.enter.prevent' => "mountFormComponentAction('{$component->getStatePath()}', 'generate')",
                                     ])
                                     ->maxLength(11),
@@ -207,17 +207,17 @@ class UserResource extends Resource
                 Tables\Actions\Action::make('changePassword')
                     ->label('Nueva Clave')
                     ->icon('heroicon-o-lock-closed')
-                    ->visible(fn() => app(AuthService::class)->IsSuperUser())
+                    ->visible(fn () => app(AuthService::class)->IsSuperUser())
                     ->modalWidth('md')
                     ->form([
                         Forms\Components\TextInput::make('name')
                             ->translateLabel()
                             ->disabled()
-                            ->default(fn(User $record) => $record->name),
+                            ->default(fn (User $record) => $record->name),
                         Forms\Components\TextInput::make('email')
                             ->translateLabel()
                             ->disabled()
-                            ->default(fn(User $record) => $record->email),
+                            ->default(fn (User $record) => $record->email),
                         Forms\Components\TextInput::make('password')
                             ->translateLabel()
                             ->password()

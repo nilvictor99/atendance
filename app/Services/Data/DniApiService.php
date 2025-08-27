@@ -21,7 +21,7 @@ class DniApiService
         $response = Http::withHeaders([
             'Authorization' => "Bearer {$this->token}",
             'Accept' => 'application/json',
-        ])->get($this->endpoint . $identifier);
+        ])->get($this->endpoint.$identifier);
 
         return $response->successful() ? $this->mapResponse($response->json()) : null;
     }

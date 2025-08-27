@@ -20,12 +20,13 @@ class User extends Authenticatable
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
-    use SoftDeletes;
+
     use HasProfilePhoto;
-    use Notifiable;
-    use SoftDeletes;
-    use SecuritySystemTrait;
     use HasRoles;
+    use Notifiable;
+    use SecuritySystemTrait;
+    use SoftDeletes;
+    use SoftDeletes;
     use TwoFactorAuthenticatable;
 
     /**
