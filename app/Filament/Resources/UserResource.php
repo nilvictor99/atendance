@@ -3,8 +3,10 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
+use App\Models\IdentificationType;
 use App\Models\User;
 use App\Services\Auth\AuthService;
+use App\Services\Utils\IdentificationService;
 use App\Services\Utils\PasswordGenerator;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
@@ -12,6 +14,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Tapp\FilamentCountryCodeField\Forms\Components\CountryCodeSelect;
 
 class UserResource extends Resource
 {
@@ -83,6 +86,88 @@ class UserResource extends Resource
                             ->preload()
                             ->searchable(),
                     ]),
+
+                Section::make(__('users.Profile'))
+                    ->icon('heroicon-m-adjustments-vertical')
+                    ->collapsible()
+                    ->live()
+                    ->columns(1)
+                    ->schema([
+                        Forms\Components\Repeater::make('profile')
+                            ->translateLabel()
+                            ->relationship('profile')
+                            ->deletable(false)
+                            ->schema([
+                                Forms\Components\Select::make('identification_type_id')
+                                    ->translateLabel()
+                                    ->searchable()
+                                    ->preload()
+                                    ->relationship('identificationType', 'name')
+                                    ->default(2)
+                                    ->live(),
+                                Forms\Components\TextInput::make('document_number')
+                                    ->translateLabel()
+                                    ->disabled(fn(callable $get) => $get('is_disabled') ?? false)
+                                    ->afterStateHydrated(function (mixed $component, mixed $state, callable $set, string $context) {
+                                        if ($context === 'edit') {
+                                            $set('is_disabled', true);
+                                        }
+                                    })
+                                    ->prefixAction(
+                                        Forms\Components\Actions\Action::make('toggleEdit')
+                                            ->icon(fn(callable $get) => $get('is_disabled') ? 'heroicon-m-lock-closed' : 'heroicon-m-lock-open')
+                                            ->tooltip(fn(callable $get) => $get('is_disabled') ? 'Habilitar edición' : 'Deshabilitar edición')
+                                            ->action(function (callable $set, callable $get) {
+                                                $set('is_disabled', ! $get('is_disabled'));
+                                            })
+                                            ->visible(fn(string $context): bool => $context === 'edit')
+                                    )
+                                    ->live()
+                                    ->unique(ignoreRecord: true)
+                                    ->suffixAction(
+                                        Forms\Components\Actions\Action::make('generate')
+                                            ->icon('heroicon-m-magnifying-glass')
+                                            ->action(function (?string $state, callable $set, callable $get) {
+                                                app(IdentificationService::class)->setFullName($state, $set);
+                                            })
+                                            ->visible(
+                                                fn(callable $get, string $context): bool => in_array($get('identification_type_id'), IdentificationType::dniRuc()) &&
+                                                    $context !== 'view' &&
+                                                    ($context !== 'edit' || ! ($get('is_disabled') ?? true))
+                                            ),
+                                    )->extraAttributes(fn(Forms\Components\TextInput $component) => [
+                                        'wire:keydown.enter.prevent' => "mountFormComponentAction('{$component->getStatePath()}', 'generate')",
+                                    ])
+                                    ->maxLength(11),
+                                Forms\Components\TextInput::make('full_name')
+                                    ->translateLabel()
+                                    ->maxLength(255),
+                            ])
+                            ->columns(3)
+                            ->addable()
+                            ->maxItems(1),
+                        Forms\Components\Repeater::make('phones')
+                            ->translateLabel()
+                            ->relationship('phones')
+                            ->collapsible()
+                            ->schema([
+                                Forms\Components\TextInput::make('phone_type')
+                                    ->translateLabel()
+                                    ->maxLength(50)
+                                    ->default('Personal')
+                                    ->nullable(),
+                                CountryCodeSelect::make('country_code')
+                                    ->default('+51')
+                                    ->translateLabel(),
+                                Forms\Components\TextInput::make('phone_number')
+                                    ->translateLabel()
+                                    ->tel()
+                                    ->maxLength(15),
+                            ])
+                            ->addable()
+                            ->maxItems(3)
+                            ->columns(3),
+                    ]),
             ]);
     }
 
@@ -122,17 +207,17 @@ class UserResource extends Resource
                 Tables\Actions\Action::make('changePassword')
                     ->label('Nueva Clave')
                     ->icon('heroicon-o-lock-closed')
-                    ->visible(fn () => app(AuthService::class)->IsSuperUser())
+                    ->visible(fn() => app(AuthService::class)->IsSuperUser())
                     ->modalWidth('md')
                     ->form([
                         Forms\Components\TextInput::make('name')
                             ->translateLabel()
                             ->disabled()
-                            ->default(fn (User $record) => $record->name),
+                            ->default(fn(User $record) => $record->name),
                         Forms\Components\TextInput::make('email')
                             ->translateLabel()
                             ->disabled()
-                            ->default(fn (User $record) => $record->email),
+                            ->default(fn(User $record) => $record->email),
                         Forms\Components\TextInput::make('password')
                             ->translateLabel()
                             ->password()
