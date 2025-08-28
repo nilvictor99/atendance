@@ -267,7 +267,9 @@
                                         >
                                             Profile
                                         </DropdownLink>
-
+                                        <DropdownLink href="/admin" as="a">
+                                            Panel Administrativo
+                                        </DropdownLink>
                                         <DropdownLink
                                             v-if="
                                                 $page.props.jetstream
@@ -388,7 +390,9 @@
                             >
                                 Profile
                             </ResponsiveNavLink>
-
+                            <ResponsiveNavLink href="/admin" as="a">
+                                Panel Administrativo
+                            </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 v-if="$page.props.jetstream.hasApiFeatures"
                                 :href="route('api-tokens.index')"
