@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Observers\PasswordVaultObserver;
+use App\Traits\Auth\BelongsToAuthenticatedUser;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[ObservedBy([PasswordVaultObserver::class])]
 class PasswordVault extends Model
 {
+    use BelongsToAuthenticatedUser;
     use SoftDeletes;
 
     protected $fillable = [
@@ -26,5 +28,10 @@ class PasswordVault extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function passwordShares()
+    {
+        return $this->hasMany(PasswordShare::class, 'password_id');
     }
 }
