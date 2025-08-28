@@ -1,0 +1,133 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Enums\HolidayTypeEnum;
+use App\Filament\Resources\HolidayResource\Pages;
+use App\Models\Holiday;
+use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+
+class HolidayResource extends Resource
+{
+    protected static ?string $model = Holiday::class;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation-panel.Logistics');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('holiday.navegation_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('holiday.navegation_label');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('holiday.navegation_label_singel');
+    }
+
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Section::make(__('Request Information'))
+                    ->schema([
+                        Forms\Components\Select::make('staff_id')
+                            ->translateLabel()
+                            ->searchable()
+                            ->preload()
+                            ->relationship(name: 'user', titleAttribute: 'name')
+                            ->required(),
+                        Forms\Components\TextInput::make('Calendar')
+                            ->required()
+                            ->default(date('Y')),
+                        Forms\Components\Select::make('type')
+                            ->translateLabel()
+                            ->native(false)
+                            ->options(HolidayTypeEnum::options())
+                            ->default(HolidayTypeEnum::PERSONAL_LEAVE)
+                            ->required(),
+                    ])->columns(3),
+
+                Section::make(__('Request Information'))
+                    ->schema([
+                        Forms\Components\DatePicker::make('start_day')
+                            ->native(false)
+                            ->displayFormat('d F Y')
+                            ->locale('es')
+                            ->required(),
+                        Forms\Components\DatePicker::make('end_day')
+                            ->label('Fin')
+                            ->native(false)
+                            ->displayFormat('d F Y')
+                            ->locale('es')
+                            ->required(),
+                        Forms\Components\RichEditor::make('description')
+                            ->label('Descripción')
+                            ->columnSpanFull()
+                            ->fileAttachmentsDirectory('holidays/rich-editor'),
+                    ])->columns(2),
+
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('calendar')
+                    ->translateLabel(),
+                Tables\Columns\TextColumn::make('staff.name')
+                    ->translateLabel(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->translateLabel(),
+                Tables\Columns\TextColumn::make('start_day')
+                    ->date()
+                    ->translateLabel(),
+                Tables\Columns\TextColumn::make('end_day')
+                    ->date()
+                    ->translateLabel(),
+                Tables\Columns\TextColumn::make('type')
+                    ->translateLabel(),
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListHolidays::route('/'),
+            'create' => Pages\CreateHoliday::route('/create'),
+            'edit' => Pages\EditHoliday::route('/{record}/edit'),
+        ];
+    }
+}
