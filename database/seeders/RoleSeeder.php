@@ -11,6 +11,8 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $this->call([
+            ShieldSeeder::class,
+        ]);
     }
 }
