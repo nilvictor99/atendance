@@ -16,4 +16,11 @@ class CreatePasswordVault extends CreateRecord
 
         return $data;
     }
+
+    protected function getRedirectUrl(): string
+    {
+        $resource = static::getResource();
+
+        return $resource::getUrl('index');
+    }
 }

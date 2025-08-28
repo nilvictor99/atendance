@@ -134,7 +134,7 @@ class PasswordVaultResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\TrashedFilter::make()->native(false),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
