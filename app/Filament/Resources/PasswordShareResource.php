@@ -1,0 +1,127 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Enums\PermissionsPasswordEnum;
+use App\Filament\Resources\PasswordShareResource\Pages;
+use App\Models\PasswordShare;
+use Filament\Forms;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+
+class PasswordShareResource extends Resource
+{
+    protected static ?string $model = PasswordShare::class;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation-panel.Logistics');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('password_share.navegation_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('password_share.navegation_label');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('password_share.navegation_label_singel');
+    }
+
+    protected static ?string $navigationIcon = 'heroicon-o-share';
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Section::make(__('Request Information'))
+                    ->schema([
+                        Forms\Components\Select::make('password_id')
+                            ->translateLabel()
+                            ->relationship('password', 'name')
+                            ->required()
+                            ->searchable(),
+                        Forms\Components\Select::make('shared_with')
+                            ->translateLabel()
+                            ->relationship('sharedWith', 'name')
+                            ->required()
+                            ->preload()
+                            ->searchable(),
+                        Forms\Components\Select::make('permissions')
+                            ->translateLabel()
+                            ->options(PermissionsPasswordEnum::Options())
+                            ->required()
+                            ->native(false),
+                    ])->columns(3),
+
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('sharedWith.name')
+                    ->translateLabel()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('sharedBy.name')
+                    ->translateLabel()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('permissions')
+                    ->translateLabel()
+                    ->badge()
+                    ->formatStateUsing(fn (string $state): string => __($state))
+                    ->color(fn (string $state): string => match ($state) {
+                        'view' => 'success',
+                        'edit' => 'info',
+                        default => 'gray',
+                    })
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->translateLabel()
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->translateLabel()
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListPasswordShares::route('/'),
+            'create' => Pages\CreatePasswordShare::route('/create'),
+            'edit' => Pages\EditPasswordShare::route('/{record}/edit'),
+        ];
+    }
+}

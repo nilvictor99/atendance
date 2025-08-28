@@ -277,5 +277,18 @@
     "Personal_leave": "Permiso personal",
     "Maternity_leave": "Permiso por maternidad",
     "Paternity_leave": "Permiso por paternidad",
-    "Type": "Tipo"
+    "Type": "Tipo",
+    "Notes": "Notas",
+    "Url": "Dirección",
+    "Basic Info": "Informacion Basica",
+    "Public": "Publico",
+    "Private": "Privado",
+    "Username": "Usuario",
+    "Shared with": "Otorgado a",
+    "Shared by": "Otorgado por",
+    "Permissions": "Permisos",
+    "view": "ver",
+    "edit": "editar",
+    "private": "privado",
+    "public": "público"
 }
