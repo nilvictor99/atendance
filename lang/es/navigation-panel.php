@@ -2,4 +2,5 @@
 
 return [
     'Administration' => 'Administración',
+    'Logistics' => 'Logística',
 ];
