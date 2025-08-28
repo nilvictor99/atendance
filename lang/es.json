@@ -271,5 +271,11 @@
     "Reference": "Referencia",
     "Staff": "Colaborador",
     "Simple": "Simple",
-    "Type user": "Tipo de usuario"
+    "Type user": "Tipo de usuario",
+    "Vacation": "Vacaciones",
+    "Sick_leave": "Permiso por Malestar",
+    "Personal_leave": "Permiso personal",
+    "Maternity_leave": "Permiso por maternidad",
+    "Paternity_leave": "Permiso por paternidad",
+    "Type": "Tipo"
 }
