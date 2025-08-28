@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\HolidayResource\Pages;
+namespace App\Filament\Resources\PasswordShareResource\Pages;
 
-use App\Filament\Resources\HolidayResource;
+use App\Filament\Resources\PasswordShareResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditHoliday extends EditRecord
+class EditPasswordShare extends EditRecord
 {
-    protected static string $resource = HolidayResource::class;
+    protected static string $resource = PasswordShareResource::class;
 
     protected function getHeaderActions(): array
     {

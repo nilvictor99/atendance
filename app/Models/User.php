@@ -89,4 +89,19 @@ class User extends Authenticatable
     {
         return $this->morphMany(Addresse::class, 'addressable');
     }
+
+    public function holidays()
+    {
+        return $this->hasMany(Holiday::class, 'staff_id');
+    }
+
+    public function passwordShares()
+    {
+        return $this->hasMany(PasswordShare::class, 'shared_by');
+    }
+
+    public function timeSheets()
+    {
+        return $this->hasMany(TimeSheet::class, 'user_id');
+    }
 }
