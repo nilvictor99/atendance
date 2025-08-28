@@ -38,6 +38,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'type_user',
     ];
 
     /**
@@ -82,5 +83,10 @@ class User extends Authenticatable
     public function phones()
     {
         return $this->morphMany(Phone::class, 'phoneable');
+    }
+
+    public function addresses()
+    {
+        return $this->morphMany(Addresse::class, 'addressable');
     }
 }

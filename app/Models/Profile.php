@@ -12,10 +12,16 @@ class Profile extends Model
         'identification_type_id',
         'document_number',
         'full_name',
-        'email',
+        'gender',
+        'date_of_birth',
+        'civil_status',
+        'education_level',
+        'blood_type',
         'description',
         'adicional_data',
         'characteristics',
+        'photo',
+        'is_active',
     ];
 
     protected $casts = [
