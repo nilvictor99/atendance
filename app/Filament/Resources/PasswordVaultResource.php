@@ -183,10 +183,13 @@ class PasswordVaultResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()
-            ->visibleToUser(static::getAuthUserId())
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
+        $query = parent::getEloquentQuery()->withoutGlobalScopes([
+            SoftDeletingScope::class,
+        ]);
+        if (! app(AuthService::class)->IsSuperUser()) {
+            $query->visibleToUser(static::getAuthUserId());
+        }
+
+        return $query;
     }
 }
