@@ -5,12 +5,14 @@ namespace App\Filament\Resources;
 use App\Enums\PermissionsPasswordEnum;
 use App\Filament\Resources\PasswordShareResource\Pages;
 use App\Models\PasswordShare;
+use App\Services\Auth\AuthService;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class PasswordShareResource extends Resource
 {
@@ -38,6 +40,18 @@ class PasswordShareResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-share';
 
+    protected $authUserId;
+
+    public function __construct()
+    {
+        $this->authUserId = (new AuthService)->getAuthUser()->id;
+    }
+
+    protected static function getAuthUserId()
+    {
+        return app(AuthService::class)->getAuthUser()->id;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -46,12 +60,17 @@ class PasswordShareResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('password_id')
                             ->translateLabel()
-                            ->relationship('password', 'name')
+                            ->relationship('password', 'name', function (Builder $query) {
+                                $query->where('user_id', static::getAuthUserId());
+                            })
                             ->required()
+                            ->preload()
                             ->searchable(),
                         Forms\Components\Select::make('shared_with')
                             ->translateLabel()
-                            ->relationship('sharedWith', 'name')
+                            ->relationship('sharedWith', 'name', function (Builder $query) {
+                                $query->where('id', '!=', static::getAuthUserId());
+                            })
                             ->required()
                             ->preload()
                             ->searchable(),
@@ -120,8 +139,18 @@ class PasswordShareResource extends Resource
     {
         return [
             'index' => Pages\ListPasswordShares::route('/'),
-            'create' => Pages\CreatePasswordShare::route('/create'),
-            'edit' => Pages\EditPasswordShare::route('/{record}/edit'),
+            // 'create' => Pages\CreatePasswordShare::route('/create'),
+            // 'edit' => Pages\EditPasswordShare::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        if (! app(AuthService::class)->IsSuperUser()) {
+            $query->visibleToUser(static::getAuthUserId());
+        }
+
+        return $query;
     }
 }
