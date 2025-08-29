@@ -41,6 +41,18 @@ class PasswordVaultResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-key';
 
+    protected $authUserId;
+
+    public function __construct()
+    {
+        $this->authUserId = (new AuthService)->getAuthUser()->id;
+    }
+
+    protected static function getAuthUserId()
+    {
+        return app(AuthService::class)->getAuthUser()->id;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -138,8 +150,10 @@ class PasswordVaultResource extends Resource
                 Tables\Filters\TrashedFilter::make()->native(false),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->visible(fn ($record) => $record->canView(static::getAuthUserId())),
+                Tables\Actions\EditAction::make()
+                    ->visible(fn ($record) => $record->canEdit(static::getAuthUserId())),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -169,10 +183,8 @@ class PasswordVaultResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $userId = app(AuthService::class)->getAuthUser()->id;
-
         return parent::getEloquentQuery()
-            ->visibleToUser($userId)
+            ->visibleToUser(static::getAuthUserId())
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);

@@ -43,7 +43,31 @@ class PasswordVault extends Model
                 ->orWhere(function ($sub) use ($userId) {
                     $sub->where('type', 'private')
                         ->where('user_id', $userId);
+                })
+                ->orWhereHas('passwordShares', function ($sub) use ($userId) {
+                    $sub->where('shared_with', $userId);
                 });
         });
+    }
+
+    public function canView($userId)
+    {
+        if ($this->user_id == $userId) {
+            return true;
+        }
+        if ($this->type == 'public') {
+            return true;
+        }
+
+        return $this->passwordShares()->where('shared_with', $userId)->whereIn('permissions', ['view', 'edit'])->exists();
+    }
+
+    public function canEdit($userId)
+    {
+        if ($this->user_id == $userId) {
+            return true;
+        }
+
+        return $this->passwordShares()->where('shared_with', $userId)->where('permissions', 'edit')->exists();
     }
 }
