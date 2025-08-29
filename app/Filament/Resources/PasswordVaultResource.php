@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\PasswordTypeEnum;
 use App\Filament\Resources\PasswordVaultResource\Pages;
 use App\Models\PasswordVault;
+use App\Services\Auth\AuthService;
 use App\Services\Utils\PasswordGenerator;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -168,7 +169,10 @@ class PasswordVaultResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
+        $userId = app(AuthService::class)->getAuthUser()->id;
+
         return parent::getEloquentQuery()
+            ->visibleToUser($userId)
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
             ]);

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Observers\PasswordVaultObserver;
 use App\Traits\Auth\BelongsToAuthenticatedUser;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -33,5 +34,16 @@ class PasswordVault extends Model
     public function passwordShares()
     {
         return $this->hasMany(PasswordShare::class, 'password_id');
+    }
+
+    public function scopeVisibleToUser(Builder $query, $userId)
+    {
+        return $query->where(function ($q) use ($userId) {
+            $q->where('type', 'public')
+                ->orWhere(function ($sub) use ($userId) {
+                    $sub->where('type', 'private')
+                        ->where('user_id', $userId);
+                });
+        });
     }
 }
