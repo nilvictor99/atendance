@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class PasswordShare extends Model
@@ -26,5 +27,10 @@ class PasswordShare extends Model
     public function sharedWith()
     {
         return $this->belongsTo(User::class, 'shared_with');
+    }
+
+    public function scopeVisibleToUser(Builder $query, $userId)
+    {
+        return $query->where('shared_by', $userId);
     }
 }
