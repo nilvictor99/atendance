@@ -64,7 +64,11 @@
                         autofocus
                         autocomplete="username"
                     />
-                    <InputError class="mt-2" :message="form.errors.email" />
+                    <InputError
+                        theme="dark"
+                        color="white"
+                        :message="form.errors.email"
+                    />
                 </div>
 
                 <div class="mt-4">
@@ -81,7 +85,12 @@
                         required
                         autocomplete="current-password"
                     />
-                    <InputError class="mt-2" :message="form.errors.password" />
+                    <InputError
+                        class="mt-1"
+                        :message="form.errors.password"
+                        theme="dark"
+                        color="white"
+                    />
                 </div>
 
                 <div class="block mb-5 mt-4">
