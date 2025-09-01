@@ -2,10 +2,10 @@
     import { ref } from 'vue';
     import { useForm } from '@inertiajs/vue3';
     import ActionSection from '@/Components/Actions/ActionSection.vue';
-    import DangerButton from '@/Components/Button/DangerButton.vue';
+    import DangerButton from '@/Components/Buttons/DangerButton.vue';
     import DialogModal from '@/Components/Modals/DialogModal.vue';
     import InputError from '@/Components/Inputs/InputError.vue';
-    import SecondaryButton from '@/Components/Button/SecondaryButton.vue';
+    import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue';
     import TextInput from '@/Components/Inputs/TextInput.vue';
 
     const confirmingUserDeletion = ref(false);

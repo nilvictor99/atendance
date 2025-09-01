@@ -1,12 +1,14 @@
 <script setup>
-    import { Head, Link, useForm } from '@inertiajs/vue3';
-    import AuthenticationCard from '@/Components/Cards/AuthenticationCard.vue';
+    import { Head, useForm } from '@inertiajs/vue3';
+    import CardCustomLogin from '@/Components/Cards/CardCustomLogin.vue';
     import AuthenticationCardLogo from '@/Components/Cards/AuthenticationCardLogo.vue';
-    import Checkbox from '@/Components/Inputs/Checkbox.vue';
     import InputError from '@/Components/Inputs/InputError.vue';
-    import InputLabel from '@/Components/Inputs/InputLabel.vue';
-    import PrimaryButton from '@/Components/Button/PrimaryButton.vue';
+    import Checkbox from '@/Components/Inputs/Checkbox.vue';
     import TextInput from '@/Components/Inputs/TextInput.vue';
+    import InputRevealablePassword from '@/Components/Inputs/InputRevealablePassword.vue';
+    import NativeButton from '@/Components/Buttons/NativeButton.vue';
+    import ClassicLabel from '@/Components/Labels/ClassicLabel.vue';
+    import LoadPoints from '@/Components/Icons/LoadPoints.vue';
 
     defineProps({
         canResetPassword: Boolean,
@@ -32,67 +34,166 @@
 <template>
     <Head title="Log in" />
 
-    <AuthenticationCard>
-        <template #logo>
-            <AuthenticationCardLogo />
-        </template>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap"
+        rel="stylesheet"
+    />
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
-        </div>
-
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
-                <TextInput
-                    id="email"
-                    v-model="form.email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-                <InputError class="mt-2" :message="form.errors.email" />
+    <div
+        class="h-screen bg-cover bg-center bg-no-repeat overflow-hidden flex items-center justify-center relative"
+        style="background-image: url('/System/Samples/background.webp')"
+    >
+        <CardCustomLogin>
+            <template #logo>
+                <AuthenticationCardLogo />
+            </template>
+            <div
+                class="mt-2 mb-2 text-white text-center p-2 border-t-[5px] border-b-[5px] border-white/20 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse font-bold text-xl tracking-wider"
+            >
+                <span class="animate-fade-in">Iniciar Sesión</span>
             </div>
+            <form @submit.prevent="submit">
+                <div>
+                    <ClassicLabel :weight="'bold'" :size="'lg'" value="Email" />
+                    <TextInput
+                        id="email"
+                        v-model="form.email"
+                        type="email"
+                        placeholder="correo electrónico"
+                        class="mt-1 block w-full"
+                        required
+                        autofocus
+                        autocomplete="username"
+                    />
+                    <InputError
+                        theme="dark"
+                        color="white"
+                        :message="form.errors.email"
+                    />
+                </div>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-                <TextInput
-                    id="password"
-                    v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    required
-                    autocomplete="current-password"
-                />
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
+                <div class="mt-4">
+                    <ClassicLabel
+                        :weight="'bold'"
+                        :size="'lg'"
+                        value="Password"
+                    />
+                    <InputRevealablePassword
+                        id="password"
+                        v-model="form.password"
+                        class="mt-1 block w-full"
+                        placeholder="contraseña"
+                        required
+                        autocomplete="current-password"
+                    />
+                    <InputError
+                        class="mt-1"
+                        :message="form.errors.password"
+                        theme="dark"
+                        color="white"
+                    />
+                </div>
 
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <Checkbox v-model:checked="form.remember" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600">Remember me</span>
-                </label>
-            </div>
+                <div class="block mb-5 mt-4">
+                    <label class="flex items-center">
+                        <Checkbox
+                            v-model:checked="form.remember"
+                            name="remember"
+                        />
+                        <span class="ms-2 text-sm text-gray-100"
+                            >Mantener la Sesion</span
+                        >
+                    </label>
+                </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <Link
-                    v-if="canResetPassword"
-                    :href="route('password.request')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    Forgot your password?
-                </Link>
-
-                <PrimaryButton
-                    class="ms-4"
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Log in
-                </PrimaryButton>
-            </div>
-        </form>
-    </AuthenticationCard>
+                <div class="flex items-center justify-end mt-4">
+                    <NativeButton
+                        :class="{ 'opacity-15': form.processing }"
+                        :theme="'gray'"
+                        :disabled="form.processing"
+                        class="h-11"
+                    >
+                        <LoadPoints v-if="form.processing" />
+                        <span v-else>Iniciar Sesion</span>
+                    </NativeButton>
+                </div>
+            </form>
+        </CardCustomLogin>
+        <span
+            class="square square-tl absolute h-screen w-1/2 bg-[rgba(34,34,34,0.1)]"
+            style="top: -80%; left: -10%; z-index: 50; transform: rotate(45deg)"
+        ></span>
+        <span
+            class="square square-tr absolute h-screen w-1/2 bg-[rgba(255,255,255,0.1)]"
+            style="top: 0%; right: -30%; transform: rotate(45deg)"
+        ></span>
+        <span
+            class="square square-bl absolute h-screen w-1/2 bg-[rgba(255,255,255,0.1)]"
+            style="bottom: -70%; left: -15%; transform: rotate(45deg)"
+        ></span>
+        <span
+            class="square square-br absolute h-screen w-1/2 bg-[rgba(34,34,34,0.1)]"
+            style="bottom: 0%; right: -40%; transform: rotate(45deg)"
+        ></span>
+        <span
+            class="star star1 absolute w-[50px] h-[50px] box-shadow transition duration-500"
+            style="
+                bottom: -10%;
+                left: -30%;
+                transform: rotate(-30deg);
+                background: rgba(34, 34, 34, 0.5);
+            "
+        ></span>
+        <span
+            class="star star2 absolute w-[50px] h-[50px] box-shadow transition duration-500"
+            style="
+                bottom: -30%;
+                left: -10%;
+                transform: rotate(-30deg);
+                background: rgb(255, 255, 255, 0.5);
+            "
+        ></span>
+    </div>
 </template>
+
+<style scoped>
+    .square.square-tl {
+        animation: bounce 50s infinite ease-in-out;
+    }
+    .square.square-tr {
+        animation: bounce 50s infinite ease-in-out;
+    }
+    .square.square-bl {
+        animation: bounce 50s infinite ease-in-out;
+    }
+    .square.square-br {
+        animation: bounce 50s infinite ease-in-out;
+    }
+    .star1 {
+        animation: sweep 4s infinite;
+    }
+    .star2 {
+        animation: sweep 3s infinite;
+    }
+
+    @keyframes bounce {
+        0% {
+            transform: translateY(0px) rotate(45deg);
+        }
+        50% {
+            transform: translateY(20px) rotate(45deg);
+            border-radius: 50px;
+        }
+        100% {
+            transform: translateY(0px) rotate(45deg);
+        }
+    }
+
+    @keyframes sweep {
+        100% {
+            bottom: 120%;
+            left: 120%;
+            transform: rotate(360deg);
+        }
+    }
+</style>
