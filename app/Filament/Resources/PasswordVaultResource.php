@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\PasswordTypeEnum;
+use App\Filament\Exports\PasswordVaultExporter;
 use App\Filament\Imports\PasswordVaultImporter;
 use App\Filament\Resources\PasswordVaultResource\Pages;
 use App\Models\PasswordVault;
@@ -12,6 +13,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -159,6 +161,8 @@ class PasswordVaultResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    ExportBulkAction::make()
+                        ->exporter(PasswordVaultExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
