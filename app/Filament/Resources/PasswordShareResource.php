@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\PermissionsPasswordEnum;
+use App\Filament\Exports\PasswordShareExporter;
 use App\Filament\Imports\PasswordShareImporter;
 use App\Filament\Resources\PasswordShareResource\Pages;
 use App\Models\PasswordShare;
@@ -12,6 +13,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -125,6 +127,8 @@ class PasswordShareResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    ExportBulkAction::make()
+                        ->exporter(PasswordShareExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
