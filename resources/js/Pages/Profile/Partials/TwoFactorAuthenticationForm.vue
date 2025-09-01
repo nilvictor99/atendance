@@ -3,11 +3,11 @@
     import { router, useForm, usePage } from '@inertiajs/vue3';
     import ActionSection from '@/Components/Actions/ActionSection.vue';
     import ConfirmsPassword from '@/Components/Modals/ConfirmsPassword.vue';
-    import DangerButton from '@/Components/Button/DangerButton.vue';
+    import DangerButton from '@/Components/Buttons/DangerButton.vue';
     import InputError from '@/Components/Inputs/InputError.vue';
     import InputLabel from '@/Components/Inputs/InputLabel.vue';
-    import PrimaryButton from '@/Components/Button/PrimaryButton.vue';
-    import SecondaryButton from '@/Components/Button/SecondaryButton.vue';
+    import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
+    import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue';
     import TextInput from '@/Components/Inputs/TextInput.vue';
     import axios from 'axios';
 

@@ -5,7 +5,7 @@
     import FormSection from '@/Components/Sections/FormSection.vue';
     import InputError from '@/Components/Inputs/InputError.vue';
     import InputLabel from '@/Components/Inputs/InputLabel.vue';
-    import PrimaryButton from '@/Components/Button/PrimaryButton.vue';
+    import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
     import TextInput from '@/Components/Inputs/TextInput.vue';
 
     const passwordInput = ref(null);

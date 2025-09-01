@@ -2,8 +2,8 @@
     import { ref, reactive, nextTick } from 'vue';
     import DialogModal from '@/Components/Modals/DialogModal.vue';
     import InputError from '@/Components/Inputs/InputError.vue';
-    import PrimaryButton from '@/Components/Button/PrimaryButton.vue';
-    import SecondaryButton from '@/Components/Button/SecondaryButton.vue';
+    import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
+    import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue';
     import TextInput from '@/Components/Inputs/TextInput.vue';
     import axios from 'axios';
 
