@@ -2,11 +2,13 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Imports\TimesheetImporter;
 use App\Filament\Resources\TimesheetResource\Pages;
 use App\Models\Timesheet;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Table;
 
 class TimesheetResource extends Resource
@@ -83,6 +85,11 @@ class TimesheetResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                ImportAction::make()
+                    ->importer(TimesheetImporter::class)
+                    ->icon('heroicon-o-arrow-up-tray'),
             ]);
     }
 
