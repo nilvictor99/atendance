@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\Models\RoleService;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -35,9 +36,26 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return [
-            ...parent::share($request),
-            //
-        ];
+        return array_merge(parent::share($request), [
+            'auth' => [
+                'user' => $this->getAuthenticatedUserData($request),
+            ],
+        ]);
+    }
+
+    private function getAuthenticatedUserData(Request $request): ?array
+    {
+        $user = $request->user();
+        $roleService = app(RoleService::class);
+
+        if (! $user) {
+            return null;
+        }
+
+        return array_merge($user->toArray(), [
+            'two_factor_enabled' => ! $user->two_factor_secret ? false : true,
+            'roles' => $roleService->getRoleNames($user) ?? [],
+            'permissions' => $roleService->getPermissions($user) ?? [],
+        ]);
     }
 }
