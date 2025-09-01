@@ -30,6 +30,6 @@
         v-model="proxyChecked"
         type="checkbox"
         :value="value"
-        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500"
+        class="rounded border-gray-300 text-gray-600 shadow-sm focus:ring-gray-500"
     />
 </template>
