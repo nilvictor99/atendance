@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\HolidayTypeEnum;
+use App\Filament\Exports\HolidayExporter;
 use App\Filament\Imports\HolidayImporter;
 use App\Filament\Resources\HolidayResource\Pages;
 use App\Models\Holiday;
@@ -11,6 +12,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Table;
 
@@ -112,6 +114,8 @@ class HolidayResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    ExportBulkAction::make()
+                        ->exporter(HolidayExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
