@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\HolidayTypeEnum;
+use App\Filament\Imports\HolidayImporter;
 use App\Filament\Resources\HolidayResource\Pages;
 use App\Models\Holiday;
 use Filament\Forms;
@@ -10,6 +11,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Table;
 
 class HolidayResource extends Resource
@@ -112,6 +114,11 @@ class HolidayResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                ImportAction::make()
+                    ->importer(HolidayImporter::class)
+                    ->icon('heroicon-o-arrow-up-tray'),
             ]);
     }
 
