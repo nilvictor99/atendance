@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\PermissionsPasswordEnum;
+use App\Filament\Imports\PasswordShareImporter;
 use App\Filament\Resources\PasswordShareResource\Pages;
 use App\Models\PasswordShare;
 use App\Services\Auth\AuthService;
@@ -11,6 +12,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ImportAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -125,6 +127,11 @@ class PasswordShareResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                ImportAction::make()
+                    ->importer(PasswordShareImporter::class)
+                    ->icon('heroicon-o-arrow-up-tray'),
             ]);
     }
 
