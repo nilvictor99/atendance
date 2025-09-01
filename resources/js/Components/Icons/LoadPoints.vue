@@ -45,7 +45,7 @@
     const props = defineProps({
         variant: {
             type: String,
-            default: 'indigo',
+            default: 'gray',
         },
     });
 
@@ -108,6 +108,12 @@
             colorPoints: '#1f2937',
             colorPointsAlt: '#4b5563',
             colorText: 'text-white',
+            bg: 'bg-transparent',
+        },
+        gray: {
+            colorPoints: '#6b7280',
+            colorPointsAlt: '#d1d5db',
+            colorText: 'text-gray-100',
             bg: 'bg-transparent',
         },
     };

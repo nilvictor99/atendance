@@ -8,6 +8,7 @@
     import InputRevealablePassword from '@/Components/Inputs/InputRevealablePassword.vue';
     import NativeButton from '@/Components/Buttons/NativeButton.vue';
     import ClassicLabel from '@/Components/Labels/ClassicLabel.vue';
+    import LoadPoints from '@/Components/Icons/LoadPoints.vue';
 
     defineProps({
         canResetPassword: Boolean,
@@ -107,67 +108,72 @@
 
                 <div class="flex items-center justify-end mt-4">
                     <NativeButton
-                        :class="{ 'opacity-25': form.processing }"
+                        :class="{ 'opacity-15': form.processing }"
                         :theme="'gray'"
                         :disabled="form.processing"
+                        class="h-11"
                     >
-                        <span
-                            v-if="form.processing"
-                            class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent text-white rounded-full"
-                            role="status"
-                            aria-label="loading"
-                        >
-                            <span class="sr-only">Loading...</span>
-                        </span>
-                        <span v-if="!form.processing">Iniciar Sesion</span>
+                        <LoadPoints v-if="form.processing" />
+                        <span v-else>Iniciar Sesion</span>
                     </NativeButton>
                 </div>
             </form>
         </CardCustomLogin>
-        <span class="square square-tl"></span>
-        <span class="square square-tr"></span>
-        <span class="square square-bl"></span>
-        <span class="square square-br"></span>
-        <span class="star star1"></span>
-        <span class="star star2"></span>
+        <span
+            class="square square-tl absolute h-screen w-1/2 bg-[rgba(34,34,34,0.1)]"
+            style="top: -80%; left: -10%; z-index: 50; transform: rotate(45deg)"
+        ></span>
+        <span
+            class="square square-tr absolute h-screen w-1/2 bg-[rgba(255,255,255,0.1)]"
+            style="top: 0%; right: -30%; transform: rotate(45deg)"
+        ></span>
+        <span
+            class="square square-bl absolute h-screen w-1/2 bg-[rgba(255,255,255,0.1)]"
+            style="bottom: -70%; left: -15%; transform: rotate(45deg)"
+        ></span>
+        <span
+            class="square square-br absolute h-screen w-1/2 bg-[rgba(34,34,34,0.1)]"
+            style="bottom: 0%; right: -40%; transform: rotate(45deg)"
+        ></span>
+        <span
+            class="star star1 absolute w-[50px] h-[50px] box-shadow transition duration-500"
+            style="
+                bottom: -10%;
+                left: -30%;
+                transform: rotate(-30deg);
+                background: rgba(34, 34, 34, 0.5);
+            "
+        ></span>
+        <span
+            class="star star2 absolute w-[50px] h-[50px] box-shadow transition duration-500"
+            style="
+                bottom: -30%;
+                left: -10%;
+                transform: rotate(-30deg);
+                background: rgb(255, 255, 255, 0.5);
+            "
+        ></span>
     </div>
 </template>
 
 <style scoped>
-    .square {
-        height: 100vh;
-        width: 50vw;
-        display: table;
-        position: absolute;
-        background: rgba(255, 255, 255, 0.1);
-        transform: rotate(45deg);
-    }
-
     .square.square-tl {
-        top: -80%;
-        left: -10%;
-        animation: bounce 6s infinite ease-in-out;
-        background: rgb(34, 34, 34, 0.1);
-        z-index: 50;
+        animation: bounce 50s infinite ease-in-out;
     }
-
     .square.square-tr {
-        top: 0%;
-        right: -30%;
-        animation: bounce 5s infinite ease-in-out;
+        animation: bounce 50s infinite ease-in-out;
     }
-
     .square.square-bl {
-        bottom: -70%;
-        left: -15%;
-        animation: bounce 4s infinite ease-in-out;
+        animation: bounce 50s infinite ease-in-out;
     }
-
     .square.square-br {
-        bottom: 0%;
-        right: -40%;
-        animation: bounce 3s infinite ease-in-out;
-        background: rgb(34, 34, 34, 0.1);
+        animation: bounce 50s infinite ease-in-out;
+    }
+    .star1 {
+        animation: sweep 4s infinite;
+    }
+    .star2 {
+        animation: sweep 3s infinite;
     }
 
     @keyframes bounce {
@@ -181,31 +187,6 @@
         100% {
             transform: translateY(0px) rotate(45deg);
         }
-    }
-
-    .star {
-        height: 50px;
-        width: 50px;
-        display: table;
-        position: absolute;
-        box-shadow: 0 0 5px 0 rgba(34, 34, 34, 0.5);
-        transition: 0.5s;
-    }
-
-    .star1 {
-        bottom: -10%;
-        left: -30%;
-        transform: rotate(-30deg);
-        animation: sweep 4s infinite;
-        background: rgba(34, 34, 34, 0.5);
-    }
-
-    .star2 {
-        bottom: -30%;
-        left: -10%;
-        transform: rotate(-30deg);
-        animation: sweep 3s infinite;
-        background: rgb(255, 255, 255, 0.5);
     }
 
     @keyframes sweep {
