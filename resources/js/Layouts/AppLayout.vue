@@ -67,6 +67,13 @@
                                 >
                                     Asistencias
                                 </NavLink>
+
+                                <NavLink
+                                    :href="route('password-vault')"
+                                    :active="route().current('password-vault')"
+                                >
+                                    Contraseñas
+                                </NavLink>
                             </div>
                         </div>
 
