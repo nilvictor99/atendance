@@ -331,5 +331,13 @@
     "Day in": "Ingreso",
     "Day out": "Salida",
     "Work date": "Fecha",
-    "Hours": "Horas"
+    "Hours": "Horas",
+    "Start day": "Fecha de inicio",
+    "End day": "Fecha de fin",
+    "vacation": "Vacaciones",
+    "sick_leave": "Permiso por Malestar",
+    "personal_leave": "Permiso personal",
+    "maternity_leave": "Permiso por maternidad",
+    "paternity_leave": "Permiso por paternidad"
+    
 }
