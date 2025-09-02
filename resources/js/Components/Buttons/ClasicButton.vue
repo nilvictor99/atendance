@@ -19,7 +19,7 @@
             },
             variant: {
                 type: String,
-                default: 'primary',
+                default: 'gray',
             },
         },
         computed: {
@@ -28,7 +28,7 @@
             },
             buttonClasses() {
                 const baseClasses = [
-                    'flex items-center font-medium rounded-lg border',
+                    'flex items-center font-medium rounded-lg border border-none',
                     'focus:outline-none',
                     'disabled:opacity-50 disabled:pointer-events-none',
                     this.size === 'square'
@@ -52,6 +52,7 @@
                     info: 'bg-blue-500 text-white hover:bg-blue-600 focus:bg-blue-700 border-transparent',
                     light: 'bg-white text-gray-800 hover:bg-gray-100 focus:bg-gray-200 border-gray-300',
                     dark: 'bg-gray-800 text-white hover:bg-gray-700 focus:bg-gray-600 border-gray-600',
+                    gray: 'bg-gray-500 text-white hover:bg-gray-600 focus:bg-gray-700 border-gray-600',
                 };
 
                 return [

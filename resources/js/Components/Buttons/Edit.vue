@@ -8,7 +8,7 @@
     <section class="tooltip tooltip-warning" data-tip="Editar">
         <button
             @click="$emit('click')"
-            class="btn btn-link btn-lg p-1 hover:bg-gray-100 rounded-md inline-flex items-center gap-x-4 font-bold rounded-lg border border-transparent text-orange-500 hover:text-orange-600 focus:outline-none text-center"
+            class="btn btn-link btn-lg p-1 hover:bg-gray-100 rounded-md inline-flex items-center gap-x-4 font-bold rounded-lg border border-transparent text-gray-500 hover:text-gray-600 focus:outline-none text-center"
             type="button"
             aria-label="Editar"
             title="Editar"
