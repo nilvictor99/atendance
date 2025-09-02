@@ -60,6 +60,13 @@
                                 >
                                     Dashboard
                                 </NavLink>
+
+                                <NavLink
+                                    :href="route('timesheet')"
+                                    :active="route().current('timesheet')"
+                                >
+                                    Asistencias
+                                </NavLink>
                             </div>
                         </div>
 
