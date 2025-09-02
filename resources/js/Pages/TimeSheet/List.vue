@@ -24,27 +24,27 @@
             type: Object,
             default: () => ({ start: '', end: '' }),
         },
-        users: {
+        staff: {
             type: Array,
             default: () => [],
         },
-        userId: { type: [String, Number], default: '' },
+        staffId: { type: [String, Number], default: '' },
     });
     const search = ref(props.search);
     const dateRange = ref(props.dateRange || { start: '', end: '' });
-    const selectedUserText = computed(() => {
-        if (!props.userId) return '';
-        const selectedUser = props.users.find(
-            user => user.id.toString() === props.userId.toString()
+    const selectedStaffText = computed(() => {
+        if (!props.staffId) return '';
+        const selectedStaff = props.staff.find(
+            staff => staff.id.toString() === props.staffId.toString()
         );
-        return selectedUser?.profile?.full_name || selectedUser?.name || '';
+        return selectedStaff?.profile?.full_name || selectedStaff?.name || '';
     });
-    const userId = ref(props.userId ?? '');
-    const userOptions = computed(() =>
-        props.users.map(user => ({
-            id: user.id,
-            text: user.profile?.full_name || user.name || 'Sin nombre',
-            originalData: user,
+    const staffId = ref(props.staffId ?? '');
+    const staffOptions = computed(() =>
+        props.staff.map(staff => ({
+            id: staff.id,
+            text: staff.profile?.full_name || staff.name || 'Sin nombre',
+            originalData: staff,
         }))
     );
 
@@ -61,7 +61,7 @@
                 search: search.value,
                 start: dateRange.value.start,
                 end: dateRange.value.end,
-                user_id: userId.value,
+                staff_id: staffId.value,
             },
             {
                 preserveState: true,
@@ -141,14 +141,14 @@
                         @filter="handleSearch"
                     />
                     <InputSelectClasic
-                        v-model="userId"
-                        :options="userOptions"
+                        v-model="staffId"
+                        :options="staffOptions"
                         :initialValue="{
-                            id: props.userId,
-                            text: selectedUserText,
+                            id: props.staffId,
+                            text: selectedStaffText,
                         }"
-                        label="Elige un usuario"
-                        placeholder="Selecciona un usuario"
+                        label="Elige un staff"
+                        placeholder="Selecciona un staff"
                         :disabled="false"
                         theme="orange"
                         :bold="true"
@@ -200,12 +200,6 @@
                                                     scope="col"
                                                     class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                                                 >
-                                                    Usuario
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
-                                                >
                                                     Tipo
                                                 </th>
                                                 <th
@@ -252,16 +246,6 @@
                                                             ?.full_name ||
                                                         timesheet.staff?.name ||
                                                         'Sin staff'
-                                                    }}
-                                                </td>
-                                                <td
-                                                    class="max-w-[200px] px-4 py-4 text-sm text-gray-800"
-                                                >
-                                                    {{
-                                                        timesheet.user?.profile
-                                                            ?.full_name ||
-                                                        timesheet.user?.name ||
-                                                        'Sin usuario'
                                                     }}
                                                 </td>
                                                 <td

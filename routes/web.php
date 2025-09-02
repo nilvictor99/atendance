@@ -4,7 +4,6 @@ use App\Http\Controllers\TimesheetController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Ramsey\Uuid\Type\Time;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -23,7 +22,6 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
-
 
     Route::controller(TimesheetController::class)->group(function () {
         Route::get('/timesheet', 'index')->name('timesheet');

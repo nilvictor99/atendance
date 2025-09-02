@@ -3,22 +3,47 @@
 namespace App\Http\Controllers;
 
 use App\Models\Timesheet;
+use App\Services\Models\TimesheetService;
+use App\Services\Models\UserService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class TimesheetController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    private $userService;
+
+    private $timesheetService;
+
+    public function __construct(UserService $userService, TimesheetService $timesheetService)
+    {
+        $this->userService = $userService;
+        $this->timesheetService = $timesheetService;
+    }
+
     public function index()
     {
         return Inertia::render('TimeSheet');
     }
 
-    public function list()
+    public function list(Request $request)
     {
-        return Inertia::render('TimeSheet/List');
+        $search = $request->input('search');
+        $startDate = $request->input('start');
+        $endDate = $request->input('end');
+        $staffId = $request->input('staff_id');
+        $staff = $this->userService->getStaffsWithTimeSheets();
+        $timesheets = $this->timesheetService->getModel($search, $startDate, $endDate, $staffId);
+
+        return Inertia::render('TimeSheet/List', [
+            'timesheets' => $timesheets,
+            'search' => $search,
+            'dateRange' => [
+                'start' => $startDate,
+                'end' => $endDate,
+            ],
+            'staff' => $staff,
+            'staffId' => $staffId,
+        ]);
     }
 
     /**

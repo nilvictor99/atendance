@@ -17,6 +17,7 @@
         "laravel/jetstream": "^5.3",
         "laravel/sanctum": "^4.0",
         "laravel/scout": "^10.19",
+        "laravel/telescope": "^5.11",
         "laravel/tinker": "^2.10.1",
         "tapp/filament-country-code-field": "^1.0",
         "tightenco/ziggy": "^2.0"
