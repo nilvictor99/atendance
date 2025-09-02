@@ -106,8 +106,15 @@ class User extends Authenticatable
         return $this->hasMany(TimeSheet::class, 'user_id');
     }
 
-    public function scopeWithTimeSheets(Builder $query)
+    public function staffTimesheets()
     {
-        return $query->with('timeSheets')->has('timeSheets');
+        return $this->hasMany(Timesheet::class, 'staff_id');
+    }
+
+    public function scopeWithStaffs(Builder $query)
+    {
+        return $query->whereHas('staffTimesheets')
+            ->with(['profile'])
+            ->select('id', 'name');
     }
 }

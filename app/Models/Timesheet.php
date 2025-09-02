@@ -63,13 +63,11 @@ class Timesheet extends Model
         return $query;
     }
 
-    public function scopeFilterByUser(Builder $query, $staffId)
+    public function scopeFilterByStaff(Builder $query, $staffId)
     {
-        if (! empty($staffId)) {
+        return $query->when($staffId, function ($query) use ($staffId) {
             $query->where('staff_id', $staffId);
-        }
-
-        return $query;
+        });
     }
 
     public function scopeSearchData(Builder $query, $search = null, $startDate = null, $endDate = null, $staffId = null)
@@ -81,7 +79,7 @@ class Timesheet extends Model
             $query->filterByDateRange($startDate, $endDate);
         }
         if (! empty($staffId)) {
-            $query->filterByUser($staffId);
+            $query->filterByStaff($staffId);
         }
 
         return $query;

@@ -1,6 +1,5 @@
 <script setup>
     import Pagination from '@/Components/Sections/SectionPagination.vue';
-    import { computed } from 'vue';
     import AppLayout from '@/Layouts/AppLayout.vue';
     import ClasicButton from '@/Components/Buttons/ClasicButton.vue';
     import { ref } from 'vue';
@@ -29,23 +28,18 @@
         },
         staffId: { type: [String, Number], default: '' },
     });
+
     const search = ref(props.search);
     const dateRange = ref(props.dateRange || { start: '', end: '' });
-    const selectedStaffText = computed(() => {
-        if (!props.staffId) return '';
-        const selectedStaff = props.staff.find(
-            staff => staff.id.toString() === props.staffId.toString()
-        );
-        return selectedStaff?.profile?.full_name || selectedStaff?.name || '';
-    });
     const staffId = ref(props.staffId ?? '');
-    const staffOptions = computed(() =>
-        props.staff.map(staff => ({
-            id: staff.id,
-            text: staff.profile?.full_name || staff.name || 'Sin nombre',
-            originalData: staff,
-        }))
-    );
+    const selectedStaffText =
+        props.staff.find(
+            staff => staff.id.toString() === props.staffId?.toString()
+        )?.name || '';
+    const staffOptions = props.staff.map(staff => ({
+        id: staff.id,
+        text: staff.name || 'Sin nombre',
+    }));
 
     function handleSearch(val) {
         if (typeof val === 'object' && val !== null) {
@@ -54,6 +48,7 @@
         if (typeof val === 'string') {
             search.value = val;
         }
+
         router.get(
             route('timesheets.list'),
             {
@@ -68,19 +63,6 @@
             }
         );
     }
-
-    const data = computed(
-        () =>
-            props.timesheets.data?.map(timesheet => ({
-                ...timesheet,
-                staff: timesheet.staff || {
-                    profile: { full_name: 'Sin staff' },
-                },
-                user: timesheet.user || {
-                    profile: { full_name: 'Sin usuario' },
-                },
-            })) || []
-    );
 </script>
 
 <template>
@@ -189,7 +171,7 @@
                                         </thead>
                                         <tbody class="divide-y divide-gray-200">
                                             <tr
-                                                v-for="timesheet in data"
+                                                v-for="timesheet in timesheets.data"
                                                 :key="timesheet.id"
                                             >
                                                 <td
@@ -201,8 +183,6 @@
                                                     class="max-w-[200px] px-4 py-4 text-sm text-gray-800"
                                                 >
                                                     {{
-                                                        timesheet.staff?.profile
-                                                            ?.full_name ||
                                                         timesheet.staff?.name ||
                                                         'Sin staff'
                                                     }}
