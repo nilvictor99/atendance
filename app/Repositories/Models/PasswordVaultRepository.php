@@ -12,4 +12,14 @@ class PasswordVaultRepository extends BaseRepository
     {
         parent::__construct($model, self::RELATIONS);
     }
+
+    public function getModel($search = null, $startDate = null, $endDate = null)
+    {
+        $query = $this->model->withUserProfile();
+        if ($search || $startDate || $endDate) {
+            $query->searchData($search, $startDate, $endDate);
+        }
+
+        return $query->latest()->paginate(5);
+    }
 }

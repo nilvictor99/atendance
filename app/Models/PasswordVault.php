@@ -72,4 +72,44 @@ class PasswordVault extends Model
 
         return $this->passwordShares()->where('shared_with', $userId)->where('permissions', 'edit')->exists();
     }
+
+    public function scopeWithUserProfile(Builder $query)
+    {
+        return $query->with('user.profile');
+    }
+
+    public function scopeSearchPassword(Builder $query, $search)
+    {
+        return $query->when($search, function ($query) use ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'ILIKE', "%{$search}%")
+                    ->orWhere('username', 'ILIKE', "%{$search}%")
+                    ->orWhere('url', 'ILIKE', "%{$search}%");
+            });
+        });
+    }
+
+    public function scopeFilterByDateRange(Builder $query, $startDate, $endDate)
+    {
+        if (! empty($startDate)) {
+            $query->whereDate('created_at', '>=', $startDate);
+        }
+        if (! empty($endDate)) {
+            $query->whereDate('created_at', '<=', $endDate);
+        }
+
+        return $query;
+    }
+
+    public function scopeSearchData(Builder $query, $search = null, $startDate = null, $endDate = null)
+    {
+        if (! empty($search)) {
+            $query->searchPassword($search);
+        }
+        if (! empty($startDate) || ! empty($endDate)) {
+            $query->filterByDateRange($startDate, $endDate);
+        }
+
+        return $query;
+    }
 }

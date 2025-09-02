@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PasswordVaultController;
 use App\Http\Controllers\TimesheetController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -26,5 +27,10 @@ Route::middleware([
     Route::controller(TimesheetController::class)->group(function () {
         Route::get('/timesheet', 'index')->name('timesheet');
         Route::get('/timesheets/list', 'list')->name('timesheets.list');
+    });
+
+    Route::controller(PasswordVaultController::class)->group(function () {
+        Route::get('/password-vault', 'index')->name('password-vault');
+        Route::get('/password-vault/list', 'list')->name('password-vault.list');
     });
 });
