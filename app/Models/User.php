@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Traits\System\SecuritySystemTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -103,5 +104,10 @@ class User extends Authenticatable
     public function timeSheets()
     {
         return $this->hasMany(TimeSheet::class, 'user_id');
+    }
+
+    public function scopeWithTimeSheets(Builder $query)
+    {
+        return $query->with('timeSheets')->has('timeSheets');
     }
 }

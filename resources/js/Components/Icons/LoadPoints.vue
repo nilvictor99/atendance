@@ -113,7 +113,7 @@
         gray: {
             colorPoints: '#6b7280',
             colorPointsAlt: '#d1d5db',
-            colorText: 'text-gray-100',
+            colorText: 'text-gray-500',
             bg: 'bg-transparent',
         },
     };
