@@ -2,7 +2,11 @@
 
 namespace Database\Seeders;
 
-use Database\Factories\TimesheetFactory;
+use App\Models\Holiday;
+use App\Models\PasswordShare;
+use App\Models\PasswordVault;
+use App\Models\Timesheet;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class FakerSeeder extends Seeder
@@ -12,6 +16,12 @@ class FakerSeeder extends Seeder
      */
     public function run(): void
     {
-        TimesheetFactory::new()->count(10)->create();
+        if ($this->command->confirm('¿Desea ejecutar el FakerSeeder?')) {
+            User::factory()->count(10)->create([]);
+            PasswordVault::factory()->count(10)->create([]);
+            PasswordShare::factory()->count(10)->create([]);
+            Holiday::factory()->count(10)->create([]);
+            Timesheet::factory()->count(10)->create([]);
+        }
     }
 }
