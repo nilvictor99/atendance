@@ -6,6 +6,7 @@ use App\Observers\PasswordVaultObserver;
 use App\Traits\Auth\BelongsToAuthenticatedUser;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class PasswordVault extends Model
 {
     use BelongsToAuthenticatedUser;
+    use HasFactory;
     use SoftDeletes;
 
     protected $fillable = [
