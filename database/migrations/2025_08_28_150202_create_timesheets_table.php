@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('type');
             $table->dateTime('day_in');
             $table->dateTime('day_out');
-            $table->time('hours')->nullable();
+            $table->decimal('hours')->nullable();
             $table->timestamps();
         });
     }

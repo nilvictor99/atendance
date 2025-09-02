@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             UbigeoSeeder::class,
             RoleSeeder::class,
             InitialConfigSeeder::class,
+            FakerSeeder::class,
         ]);
     }
 }
