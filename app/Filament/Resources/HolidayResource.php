@@ -95,16 +95,24 @@ class HolidayResource extends Resource
                     ->translateLabel(),
                 Tables\Columns\TextColumn::make('staff.name')
                     ->translateLabel(),
-                Tables\Columns\TextColumn::make('user.name')
-                    ->translateLabel(),
                 Tables\Columns\TextColumn::make('start_day')
-                    ->date()
+                    ->date('d/m/Y')
                     ->translateLabel(),
                 Tables\Columns\TextColumn::make('end_day')
-                    ->date()
+                    ->date('d/m/Y')
                     ->translateLabel(),
                 Tables\Columns\TextColumn::make('type')
-                    ->translateLabel(),
+                    ->translateLabel()
+                    ->badge()
+                    ->formatStateUsing(fn (string $state): string => __($state))
+                    ->color(fn (string $state): string => match ($state) {
+                        'vacation' => 'success',
+                        'sick_leave' => 'warning',
+                        'personal_leave' => 'info',
+                        'maternity_leave' => 'primary',
+                        'paternity_leave' => 'secondary',
+                        default => 'gray',
+                    }),
             ])
             ->filters([
                 //
