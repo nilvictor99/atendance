@@ -16,13 +16,13 @@
     const optionsAccess = [
         {
             name: 'Asistencias',
-            route: 'TimeSheet',
+            route: 'timesheet',
             background:
                 'https://i.pinimg.com/736x/ce/c4/b3/cec4b3cc815353d62435bb666868594a.jpg',
         },
         {
             name: 'Contraseñas',
-            route: 'PasswordsVault',
+            route: 'password-vault',
             background:
                 'https://i.pinimg.com/736x/ae/48/4a/ae484a15a84631934a735e96ad73147d.jpg',
         },
