@@ -324,5 +324,12 @@
     "Oct": "Oct",
     "Nov": "Nov",
     "Dec": "Dic",
-    "attendances": "asistencias"
+    "attendances": "asistencias",
+    "Calendar": "Calendario",
+    "break": "Descanso",
+    "work": "Trabajo",
+    "Day in": "Ingreso",
+    "Day out": "Salida",
+    "Work date": "Fecha",
+    "Hours": "Horas"
 }

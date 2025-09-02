@@ -6,6 +6,7 @@ use App\Filament\Exports\TimesheetExporter;
 use App\Filament\Imports\TimesheetImporter;
 use App\Filament\Resources\TimesheetResource\Pages;
 use App\Models\Timesheet;
+use App\Services\Utils\TimesheetDateService;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -52,36 +53,54 @@ class TimesheetResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('calendar')
+                    ->translateLabel()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('staff_id')
+                Tables\Columns\TextColumn::make('staff.name')
                     ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->translateLabel(),
                 Tables\Columns\TextColumn::make('type')
-                    ->searchable(),
+                    ->searchable()
+                    ->badge()
+                    ->formatStateUsing(fn (string $state): string => __($state))
+                    ->color(fn (string $state): string => match ($state) {
+                        'break' => 'success',
+                        'work' => 'info',
+                        default => 'gray',
+                    })
+                    ->translateLabel(),
                 Tables\Columns\TextColumn::make('day_in')
-                    ->dateTime()
-                    ->sortable(),
+                    ->label('Entrada')
+                    ->time()
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('day_out')
-                    ->dateTime()
+                    ->label('Salida')
+                    ->time()
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('work_date')
+                    ->translateLabel()
+                    ->getStateUsing(fn ($record) => (new TimesheetDateService)->formatWorkDate($record->day_in, $record->day_out))
                     ->sortable(),
-                Tables\Columns\TextColumn::make('hours'),
+                Tables\Columns\TextColumn::make('hours')
+                    ->translateLabel(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->date()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->translateLabel(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->date()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->translateLabel(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
