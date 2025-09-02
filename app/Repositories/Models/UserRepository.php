@@ -15,6 +15,6 @@ class UserRepository extends BaseRepository
 
     public function getStaffsWithTimeSheets()
     {
-        return $this->model->withTimeSheets()->get();
+        return $this->model->WithStaffs()->get();
     }
 }
