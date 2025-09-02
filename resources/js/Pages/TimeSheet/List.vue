@@ -3,10 +3,9 @@
     import { computed } from 'vue';
     import AppLayout from '@/Layouts/AppLayout.vue';
     import ClasicButton from '@/Components/Buttons/ClasicButton.vue';
-    import { ref, onMounted } from 'vue';
+    import { ref } from 'vue';
     import { router } from '@inertiajs/vue3';
     import Edit from '@/Components/Buttons/Edit.vue';
-    import { usePage } from '@inertiajs/vue3';
     import InputListSearch from '@/Components/Inputs/InputListSearch.vue';
     import DateRangeFilter from '@/Components/Sections/SectionDateRangeFilter.vue';
     import InputSelectClasic from '@/Components/Inputs/InputSelectClasic.vue';
@@ -70,33 +69,6 @@
         );
     }
 
-    const isDeleting = ref(false);
-    const showDeleteModal = ref(false);
-    const timesheetToDelete = ref(null);
-    const itemType = ref('Timesheet');
-    const itemDetails = computed(() => {
-        if (!timesheetToDelete.value) return {};
-        return (
-            data.value.find(item => item.id === timesheetToDelete.value) || {}
-        );
-    });
-    const confirmDelete = () => {
-        if (!timesheetToDelete.value) return;
-
-        isDeleting.value = true;
-        router.delete(
-            route('timesheets.delete', { id: timesheetToDelete.value }),
-            {
-                preserveScroll: true,
-                onFinish: () => {
-                    isDeleting.value = false;
-                    showDeleteModal.value = false;
-                    timesheetToDelete.value = null;
-                },
-            }
-        );
-    };
-
     const data = computed(
         () =>
             props.timesheets.data?.map(timesheet => ({
@@ -109,18 +81,6 @@
                 },
             })) || []
     );
-
-    const page = usePage();
-    const pdfUrl = page.props.jetstream?.flash?.pdf;
-
-    onMounted(() => {
-        if (pdfUrl) {
-            const url = pdfUrl.startsWith('http')
-                ? pdfUrl
-                : `${window.location.origin}${pdfUrl}`;
-            window.open(url, '_blank');
-        }
-    });
 </script>
 
 <template>
@@ -297,16 +257,5 @@
                 </div>
             </div>
         </section>
-
-        <ModalDelete
-            :show="showDeleteModal"
-            title="Eliminar Timesheet"
-            description="¿Está seguro que desea eliminar este timesheet? Esta acción no se puede deshacer."
-            :item-type="itemType"
-            :item-id="timesheetToDelete"
-            :item-details="itemDetails"
-            @close="showDeleteModal = false"
-            @confirm="confirmDelete"
-        />
     </AppLayout>
 </template>
