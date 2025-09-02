@@ -9,7 +9,7 @@
         disabled: { type: Boolean, default: false },
         focusColor: { type: String, default: '' },
         bold: { type: Boolean, default: false },
-        theme: { type: String, default: 'orange' },
+        theme: { type: String, default: 'gray' },
         multiple: { type: Boolean, default: false },
         customClass: { type: String, default: '' },
         label: { type: String, default: '' },

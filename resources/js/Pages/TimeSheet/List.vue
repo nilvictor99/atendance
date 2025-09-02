@@ -110,7 +110,7 @@
                         label="Elige un staff"
                         placeholder="Selecciona un staff"
                         :disabled="false"
-                        theme="orange"
+                        theme="gray"
                         :bold="true"
                         :CleanButton="true"
                         @change="handleSearch"
@@ -129,7 +129,6 @@
                         />
                         <ClasicButton
                             @click="$inertia.visit(route('timesheets.create'))"
-                            variant="primary"
                             >Nuevo Timesheet</ClasicButton
                         >
                     </div>

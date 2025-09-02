@@ -15,7 +15,7 @@
         },
         focusColor: {
             type: String,
-            default: 'focus:border-orange-500 focus:ring-orange-200',
+            default: 'focus:border-gray-500 focus:ring-gray-200',
         },
         bold: {
             type: Boolean,
@@ -123,7 +123,7 @@
                 v-if="cleanButton && (localValue.start || localValue.end)"
                 type="button"
                 @click="clearDates"
-                class="ml-2 px-2 py-2 rounded bg-orange-500 text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300"
+                class="ml-2 px-2 py-2 rounded bg-gray-500 text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300"
                 :disabled="disabled"
             >
                 <Eraser class="inline-block w-6 h-6" />
