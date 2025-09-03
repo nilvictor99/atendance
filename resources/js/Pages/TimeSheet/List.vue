@@ -111,8 +111,9 @@
                         />
                         <ClasicButton
                             @click="$inertia.visit(route('timesheets.create'))"
-                            >Nuevo Timesheet</ClasicButton
                         >
+                            {{ $t('Create Timesheet') }}
+                        </ClasicButton>
                     </div>
                     <div class="flex flex-col space-y-4">
                         <div class="overflow-x-auto">
