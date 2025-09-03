@@ -112,11 +112,14 @@
 
 <template>
     <ActionSection>
-        <template #title> Two Factor Authentication </template>
+        <template #title> {{ $t('Two Factor Authentication') }} </template>
 
         <template #description>
-            Add additional security to your account using two factor
-            authentication.
+            {{
+                $t(
+                    'Add additional security to your account using two factor authentication.'
+                )
+            }}
         </template>
 
         <template #content>
@@ -124,26 +127,27 @@
                 v-if="twoFactorEnabled && !confirming"
                 class="text-lg font-medium text-gray-900"
             >
-                You have enabled two factor authentication.
+                {{ $t('You have enabled two factor authentication.') }}
             </h3>
 
             <h3
                 v-else-if="twoFactorEnabled && confirming"
                 class="text-lg font-medium text-gray-900"
             >
-                Finish enabling two factor authentication.
+                {{ $t('Finish enabling two factor authentication.') }}
             </h3>
 
             <h3 v-else class="text-lg font-medium text-gray-900">
-                You have not enabled two factor authentication.
+                {{ $t('You have not enabled two factor authentication.') }}
             </h3>
 
             <div class="mt-3 max-w-xl text-sm text-gray-600">
                 <p>
-                    When two factor authentication is enabled, you will be
-                    prompted for a secure, random token during authentication.
-                    You may retrieve this token from your phone's Google
-                    Authenticator application.
+                    {{
+                        $t(
+                            "When two factor authentication is enabled, you will be prompted for a secure, random token during authentication. You may retrieve this token from your phone's Google Authenticator application."
+                        )
+                    }}
                 </p>
             </div>
 
@@ -151,16 +155,19 @@
                 <div v-if="qrCode">
                     <div class="mt-4 max-w-xl text-sm text-gray-600">
                         <p v-if="confirming" class="font-semibold">
-                            To finish enabling two factor authentication, scan
-                            the following QR code using your phone's
-                            authenticator application or enter the setup key and
-                            provide the generated OTP code.
+                            {{
+                                $t(
+                                    "To finish enabling two factor authentication, scan the following QR code using your phone's authenticator application or enter the setup key and provide the generated OTP code."
+                                )
+                            }}
                         </p>
 
                         <p v-else>
-                            Two factor authentication is now enabled. Scan the
-                            following QR code using your phone's authenticator
-                            application or enter the setup key.
+                            {{
+                                $t(
+                                    "Two factor authentication is now enabled. Scan the following QR code using your phone's authenticator application or enter the setup key."
+                                )
+                            }}
                         </p>
                     </div>
 
@@ -174,12 +181,13 @@
                         class="mt-4 max-w-xl text-sm text-gray-600"
                     >
                         <p class="font-semibold">
-                            Setup Key: <span v-html="setupKey"></span>
+                            {{ $t('Setup Key') }}:
+                            <span v-html="setupKey"></span>
                         </p>
                     </div>
 
                     <div v-if="confirming" class="mt-4">
-                        <InputLabel for="code" value="Code" />
+                        <InputLabel for="code" :value="$t('Code')" />
 
                         <TextInput
                             id="code"
@@ -203,10 +211,11 @@
                 <div v-if="recoveryCodes.length > 0 && !confirming">
                     <div class="mt-4 max-w-xl text-sm text-gray-600">
                         <p class="font-semibold">
-                            Store these recovery codes in a secure password
-                            manager. They can be used to recover access to your
-                            account if your two factor authentication device is
-                            lost.
+                            {{
+                                $t(
+                                    'Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost.'
+                                )
+                            }}
                         </p>
                     </div>
 
@@ -230,7 +239,7 @@
                             :class="{ 'opacity-25': enabling }"
                             :disabled="enabling"
                         >
-                            Enable
+                            {{ $t('Enable') }}
                         </PrimaryButton>
                     </ConfirmsPassword>
                 </div>
@@ -249,7 +258,7 @@
                             }"
                             :disabled="enabling || confirmationForm.processing"
                         >
-                            Confirm
+                            {{ $t('Confirm') }}
                         </PrimaryButton>
                     </ConfirmsPassword>
 
@@ -258,7 +267,7 @@
                             v-if="recoveryCodes.length > 0 && !confirming"
                             class="me-3"
                         >
-                            Regenerate Recovery Codes
+                            {{ $t('Regenerate Recovery Codes') }}
                         </SecondaryButton>
                     </ConfirmsPassword>
 
@@ -267,7 +276,7 @@
                             v-if="recoveryCodes.length === 0 && !confirming"
                             class="me-3"
                         >
-                            Show Recovery Codes
+                            {{ $t('Show Recovery Codes') }}
                         </SecondaryButton>
                     </ConfirmsPassword>
 
@@ -279,7 +288,7 @@
                             :class="{ 'opacity-25': disabling }"
                             :disabled="disabling"
                         >
-                            Cancel
+                            {{ $t('Cancel') }}
                         </SecondaryButton>
                     </ConfirmsPassword>
 
@@ -291,7 +300,7 @@
                             :class="{ 'opacity-25': disabling }"
                             :disabled="disabling"
                         >
-                            Disable
+                            {{ $t('Disable') }}
                         </DangerButton>
                     </ConfirmsPassword>
                 </div>
