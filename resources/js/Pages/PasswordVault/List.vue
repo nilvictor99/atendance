@@ -7,6 +7,8 @@
     import Edit from '@/Components/Buttons/Edit.vue';
     import InputListSearch from '@/Components/Inputs/InputListSearch.vue';
     import DateRangeFilter from '@/Components/Sections/SectionDateRangeFilter.vue';
+    import CustomTooltip from '@/Components/Utils/CustomTooltip.vue';
+    import CopyableText from '@/Components/Utils/CopyableText.vue';
 
     const props = defineProps({
         passwordVaults: {
@@ -107,6 +109,14 @@
                                                 >
                                                     Usuario
                                                 </th>
+
+                                                <th
+                                                    scope="col"
+                                                    class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                                                >
+                                                    Contraseña
+                                                </th>
+
                                                 <th
                                                     scope="col"
                                                     class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
@@ -118,12 +128,6 @@
                                                     class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                                                 >
                                                     Tipo
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
-                                                >
-                                                    Activo
                                                 </th>
                                                 <th
                                                     scope="col"
@@ -146,26 +150,68 @@
                                                 <td
                                                     class="max-w-[200px] px-4 py-4 text-sm text-gray-800"
                                                 >
-                                                    {{ vault.username }}
+                                                    <CopyableText
+                                                        :text="vault.username"
+                                                        theme="gray"
+                                                        size="sm"
+                                                        :truncate="true"
+                                                        :maxLength="15"
+                                                    />
+                                                </td>
+                                                <td
+                                                    class="max-w-[200px] px-4 py-4 text-sm text-gray-800"
+                                                >
+                                                    <CopyableText
+                                                        :text="vault.password"
+                                                        theme="gray"
+                                                        size="sm"
+                                                        :truncate="true"
+                                                        :maxLength="15"
+                                                    />
                                                 </td>
                                                 <td
                                                     class="px-4 py-4 text-sm text-gray-800"
                                                 >
-                                                    {{ vault.url }}
+                                                    <CustomTooltip
+                                                        :content="vault.url"
+                                                        theme="gray"
+                                                    >
+                                                        <a
+                                                            :href="vault.url"
+                                                            target="_blank"
+                                                            class="truncate max-w-[13ch] block font-bold text-indigo-600 cursor-pointer hover:underline"
+                                                        >
+                                                            {{
+                                                                vault.url
+                                                                    .split(' ')
+                                                                    .slice(
+                                                                        0,
+                                                                        10
+                                                                    )
+                                                                    .join(' ') +
+                                                                (vault.url.split(
+                                                                    ' '
+                                                                ).length > 10
+                                                                    ? '...'
+                                                                    : '')
+                                                            }}
+                                                        </a>
+                                                    </CustomTooltip>
                                                 </td>
                                                 <td
                                                     class="px-4 py-4 text-sm text-gray-800"
                                                 >
-                                                    {{ vault.type }}
-                                                </td>
-                                                <td
-                                                    class="px-4 py-4 text-sm text-gray-800"
-                                                >
-                                                    {{
-                                                        vault.active
-                                                            ? 'Sí'
-                                                            : 'No'
-                                                    }}
+                                                    <span
+                                                        :class="
+                                                            vault.type ===
+                                                            'public'
+                                                                ? 'bg-green-100 text-green-800'
+                                                                : 'bg-blue-100 text-blue-800'
+                                                        "
+                                                        class="px-2 py-1 rounded-full text-xs font-medium inline-block"
+                                                    >
+                                                        {{ $t(vault.type) }}
+                                                    </span>
                                                 </td>
                                                 <td
                                                     class="flex items-center justify-end px-5 py-4 whitespace-nowrap text-sm font-medium"
