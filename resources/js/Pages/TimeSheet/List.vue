@@ -89,8 +89,8 @@
                             id: props.staffId,
                             text: selectedStaffText,
                         }"
-                        label="Elige un staff"
-                        placeholder="Selecciona un staff"
+                        label="Colaboradores"
+                        placeholder="Colaborador"
                         :disabled="false"
                         theme="gray"
                         :bold="true"
@@ -106,7 +106,7 @@
                         <InputListSearch
                             v-model="search"
                             :cleanButton="true"
-                            placeholder="Buscar por staff, usuario o tipo"
+                            placeholder="Buscar Nombre, Usuario o Url"
                             @search="handleSearch"
                         />
                         <ClasicButton
@@ -136,7 +136,7 @@
                                                     scope="col"
                                                     class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                                                 >
-                                                    Staff
+                                                    Colaborador
                                                 </th>
                                                 <th
                                                     scope="col"
@@ -148,13 +148,13 @@
                                                     scope="col"
                                                     class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                                                 >
-                                                    Día Entrada
+                                                    Ingreso
                                                 </th>
                                                 <th
                                                     scope="col"
                                                     class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                                                 >
-                                                    Día Salida
+                                                    Salida
                                                 </th>
                                                 <th
                                                     scope="col"
@@ -191,7 +191,17 @@
                                                 <td
                                                     class="px-4 py-4 text-sm text-gray-800"
                                                 >
-                                                    {{ timesheet.type }}
+                                                    <span
+                                                        :class="
+                                                            timesheet.type ===
+                                                            'work'
+                                                                ? 'bg-green-100 text-green-800'
+                                                                : 'bg-gray-100 text-gray-800'
+                                                        "
+                                                        class="px-2 py-1 rounded-full text-xs font-medium inline-block"
+                                                    >
+                                                        {{ $t(timesheet.type) }}
+                                                    </span>
                                                 </td>
                                                 <td
                                                     class="px-4 py-4 text-sm text-gray-800"
