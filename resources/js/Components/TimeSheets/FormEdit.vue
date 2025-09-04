@@ -16,7 +16,6 @@
 
     const emit = defineEmits(['submitted', 'cancelled']);
 
-    // Extract date from day_in/day_out or calendar
     const extractDate = data => {
         if (data.day_in) return data.day_in.split(' ')[0];
         if (data.calendar) return data.calendar;
@@ -26,11 +25,11 @@
     const extractTime = datetime => {
         if (!datetime) return '';
         const time = datetime.split(' ')[1];
-        return time ? time.substring(0, 5) : ''; // Take only HH:MM
+        return time ? time.substring(0, 5) : '';
     };
 
     const form = useForm({
-        calendar: extractDate(props.data),
+        date: extractDate(props.data),
         day_in: extractTime(props.data.day_in),
         day_out: extractTime(props.data.day_out),
     });
@@ -55,7 +54,7 @@
         () => props.data,
         newData => {
             if (newData) {
-                form.calendar = extractDate(newData);
+                form.date = extractDate(newData);
                 form.day_in = extractTime(newData.day_in);
                 form.day_out = extractTime(newData.day_out);
             }
@@ -100,16 +99,16 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div>
                 <ClassicLabel
-                    for="calendar"
+                    for="date"
                     class="mb-1"
                     value="Fecha de Asistencia"
                 />
                 <InputDateClasic
-                    v-model="form.calendar"
+                    v-model="form.date"
                     label="Fecha de Asistencia"
                     theme="gray"
                     :required="true"
-                    name="calendar"
+                    name="date"
                     placeholder="Selecciona la fecha"
                     :disabled="false"
                     :minDate="null"
@@ -117,7 +116,7 @@
                     :allowInput="true"
                     :yearRange="10"
                 />
-                <InputError class="mt-1" :message="form.errors.calendar" />
+                <InputError class="mt-1" :message="form.errors.date" />
             </div>
             <div>
                 <InputTimeClassic

@@ -93,9 +93,11 @@ class TimesheetController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Timesheet $timesheet)
+    public function update(Request $request)
     {
-        //
+        $this->timesheetService->updateData($request->id, $request->all());
+
+        return redirect()->route('timesheets.list')->banner('Asistencia Actualizada');
     }
 
     /**

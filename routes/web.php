@@ -29,6 +29,7 @@ Route::middleware([
         Route::get('/timesheets/list', 'list')->name('timesheets.list');
         Route::get('/timesheet/qr-code', 'generate')->name('generate');
         Route::get('/timesheets/{id}/edit', 'edit')->name('timesheets.edit');
+        Route::put('/timesheets/{id}/update', 'update')->name('timesheets.update');
     });
 
     Route::controller(PasswordVaultController::class)->group(function () {
