@@ -36,4 +36,17 @@ class PasswordVaultRepository extends BaseRepository
     {
         return $this->model->create($data);
     }
+
+    public function getDataById($id)
+    {
+        return $this->model->findOrFail($id);
+    }
+
+    public function updateData($id, array $data)
+    {
+        $record = $this->model->findOrFail($id);
+        $record->update($data);
+
+        return $record;
+    }
 }

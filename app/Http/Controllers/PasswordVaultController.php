@@ -56,7 +56,7 @@ class PasswordVaultController extends Controller
         $data = $request->validated();
         $this->passwordVaultService->storeData($data);
 
-        return redirect()->back()->banner('Contraseña Registrada');
+        return redirect()->route('password-vault.list')->banner('Contraseña Registrada');
     }
 
     public function show(PasswordVault $passwordVault)
@@ -64,14 +64,21 @@ class PasswordVaultController extends Controller
         //
     }
 
-    public function edit(PasswordVault $passwordVault)
+    public function edit(Request $request)
     {
-        //
+        $data = $this->passwordVaultService->getDataById($request->id);
+
+        return Inertia::render('PasswordVault/Edit', [
+            'data' => $data,
+        ]);
     }
 
-    public function update(Request $request, PasswordVault $passwordVault)
+    public function update(PasswordVaultRequest $request)
     {
-        //
+        $data = $request->validated();
+        $this->passwordVaultService->updateData($request->id, $data);
+
+        return redirect()->route('password-vault.list')->banner('Contraseña Actualizada');
     }
 
     public function destroy(PasswordVault $passwordVault)

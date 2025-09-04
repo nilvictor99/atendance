@@ -36,5 +36,7 @@ Route::middleware([
         Route::get('/password-vault/create', 'create')->name('password-vault.create');
         Route::get('/generate-password', 'generate')->name('generate-password');
         Route::post('/password-vault/store', 'store')->name('password-vault.store');
+        Route::get('/password-vault/{id}/edit', 'edit')->name('password-vault.edit');
+        Route::put('/password-vault/{id}/update', 'update')->name('password-vault.update');
     });
 });
