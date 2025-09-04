@@ -246,6 +246,7 @@
 
     onMounted(() => {
         document.addEventListener('mousedown', handleClickOutside);
+        // Initialize from modelValue or defaultValue
         if (props.modelValue && /^\d{2}:\d{2}$/.test(props.modelValue)) {
             const [h, m] = props.modelValue.split(':');
             selectedHour.value = h;
@@ -261,7 +262,8 @@
             selectedMinute.value = m;
             hourSearch.value = h;
             minuteSearch.value = m;
-            emit('update:modelValue', `${h}:${m}`);
+            // Emit to set modelValue if not provided
+            emit('update:modelValue', String(props.defaultValue));
         }
     });
     onBeforeUnmount(() => {
@@ -287,7 +289,7 @@
                 ref="inputRef"
                 :id="id"
                 type="text"
-                :class="`font-bold rounded-md shadow-sm w-full ${themeClasses.input}`"
+                :class="`font-bold rounded-md shadow-sm w-full px-3 py-2 ${themeClasses.input}`"
                 :value="inputValue"
                 :disabled="disabled"
                 :readonly="!allowInput"

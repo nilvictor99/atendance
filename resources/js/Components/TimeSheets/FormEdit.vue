@@ -16,10 +16,23 @@
 
     const emit = defineEmits(['submitted', 'cancelled']);
 
+    // Extract date from day_in/day_out or calendar
+    const extractDate = data => {
+        if (data.day_in) return data.day_in.split(' ')[0];
+        if (data.calendar) return data.calendar;
+        return '';
+    };
+
+    const extractTime = datetime => {
+        if (!datetime) return '';
+        const time = datetime.split(' ')[1];
+        return time ? time.substring(0, 5) : ''; // Take only HH:MM
+    };
+
     const form = useForm({
-        date: props.data.date || '',
-        day_in: props.data.day_in ? props.data.day_in.split(' ')[1] : '',
-        day_out: props.data.day_out ? props.data.day_out.split(' ')[1] : '',
+        calendar: extractDate(props.data),
+        day_in: extractTime(props.data.day_in),
+        day_out: extractTime(props.data.day_out),
     });
 
     const staffName = computed(() => props.data?.staff?.name || '');
@@ -42,13 +55,9 @@
         () => props.data,
         newData => {
             if (newData) {
-                form.date = newData.date || '';
-                form.day_in = newData.day_in
-                    ? newData.day_in.split(' ')[1]
-                    : '';
-                form.day_out = newData.day_out
-                    ? newData.day_out.split(' ')[1]
-                    : '';
+                form.calendar = extractDate(newData);
+                form.day_in = extractTime(newData.day_in);
+                form.day_out = extractTime(newData.day_out);
             }
         },
         { deep: true }
@@ -91,16 +100,16 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div>
                 <ClassicLabel
-                    for="date"
+                    for="calendar"
                     class="mb-1"
                     value="Fecha de Asistencia"
                 />
                 <InputDateClasic
-                    v-model="form.date"
+                    v-model="form.calendar"
                     label="Fecha de Asistencia"
                     theme="gray"
                     :required="true"
-                    name="date"
+                    name="calendar"
                     placeholder="Selecciona la fecha"
                     :disabled="false"
                     :minDate="null"
@@ -108,7 +117,7 @@
                     :allowInput="true"
                     :yearRange="10"
                 />
-                <InputError class="mt-1" :message="form.errors.date" />
+                <InputError class="mt-1" :message="form.errors.calendar" />
             </div>
             <div>
                 <InputTimeClassic
