@@ -31,4 +31,9 @@ class PasswordVaultRepository extends BaseRepository
     {
         return $this->PasswordGeneratorService->generate($length);
     }
+
+    public function storeData(array $data)
+    {
+        return $this->model->create($data);
+    }
 }

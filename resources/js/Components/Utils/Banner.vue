@@ -6,20 +6,34 @@
     const show = ref(true);
     const style = ref('success');
     const message = ref('');
+    const duration = 10000;
 
-    watchEffect(async () => {
+    watchEffect(() => {
         style.value = page.props.jetstream.flash?.bannerStyle || 'success';
         message.value = page.props.jetstream.flash?.banner || '';
-        show.value = true;
+        show.value = !!message.value;
+        if (message.value) {
+            setTimeout(() => {
+                show.value = false;
+            }, duration);
+        }
     });
 </script>
 
 <template>
-    <div>
+    <Transition
+        enter-active-class="transform ease-out duration-300 transition"
+        enter-from-class="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+        enter-to-class="translate-y-0 opacity-100 sm:translate-x-0"
+        leave-active-class="transition ease-in duration-100"
+        leave-from-class="opacity-100"
+        leave-to-class="opacity-0"
+    >
         <div
             v-if="show && message"
+            class="fixed top-4 right-4 z-50 max-w-sm w-full shadow-lg rounded-lg pointer-events-auto"
             :class="{
-                'bg-indigo-500': style == 'success',
+                'bg-gray-500': style == 'success',
                 'bg-red-700': style == 'danger',
             }"
         >
@@ -29,7 +43,7 @@
                         <span
                             class="flex p-2 rounded-lg"
                             :class="{
-                                'bg-indigo-600': style == 'success',
+                                'bg-gray-600': style == 'success',
                                 'bg-red-600': style == 'danger',
                             }"
                         >
@@ -48,7 +62,6 @@
                                     d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                                 />
                             </svg>
-
                             <svg
                                 v-if="style == 'danger'"
                                 class="size-5 text-white"
@@ -65,18 +78,16 @@
                                 />
                             </svg>
                         </span>
-
                         <p class="ms-3 font-medium text-sm text-white truncate">
                             {{ message }}
                         </p>
                     </div>
-
                     <div class="shrink-0 sm:ms-3">
                         <button
                             type="button"
                             class="-me-1 flex p-2 rounded-md focus:outline-none sm:-me-2 transition"
                             :class="{
-                                'hover:bg-indigo-600 focus:bg-indigo-600':
+                                'hover:bg-gray-600 focus:bg-gray-600':
                                     style == 'success',
                                 'hover:bg-red-600 focus:bg-red-600':
                                     style == 'danger',
@@ -103,5 +114,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </Transition>
 </template>
