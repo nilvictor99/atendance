@@ -26,7 +26,7 @@
         },
         theme: {
             type: String,
-            default: 'indigo',
+            default: 'gray',
             validator: value =>
                 ['dark', 'gray', 'white', 'indigo', 'danger'].includes(value),
         },
@@ -49,6 +49,22 @@
 
     const input = ref(null);
     const previousValue = ref(null);
+
+    const labelTheme = computed(() => {
+        const themeMap = {
+            dark: 'gray',
+            gray: 'gray',
+            white: 'white',
+            indigo: 'indigo',
+            danger: 'primary',
+        };
+        return themeMap[props.theme] || 'gray';
+    });
+
+    const labelWeight = 'semibold';
+    const labelSize = 'sm';
+    const labelTransform = 'normal';
+    const labelRequired = false;
 
     const handleFocus = () => {
         if (props.clearOnFocus) {
@@ -74,6 +90,10 @@
     };
 
     onMounted(() => {
+        if (!props.modelValue && props.defaultValue !== null) {
+            emit('update:modelValue', String(props.defaultValue));
+        }
+
         if (input.value.hasAttribute('autofocus')) {
             input.value.focus();
         }
@@ -86,7 +106,7 @@
             case 'dark':
                 return 'border-gray-800 focus:border-gray-900 focus:ring-gray-900 bg-gray-900 text-white placeholder-gray-400';
             case 'gray':
-                return 'border-gray-300 focus:border-gray-400 focus:ring-gray-400 bg-white text-gray-800 placeholder-gray-400';
+                return 'border-gray-500 focus:border-gray-600 focus:ring-gray-600 bg-white text-gray-700 placeholder-gray-400';
             case 'white':
                 return 'border-white focus:border-gray-200 focus:ring-gray-200 bg-white text-gray-800 placeholder-gray-400';
             case 'indigo':

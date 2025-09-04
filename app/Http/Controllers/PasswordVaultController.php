@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PasswordVaultRequest;
 use App\Models\PasswordVault;
 use App\Services\Models\PasswordVaultService;
 use Illuminate\Http\Request;
@@ -40,12 +41,22 @@ class PasswordVaultController extends Controller
 
     public function create()
     {
-        //
+        return Inertia::render('PasswordVault/Create');
     }
 
-    public function store(Request $request)
+    public function generate()
     {
-        //
+        $generatedPassword = $this->passwordVaultService->generatePassword();
+
+        return response()->json(['password' => $generatedPassword]);
+    }
+
+    public function store(PasswordVaultRequest $request)
+    {
+        $data = $request->validated();
+        $this->passwordVaultService->storeData($data);
+
+        return redirect()->back()->banner('Contraseña Registrada');
     }
 
     public function show(PasswordVault $passwordVault)

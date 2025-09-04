@@ -2,7 +2,7 @@
 
 namespace App\Services\Utils;
 
-class PasswordGenerator
+class PasswordGeneratorService
 {
     /**
      * Generate a random password.
