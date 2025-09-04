@@ -40,6 +40,7 @@ class User extends Authenticatable
         'email',
         'password',
         'type_user',
+        'qr_code',
     ];
 
     /**
@@ -116,5 +117,15 @@ class User extends Authenticatable
         return $query->whereHas('staffTimesheets')
             ->with(['profile'])
             ->select('id', 'name');
+    }
+
+    public function scopeWithProfile(Builder $query)
+    {
+        return $query->with('profile');
+    }
+
+    public function scopeWithBasicData(Builder $query)
+    {
+        return $query->select(['id', 'name', 'email']);
     }
 }

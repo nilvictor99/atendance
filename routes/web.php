@@ -27,6 +27,7 @@ Route::middleware([
     Route::controller(TimesheetController::class)->group(function () {
         Route::get('/timesheet', 'index')->name('timesheet');
         Route::get('/timesheets/list', 'list')->name('timesheets.list');
+        Route::get('/timesheet/qr-code', 'generate')->name('generate');
     });
 
     Route::controller(PasswordVaultController::class)->group(function () {

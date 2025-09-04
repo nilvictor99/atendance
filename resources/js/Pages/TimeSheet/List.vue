@@ -8,6 +8,7 @@
     import InputListSearch from '@/Components/Inputs/InputListSearch.vue';
     import DateRangeFilter from '@/Components/Sections/SectionDateRangeFilter.vue';
     import InputSelectClasic from '@/Components/Inputs/InputSelectClasic.vue';
+    import ModalQrGenerate from '@/Components/TimeSheets/ModalQrGenerate.vue';
 
     const props = defineProps({
         timesheets: {
@@ -28,6 +29,17 @@
         },
         staffId: { type: [String, Number], default: '' },
     });
+
+    const showQrModal = ref(false);
+    const qrCode = ref('');
+
+    const generateQr = async () => {
+        const { qrCode: code } = await fetch(route('generate'), {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        }).then(r => r.json());
+        qrCode.value = code;
+        showQrModal.value = true;
+    };
 
     const search = ref(props.search);
     const dateRange = ref(props.dateRange || { start: '', end: '' });
@@ -109,9 +121,7 @@
                             placeholder="Buscar Nombre, Usuario o Url"
                             @search="handleSearch"
                         />
-                        <ClasicButton
-                            @click="$inertia.visit(route('timesheets.create'))"
-                        >
+                        <ClasicButton @click="generateQr">
                             {{ $t('Create Timesheet') }}
                         </ClasicButton>
                     </div>
@@ -247,5 +257,11 @@
                 </div>
             </div>
         </section>
+
+        <ModalQrGenerate
+            :show="showQrModal"
+            :qr-code="qrCode"
+            @close="showQrModal = false"
+        />
     </AppLayout>
 </template>

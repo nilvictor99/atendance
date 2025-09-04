@@ -46,6 +46,14 @@ class TimesheetController extends Controller
         ]);
     }
 
+    public function generate(Request $request)
+    {
+        $data = $this->userService->getAuthUser();
+        $result = $this->timesheetService->generateQrCode($data);
+
+        return $result;
+    }
+
     /**
      * Show the form for creating a new resource.
      */
