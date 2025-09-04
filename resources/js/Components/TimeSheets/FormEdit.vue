@@ -4,8 +4,7 @@
     import ClasicButton from '../Buttons/ClasicButton.vue';
     import InputError from '../Inputs/InputError.vue';
     import InputTimeClassic from '../Inputs/InputTimeClassic.vue';
-    import InputDateClasic from '../Inputs/InputDateClasic.vue';
-    import ClassicLabel from '../Labels/ClassicLabel.vue';
+    import InputDateSimple from '../Inputs/InputDateSimple.vue';
 
     const props = defineProps({
         data: {
@@ -98,12 +97,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div>
-                <ClassicLabel
-                    for="date"
-                    class="mb-1"
-                    value="Fecha de Asistencia"
-                />
-                <InputDateClasic
+                <InputDateSimple
                     v-model="form.date"
                     label="Fecha de Asistencia"
                     theme="gray"
