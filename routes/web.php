@@ -33,5 +33,8 @@ Route::middleware([
     Route::controller(PasswordVaultController::class)->group(function () {
         Route::get('/password-vault', 'index')->name('password-vault');
         Route::get('/password-vault/list', 'list')->name('password-vault.list');
+        Route::get('/password-vault/create', 'create')->name('password-vault.create');
+        Route::get('/generate-password', 'generate')->name('generate-password');
+        Route::post('/password-vault/store', 'store')->name('password-vault.store');
     });
 });

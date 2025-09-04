@@ -39,7 +39,7 @@
 
     const themeClasses = computed(() => {
         const themes = {
-            gray: 'text-gray-700 dark:text-gray-300',
+            gray: 'text-gray-700 dark:text-gray-600',
             white: 'text-white dark:text-gray-100',
             indigo: 'text-indigo-700 dark:text-indigo-500',
             primary: 'text-[#d35400] dark:text-orange-300',

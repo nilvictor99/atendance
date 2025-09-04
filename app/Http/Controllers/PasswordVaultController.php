@@ -40,7 +40,14 @@ class PasswordVaultController extends Controller
 
     public function create()
     {
-        //
+        return Inertia::render('PasswordVault/Create');
+    }
+
+    public function generate()
+    {
+        $generatedPassword = $this->passwordVaultService->generatePassword();
+
+        return response()->json(['password' => $generatedPassword]);
     }
 
     public function store(Request $request)
