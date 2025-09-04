@@ -1,6 +1,6 @@
 <script setup>
-    import { watch } from 'vue'; // Eliminé ref, ya no se usa
-    import { router, useForm } from '@inertiajs/vue3';
+    import { watch } from 'vue';
+    import { useForm } from '@inertiajs/vue3';
     import ClasicButton from '../Buttons/ClasicButton.vue';
     import InputLabelClassic from '../Inputs/InputLabelClassic.vue';
     import InputError from '../Inputs/InputError.vue';
@@ -13,7 +13,7 @@
             type: String,
             default: 'create',
         },
-        initialData: {
+        data: {
             type: Object,
             default: () => ({}),
         },
@@ -22,31 +22,26 @@
     const emit = defineEmits(['submitted', 'cancelled']);
 
     const form = useForm({
-        name: props.initialData.name || '',
-        username: props.initialData.username || '',
-        password: props.initialData.password || '',
-        url: props.initialData.url || '',
-        notes: props.initialData.notes || '',
-        type: props.initialData.type || 'private',
-        active:
-            props.initialData.active !== undefined
-                ? props.initialData.active
-                : true, // Agregué active si es necesario
+        name: props.data.name || '',
+        username: props.data.username || '',
+        password: props.data.password || '',
+        url: props.data.url || '',
+        notes: props.data.notes || '',
+        type: props.data.type || 'private',
+        active: props.data.active !== undefined ? props.data.active : true, // Agregué active si es necesario
     });
 
     const submitForm = () => {
         if (props.mode === 'edit') {
-            form.put(route('password-vault.update', props.initialData.id), {
+            form.put(route('password-vault.update', props.data.id), {
                 onSuccess: () => {
                     emit('submitted');
-                    router.visit('/password-vault/list');
                 },
             });
         } else {
             form.post(route('password-vault.store'), {
                 onSuccess: () => {
                     emit('submitted');
-                    router.visit('/password-vault/list');
                 },
             });
         }
@@ -57,7 +52,7 @@
     };
 
     watch(
-        () => props.initialData,
+        () => props.data,
         newData => {
             if (newData) {
                 form.name = newData.name || '';
@@ -101,7 +96,7 @@
                     placeholder="Ingresa el nombre"
                     :clearOnFocus="false"
                     :calculateOnInput="false"
-                    :defaultValue="props.initialData.name || ''"
+                    :defaultValue="props.data.name || ''"
                 />
                 <InputError class="mt-1" :message="form.errors.name" />
             </div>
@@ -117,7 +112,7 @@
                     placeholder="Ingresa el usuario"
                     :clearOnFocus="false"
                     :calculateOnInput="false"
-                    :defaultValue="props.initialData.username || ''"
+                    :defaultValue="props.data.username || ''"
                 />
                 <InputError class="mt-1" :message="form.errors.username" />
             </div>
@@ -128,7 +123,7 @@
                     label="Contraseña"
                     placeholder="Ingresa la contraseña"
                     theme="gray"
-                    :initialValue="props.initialData.password || ''"
+                    :initialValue="props.data.password || ''"
                     :disabled="false"
                 />
                 <InputError class="mt-1" :message="form.errors.password" />
@@ -148,7 +143,7 @@
                     placeholder="Ingresa la URL"
                     :clearOnFocus="false"
                     :calculateOnInput="false"
-                    :defaultValue="props.initialData.url || ''"
+                    :defaultValue="props.data.url || ''"
                 />
                 <InputError class="mt-1" :message="form.errors.url" />
             </div>
@@ -179,7 +174,7 @@
                 :font-weight="'semibold'"
                 :rows="4"
                 placeholder="Ingresa las notas"
-                :defaultValue="props.initialData.notes || ''"
+                :defaultValue="props.data.notes || ''"
             />
         </div>
         <div class="mt-6 flex justify-end space-x-4">
