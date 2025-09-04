@@ -81,9 +81,13 @@ class TimesheetController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Timesheet $timesheet)
+    public function edit(Request $request)
     {
-        //
+        $data = $this->timesheetService->getDataById($request->id);
+
+        return Inertia::render('TimeSheet/Edit', [
+            'data' => $data,
+        ]);
     }
 
     /**

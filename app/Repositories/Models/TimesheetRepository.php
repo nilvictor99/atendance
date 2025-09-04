@@ -43,4 +43,9 @@ class TimesheetRepository extends BaseRepository
 
         return ['qrCode' => $qrCode];
     }
+
+    public function getDataById($id)
+    {
+        return $this->model->withStaffProfile()->findOrFail($id);
+    }
 }
