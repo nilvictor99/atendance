@@ -116,6 +116,18 @@
             colorText: 'text-gray-500',
             bg: 'bg-transparent',
         },
+        black: {
+            colorPoints: '#000000',
+            colorPointsAlt: '#434343',
+            colorText: 'text-white',
+            bg: 'bg-transparent',
+        },
+        white: {
+            colorPoints: '#ffffff',
+            colorPointsAlt: '#ffffff00',
+            colorText: 'text-gray-100',
+            bg: 'bg-transparent',
+        },
     };
 
     const variantClass = computed(() => {

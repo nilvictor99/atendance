@@ -114,12 +114,11 @@
 
                 <div class="flex items-center justify-center mt-4">
                     <NativeButton
-                        :class="{ 'opacity-15': form.processing }"
                         :theme="'gray'"
                         :disabled="form.processing"
                         class="h-11 w-full md:w-full"
                     >
-                        <LoadPoints v-if="form.processing" />
+                        <LoadPoints v-if="form.processing" :variant="'white'" />
                         <span v-else>Iniciar Sesion</span>
                     </NativeButton>
                 </div>

@@ -6,6 +6,7 @@
     import ClasicButton from '../Buttons/ClasicButton.vue';
     import Modal from '../Modals/Modal.vue';
     import InputError from '../Inputs/InputError.vue';
+    import LoadPoints from '@/Components/Icons/LoadPoints.vue';
 
     const props = defineProps({
         show: {
@@ -74,30 +75,39 @@
 
 <template>
     <Modal :show="props.show" @close="closeModal" maxWidth="md">
-        <div class="p-6">
+        <div class="p-4 sm:p-6 lg:p-8">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-semibold">Escanear QR de Asistencia</h2>
+                <h2
+                    class="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-800"
+                >
+                    Escáner de Código QR
+                </h2>
                 <button
                     @click="closeModal"
-                    class="text-gray-500 hover:text-gray-700"
+                    class="text-gray-500 hover:text-gray-700 transition-colors"
                 >
-                    <XIcon class="h-5 w-5" />
+                    <XIcon class="h-6 w-6 sm:h-8 sm:w-8" />
                 </button>
             </div>
 
             <div class="qr-scanner">
-                <div class="flex gap-2 p-4 justify-center mb-4">
+                <div
+                    class="flex flex-col sm:flex-row gap-2 p-4 justify-center mb-4"
+                >
                     <ClasicButton
                         @click="startScanning"
                         :disabled="scanning"
                         variant="blue"
+                        class="w-full sm:w-auto flex justify-center"
                     >
-                        {{ scanning ? 'Escaneando...' : 'Iniciar Escaneo' }}
+                        <LoadPoints v-if="scanning" :variant="'white'" />
+                        <span v-else>Iniciar Escaneo</span>
                     </ClasicButton>
                     <ClasicButton
                         v-if="scanning"
                         @click="stopScanning"
                         variant="danger"
+                        class="w-full sm:w-auto flex justify-center"
                     >
                         Detener Escaneo
                     </ClasicButton>
@@ -105,22 +115,22 @@
                 <div v-if="scanning" class="mt-4 relative">
                     <div
                         v-if="loading"
-                        class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded"
+                        class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg z-10"
                     >
-                        <p class="text-white">Cargando cámara...</p>
+                        <LoadPoints />
                     </div>
                     <qrcode-stream
                         @detect="onDetect"
                         @error="onError"
                         :formats="['qr_code']"
                         :torch="false"
-                        class="rounded border"
+                        class="rounded-lg border border-gray-300 shadow-md w-full max-w-xs sm:max-w-md lg:max-w-lg mx-auto"
                     />
-                    <InputError class="mt-1">
+                    <InputError class="mt-2 text-center text-sm sm:text-base">
                         {{ $t(cameraError) }}
                     </InputError>
                 </div>
-                <InputError class="mt-1">
+                <InputError class="mt-2 text-center text-sm sm:text-base">
                     {{ $t(error) }}
                 </InputError>
             </div>

@@ -385,6 +385,6 @@
     "Total Employees": "Total de Empleados",
     "Present Today": "Presentes Hoy",
     "Absent Today": "Ausentes Hoy",
-    "Attendance Rate": "Tasa de Asistencia"
-
+    "Attendance Rate": "Tasa de Asistencia",
+    "camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP.": "Acceso a la cámara solo en contexto seguro. Usa HTTPS o localhost, no HTTP."
 }
