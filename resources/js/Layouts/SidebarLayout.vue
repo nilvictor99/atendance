@@ -32,7 +32,13 @@
 
 <template>
     <div>
-        <Head :title="title" />
+        <Head :title="title">
+            <link
+                rel="icon"
+                type="image/x-icon"
+                href="/System/favicons/favicon.ico"
+            />
+        </Head>
         <Banner />
         <div class="min-h-screen bg-white flex flex-col overflow-hidden">
             <Header :toggleSidebar="toggleSidebar" />

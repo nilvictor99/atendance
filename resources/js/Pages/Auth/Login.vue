@@ -32,7 +32,13 @@
 </script>
 
 <template>
-    <Head title="Log in" />
+    <Head title="Iniciar Sesión">
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="/System/favicons/favicon.ico"
+        />
+    </Head>
 
     <link
         href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap"
