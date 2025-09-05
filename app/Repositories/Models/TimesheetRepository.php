@@ -74,4 +74,37 @@ class TimesheetRepository extends BaseRepository
             'hours' => round($hours, 2),
         ];
     }
+
+    public function storeData(array $data)
+    {
+        $currentTime = Carbon::now()->toTimeString();
+        $userId = $this->userService->id();
+        $currentDate = Carbon::now()->toDateString();
+        $currentTime = Carbon::now()->toTimeString();
+        $timesheet = $this->model->where('staff_id', $userId)
+            ->whereDate('day_in', $currentDate)
+            ->first();
+
+        if (! $timesheet) {
+            $timesheet = $this->model->create([
+                'user_id' => $userId->getAuthUserId(),
+                'staff_id' => $data['staff_id'],
+                'day_in' => $currentDate.' '.$currentTime,
+                'day_out' => null,
+                'hours' => 0,
+                'type' => 'work',
+            ]);
+        } else {
+            if (! $timesheet->day_out) {
+                $dayOut = $currentDate.' '.$currentTime;
+                $hours = Carbon::parse($timesheet->day_in)->diffInHours(Carbon::parse($dayOut)) + (Carbon::parse($timesheet->day_in)->diffInMinutes(Carbon::parse($dayOut)) % 60) / 60;
+                $timesheet->update([
+                    'day_out' => $dayOut,
+                    'hours' => round($hours, 2),
+                ]);
+            }
+        }
+
+        return $timesheet;
+    }
 }

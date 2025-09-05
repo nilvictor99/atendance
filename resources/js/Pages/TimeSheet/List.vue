@@ -9,7 +9,7 @@
     import DateRangeFilter from '@/Components/Sections/SectionDateRangeFilter.vue';
     import InputSelectClasic from '@/Components/Inputs/InputSelectClasic.vue';
     import ModalQrGenerate from '@/Components/TimeSheets/ModalQrGenerate.vue';
-    import QrScanner from '@/Components/TimeSheets/QrScanner.vue';
+    import ModalQrScanner from '@/Components/TimeSheets/ModalQrScanner.vue';
 
     const props = defineProps({
         timesheets: {
@@ -309,6 +309,6 @@
             :qr-code="qrCode"
             @close="showQrModal = false"
         />
-        <QrScanner :show="showScanner" @close="showScanner = false" />
+        <ModalQrScanner :show="showScanner" @close="showScanner = false" />
     </AppLayout>
 </template>

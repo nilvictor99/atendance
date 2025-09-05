@@ -36,7 +36,7 @@
             scanning.value = false;
             loading.value = false;
             router.post(
-                route('timesheets.scanQr'),
+                route('scan'),
                 { qr_data: result },
                 {
                     onSuccess: () => {

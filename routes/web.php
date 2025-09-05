@@ -28,6 +28,7 @@ Route::middleware([
         Route::get('/timesheet', 'index')->name('timesheet');
         Route::get('/timesheets/list', 'list')->name('timesheets.list');
         Route::get('/timesheet/qr-code', 'generate')->name('generate');
+        Route::post('/timesheets/qr-scan', 'scan')->name('scan');
         Route::get('/timesheets/{id}/edit', 'edit')->name('timesheets.edit');
         Route::put('/timesheets/{id}/update', 'update')->name('timesheets.update');
     });
