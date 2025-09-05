@@ -5,6 +5,7 @@ namespace App\Repositories\Models;
 use App\Models\Timesheet;
 use App\Services\Models\UserService;
 use App\Services\Utils\QrGeneratorService;
+use Carbon\Carbon;
 
 class TimesheetRepository extends BaseRepository
 {
@@ -42,5 +43,35 @@ class TimesheetRepository extends BaseRepository
         $qrCode = $this->qrGeneratorService->generate($data, $options);
 
         return ['qrCode' => $qrCode];
+    }
+
+    public function getDataById($id)
+    {
+        return $this->model->withStaffProfile()->findOrFail($id);
+    }
+
+    public function updateData($id, array $data)
+    {
+        $timesheet = $this->model->findOrFail($id);
+        $updateData = $this->processUpdateData($data);
+        $timesheet->update($updateData);
+
+        return $timesheet;
+    }
+
+    private function processUpdateData(array $data): array
+    {
+        $dayIn = $data['date'].' '.$data['day_in'].':00';
+        $dayOut = $data['date'].' '.$data['day_out'].':00';
+
+        $dayInCarbon = Carbon::parse($dayIn);
+        $dayOutCarbon = Carbon::parse($dayOut);
+        $hours = $dayInCarbon->diffInHours($dayOutCarbon) + ($dayInCarbon->diffInMinutes($dayOutCarbon) % 60) / 60;
+
+        return [
+            'day_in' => $dayIn,
+            'day_out' => $dayOut,
+            'hours' => round($hours, 2),
+        ];
     }
 }
