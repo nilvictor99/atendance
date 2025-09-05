@@ -110,6 +110,7 @@ class TimesheetController extends Controller
 
     public function scan(Request $request)
     {
+        dd($request->all());
         $data = $request->all();
         $qrData = json_decode($data['qrData'], true);
 
