@@ -95,235 +95,211 @@
 
 <template>
     <AppLayout title="Timesheets">
-        <section class="mx-auto px-1 sm:px-6 lg:px-4 py-1 w-full max-w-7xl">
-            <div class="flex md:flex-col flex-col gap-1 mt-2">
-                <div
-                    class="h-24 grid grid-cols-1 md:grid-cols-2 gap-2 items-center justify-between bg-white shadow sm:rounded-lg px-4 py-2"
-                >
-                    <DateRangeFilter
-                        v-model="dateRange"
-                        label="Filtrar por fechas"
-                        borderColor="border-orange-400"
-                        focusColor="focus:border-orange-500 focus:ring-orange-200"
-                        :bold="true"
-                        :disabled="false"
-                        :cleanButton="true"
-                        @filter="handleSearch"
-                    />
-                    <InputSelectClasic
-                        v-model="staffId"
-                        :options="staffOptions"
-                        :initialValue="{
-                            id: props.staffId,
-                            text: selectedStaffText,
-                        }"
-                        label="Colaboradores"
-                        placeholder="Colaborador"
-                        :disabled="false"
-                        theme="gray"
-                        :bold="true"
-                        :CleanButton="true"
-                        @change="handleSearch"
-                    />
+        <section class="mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full max-w-7xl">
+            <div class="flex flex-col gap-6 mt-6">
+                <!-- Filters Section -->
+                <div class="bg-white shadow-lg rounded-xl p-6">
+                    <div
+                        class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end"
+                    >
+                        <DateRangeFilter
+                            v-model="dateRange"
+                            label="Filtrar por fechas"
+                            borderColor="border-orange-400"
+                            focusColor="focus:border-orange-500 focus:ring-orange-200"
+                            :bold="true"
+                            :disabled="false"
+                            :cleanButton="true"
+                            @filter="handleSearch"
+                        />
+                        <InputSelectClasic
+                            v-model="staffId"
+                            :options="staffOptions"
+                            :initialValue="{
+                                id: props.staffId,
+                                text: selectedStaffText,
+                            }"
+                            label="Colaboradores"
+                            placeholder="Colaborador"
+                            :disabled="false"
+                            theme="gray"
+                            :bold="true"
+                            :CleanButton="true"
+                            @change="handleSearch"
+                        />
+                    </div>
                 </div>
 
-                <div class="py-2 px-4 bg-white shadow sm:rounded-lg w-full">
+                <div class="bg-white shadow-lg rounded-xl p-6">
                     <div
-                        class="flex justify-between sm:rounded-lg px-1 py-1 mb-2"
+                        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 items-end"
                     >
-                        <InputListSearch
-                            v-model="search"
-                            :cleanButton="true"
-                            placeholder="Buscar Nombre, Usuario o Url"
-                            @search="handleSearch"
-                        />
-                        <div class="flex gap-2">
-                            <ClasicButton @click="generateQr">
+                        <div class="col-span-1 sm:col-span-2 lg:col-span-2">
+                            <InputListSearch
+                                v-model="search"
+                                :cleanButton="true"
+                                placeholder="Buscar Nombre, Usuario o Url"
+                                @search="handleSearch"
+                                class="w-full"
+                            />
+                        </div>
+                        <div class="col-span-1 flex flex-col sm:flex-row gap-3">
+                            <ClasicButton
+                                @click="generateQr"
+                                class="w-full sm:flex-1 justify-center text-center"
+                            >
                                 {{ $t('Create Timesheet') }}
                             </ClasicButton>
                             <ClasicButton
                                 @click="showScanner = true"
                                 variant="success"
+                                class="w-full sm:flex-1 justify-center text-center"
                             >
                                 {{ $t('Scan QR') }}
                             </ClasicButton>
                         </div>
                     </div>
-                    <div class="flex flex-col space-y-4">
-                        <div class="overflow-x-auto">
-                            <div class="inline-block min-w-full align-middle">
-                                <div
-                                    class="overflow-hidden border border-gray-200 rounded-lg min-h-[400px] mb-2"
-                                >
-                                    <table
-                                        class="min-w-full divide-y divide-gray-200"
+
+                    <div class="overflow-x-auto">
+                        <table
+                            class="min-w-full divide-y divide-gray-200 bg-white rounded-lg shadow-sm"
+                        >
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th
+                                        class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
                                     >
-                                        <thead class="bg-gray-50">
-                                            <tr>
-                                                <th
-                                                    scope="col"
-                                                    class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
-                                                >
-                                                    Calendario
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase"
-                                                >
-                                                    Fecha
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase"
-                                                >
-                                                    Colaborador
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase"
-                                                >
-                                                    Tipo
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase"
-                                                >
-                                                    Hora Ingreso
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase"
-                                                >
-                                                    Hora Salida
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase"
-                                                >
-                                                    Horas
-                                                </th>
-                                                <th
-                                                    scope="col"
-                                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase"
-                                                >
-                                                    Acciones
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="divide-y divide-gray-200">
-                                            <tr
-                                                v-for="timesheet in timesheets.data"
-                                                :key="timesheet.id"
-                                            >
-                                                <td
-                                                    class="max-w-[200px] px-6 py-4 text-sm font-medium text-gray-800"
-                                                >
-                                                    {{
-                                                        timesheet.calendar ||
-                                                        'Sin calendario'
-                                                    }}
-                                                </td>
-                                                <td
-                                                    class="max-w-[200px] text-center px-4 py-4 text-sm font-medium text-gray-800"
-                                                >
-                                                    {{
-                                                        formatWorkDate(
-                                                            timesheet.day_in,
-                                                            timesheet.day_out
-                                                        )
-                                                    }}
-                                                </td>
-                                                <td
-                                                    class="max-w-[200px] text-center px-4 py-4 text-sm text-gray-800"
-                                                >
-                                                    {{
-                                                        timesheet.staff?.name ||
-                                                        'Sin staff'
-                                                    }}
-                                                </td>
-                                                <td
-                                                    class="px-4 py-4 text-center text-sm text-gray-800"
-                                                >
-                                                    <span
-                                                        :class="
-                                                            timesheet.type ===
-                                                            'work'
-                                                                ? 'bg-green-100 text-green-800'
-                                                                : 'bg-blue-100 text-blue-800'
-                                                        "
-                                                        class="px-2 py-1 rounded-full font-semibold inline-block"
-                                                    >
-                                                        {{ $t(timesheet.type) }}
-                                                    </span>
-                                                </td>
-                                                <td
-                                                    class="px-4 py-4 text-center text-sm text-gray-800"
-                                                >
-                                                    <span
-                                                        :class="
-                                                            timesheet.type ===
-                                                            'work'
-                                                                ? 'bg-green-100 text-green-800'
-                                                                : 'bg-blue-100 text-blue-800'
-                                                        "
-                                                        class="px-2 py-1 rounded-md font-semibold inline-block"
-                                                    >
-                                                        {{
-                                                            formatTime(
-                                                                timesheet.day_in
-                                                            )
-                                                        }}
-                                                    </span>
-                                                </td>
-                                                <td
-                                                    class="px-4 py-4 text-center text-sm text-gray-800"
-                                                >
-                                                    <span
-                                                        :class="
-                                                            timesheet.type ===
-                                                            'work'
-                                                                ? 'bg-green-100 text-green-800'
-                                                                : 'bg-blue-100 text-blue-800'
-                                                        "
-                                                        class="px-2 py-1 rounded-md font-semibold inline-block"
-                                                    >
-                                                        {{
-                                                            formatTime(
-                                                                timesheet.day_out
-                                                            )
-                                                        }}
-                                                    </span>
-                                                </td>
-                                                <td
-                                                    class="px-4 py-4 text-center text-sm text-gray-800"
-                                                >
-                                                    {{ timesheet.hours }}
-                                                </td>
-                                                <td
-                                                    class="flex items-center justify-center px-5 py-4 whitespace-nowrap text-sm font-medium"
-                                                >
-                                                    <Edit
-                                                        @click="
-                                                            $inertia.visit(
-                                                                route(
-                                                                    'timesheets.edit',
-                                                                    {
-                                                                        id: timesheet.id,
-                                                                    }
-                                                                )
-                                                            )
-                                                        "
-                                                    />
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="px-2 py-1">
-                                    <Pagination :pagination="timesheets" />
-                                </div>
-                            </div>
-                        </div>
+                                        Calendario
+                                    </th>
+                                    <th
+                                        class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                                    >
+                                        Fecha
+                                    </th>
+                                    <th
+                                        class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                                    >
+                                        Colaborador
+                                    </th>
+                                    <th
+                                        class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                                    >
+                                        Tipo
+                                    </th>
+                                    <th
+                                        class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                                    >
+                                        Hora Ingreso
+                                    </th>
+                                    <th
+                                        class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                                    >
+                                        Hora Salida
+                                    </th>
+                                    <th
+                                        class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                                    >
+                                        Horas
+                                    </th>
+                                    <th
+                                        class="px-6 py-4 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider"
+                                    >
+                                        Acciones
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr
+                                    v-for="timesheet in timesheets.data"
+                                    :key="timesheet.id"
+                                    class="hover:bg-gray-50 transition-colors"
+                                >
+                                    <td
+                                        class="px-6 py-4 text-sm font-medium text-gray-900 truncate max-w-xs"
+                                    >
+                                        {{
+                                            timesheet.calendar ||
+                                            'Sin calendario'
+                                        }}
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 text-center text-sm text-gray-900"
+                                    >
+                                        {{
+                                            formatWorkDate(
+                                                timesheet.day_in,
+                                                timesheet.day_out
+                                            )
+                                        }}
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 text-center text-sm text-gray-900"
+                                    >
+                                        {{
+                                            timesheet.staff?.name || 'Sin staff'
+                                        }}
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <span
+                                            :class="
+                                                timesheet.type === 'work'
+                                                    ? 'bg-green-100 text-green-800'
+                                                    : 'bg-blue-100 text-blue-800'
+                                            "
+                                            class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold"
+                                        >
+                                            {{ $t(timesheet.type) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <span
+                                            :class="
+                                                timesheet.type === 'work'
+                                                    ? 'bg-green-100 text-green-800'
+                                                    : 'bg-blue-100 text-blue-800'
+                                            "
+                                            class="inline-flex items-center px-3 py-1 rounded-md text-xs font-semibold"
+                                        >
+                                            {{ formatTime(timesheet.day_in) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <span
+                                            :class="
+                                                timesheet.type === 'work'
+                                                    ? 'bg-green-100 text-green-800'
+                                                    : 'bg-blue-100 text-blue-800'
+                                            "
+                                            class="inline-flex items-center px-3 py-1 rounded-md text-xs font-semibold"
+                                        >
+                                            {{ formatTime(timesheet.day_out) }}
+                                        </span>
+                                    </td>
+                                    <td
+                                        class="px-6 py-4 text-center text-sm text-gray-900"
+                                    >
+                                        {{ timesheet.hours }}
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <Edit
+                                            @click="
+                                                $inertia.visit(
+                                                    route('timesheets.edit', {
+                                                        id: timesheet.id,
+                                                    })
+                                                )
+                                            "
+                                            class="text-indigo-600 hover:text-indigo-900 cursor-pointer"
+                                        />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="mt-6">
+                        <Pagination :pagination="timesheets" />
                     </div>
                 </div>
             </div>

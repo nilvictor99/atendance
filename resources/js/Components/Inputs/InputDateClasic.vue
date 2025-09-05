@@ -408,7 +408,7 @@
                 @input="handleInputChange"
                 @blur="handleInputBlur"
                 :class="[
-                    'w-full rounded-md py-2 px-3 bg-white text-gray-800',
+                    'w-full rounded-md py-2 px-3 bg-white text-gray-800 text-sm sm:text-base',
                     themeClasses.border,
                     themeClasses.focus,
                     bold ? 'font-semibold' : '',
@@ -429,26 +429,25 @@
         <div
             v-show="showCalendar"
             ref="calendarRef"
-            class="absolute z-50 mt-1 p-4 bg-white border border-gray-200 rounded-lg shadow-lg"
-            style="width: 320px"
+            class="absolute z-50 mt-1 p-2 sm:p-4 bg-white border border-gray-200 rounded-lg shadow-lg w-full sm:w-80 max-w-sm"
         >
             <!-- Encabezado con selectores de año y mes -->
-            <div class="flex justify-between items-center mb-4">
+            <div class="flex justify-between items-center mb-2 sm:mb-4">
                 <button
                     @click="prevMonth"
                     :class="['p-1 rounded-full', themeClasses.buttonHover]"
                     type="button"
                 >
-                    <ChevronLeft />
+                    <ChevronLeft class="h-4 w-4 sm:h-5 sm:w-5" />
                 </button>
 
-                <div class="flex gap-2">
+                <div class="flex gap-1 sm:gap-2">
                     <!-- Selector de mes -->
                     <div class="relative">
                         <button
                             @click="showMonthSelector = !showMonthSelector"
                             :class="[
-                                'text-lg font-semibold text-gray-800',
+                                'text-sm sm:text-lg font-semibold text-gray-800',
                                 themeClasses.dropdown.button,
                             ]"
                         >
@@ -456,14 +455,14 @@
                         </button>
                         <div
                             v-if="showMonthSelector"
-                            class="absolute top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-48 overflow-y-auto"
+                            class="absolute top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-32 sm:max-h-48 overflow-y-auto w-24 sm:w-32"
                         >
                             <button
                                 v-for="(month, index) in months"
                                 :key="index"
                                 @click="handleMonthSelect(index)"
                                 :class="[
-                                    'block w-full px-4 py-2 text-left text-gray-700',
+                                    'block w-full px-2 sm:px-4 py-1 sm:py-2 text-left text-xs sm:text-sm text-gray-700',
                                     themeClasses.dropdown.item,
                                     {
                                         [themeClasses.dropdown.selected]:
@@ -480,7 +479,7 @@
                         <button
                             @click="showYearSelector = !showYearSelector"
                             :class="[
-                                'text-lg font-semibold text-gray-800',
+                                'text-sm sm:text-lg font-semibold text-gray-800',
                                 themeClasses.dropdown.button,
                             ]"
                         >
@@ -488,14 +487,14 @@
                         </button>
                         <div
                             v-if="showYearSelector"
-                            class="absolute top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-48 overflow-y-auto"
+                            class="absolute top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-32 sm:max-h-48 overflow-y-auto w-20 sm:w-24"
                         >
                             <button
                                 v-for="year in availableYears"
                                 :key="year"
                                 @click="handleYearSelect(year)"
                                 :class="[
-                                    'block w-full px-4 py-2 text-left text-gray-700',
+                                    'block w-full px-2 sm:px-4 py-1 sm:py-2 text-left text-xs sm:text-sm text-gray-700',
                                     themeClasses.dropdown.item,
                                     {
                                         [themeClasses.dropdown.selected]:
@@ -514,16 +513,16 @@
                     :class="['p-1 rounded-full', themeClasses.buttonHover]"
                     type="button"
                 >
-                    <ChevronRight />
+                    <ChevronRight class="h-4 w-4 sm:h-5 sm:w-5" />
                 </button>
             </div>
 
             <!-- Días de la semana -->
-            <div class="grid grid-cols-7 gap-1 mb-2">
+            <div class="grid grid-cols-7 gap-1 mb-1 sm:mb-2">
                 <div
                     v-for="(day, index) in weekdays"
                     :key="index"
-                    class="text-center text-sm font-medium text-gray-600"
+                    class="text-center text-xs sm:text-sm font-medium text-gray-600"
                 >
                     {{ day }}
                 </div>
@@ -538,7 +537,7 @@
                     :disabled="isDateDisabled(day)"
                     type="button"
                     :class="[
-                        'w-10 h-10 flex items-center justify-center rounded-full text-sm',
+                        'w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full text-xs sm:text-sm',
                         isDateSelected(day)
                             ? themeClasses.selected
                             : day.isCurrentMonth
@@ -555,11 +554,11 @@
 
             <!-- Acciones rápidas -->
             <div
-                class="flex justify-between mt-4 pt-2 border-t border-gray-200"
+                class="flex justify-between mt-2 sm:mt-4 pt-2 border-t border-gray-200"
             >
                 <button
                     @click="clearDate"
-                    :class="['text-sm', themeClasses.accent]"
+                    :class="['text-xs sm:text-sm', themeClasses.accent]"
                     type="button"
                     :disabled="disabled"
                 >
@@ -567,7 +566,10 @@
                 </button>
                 <button
                     @click="goToToday"
-                    :class="['text-sm font-medium', themeClasses.accent]"
+                    :class="[
+                        'text-xs sm:text-sm font-medium',
+                        themeClasses.accent,
+                    ]"
                     type="button"
                     :disabled="disabled"
                 >

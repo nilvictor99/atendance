@@ -89,8 +89,8 @@
 <template>
     <div class="flex flex-col gap-1 w-full">
         <label v-if="label" class="font-semibold mb-1">{{ label }}</label>
-        <div class="flex gap-2 items-center">
-            <div class="flex-1">
+        <div class="flex flex-col md:flex-row gap-2 items-center">
+            <div class="flex-1 w-full md:w-auto">
                 <InputDateClasic
                     v-model="localValue.start"
                     :placeholder="placeholderStart"
@@ -101,8 +101,8 @@
                     @change="handleStartDateChange"
                 />
             </div>
-            <span class="mx-1 text-gray-500">-</span>
-            <div class="flex-1">
+            <span class="mx-1 text-gray-500 hidden md:inline">-</span>
+            <div class="flex-1 w-full md:w-auto">
                 <InputDateClasic
                     v-model="localValue.end"
                     :placeholder="placeholderEnd"
@@ -123,7 +123,7 @@
                 v-if="cleanButton && (localValue.start || localValue.end)"
                 type="button"
                 @click="clearDates"
-                class="ml-2 px-2 py-2 rounded bg-gray-500 text-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                class="ml-2 px-2 py-2 rounded bg-gray-500 text-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300 mt-2 md:mt-0"
                 :disabled="disabled"
             >
                 <Eraser class="inline-block w-6 h-6" />
