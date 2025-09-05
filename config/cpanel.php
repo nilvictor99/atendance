@@ -15,5 +15,6 @@ return [
     'storage' => [
         'origin_path' => env('CPANEL_ORIGIN_PATH'),
         'destination_path' => env('CPANEL_DESTINATION_PATH'),
+        'deploy_path' => env('CPANEL_DEPLOY_PATH'),
     ],
 ];
