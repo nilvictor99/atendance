@@ -53,16 +53,16 @@ class TimesheetRepository extends BaseRepository
     public function updateData($id, array $data)
     {
         $timesheet = $this->model->findOrFail($id);
-        $updateData = $this->processUpdateData($timesheet, $data);
+        $updateData = $this->processUpdateData($data);
         $timesheet->update($updateData);
 
         return $timesheet;
     }
 
-    private function processUpdateData(Timesheet $timesheet, array $data): array
+    private function processUpdateData(array $data): array
     {
-        $dayIn = $timesheet->calendar.' '.$data['day_in'].':00';
-        $dayOut = $timesheet->calendar.' '.$data['day_out'].':00';
+        $dayIn = $data['date'].' '.$data['day_in'].':00';
+        $dayOut = $data['date'].' '.$data['day_out'].':00';
 
         $dayInCarbon = Carbon::parse($dayIn);
         $dayOutCarbon = Carbon::parse($dayOut);
