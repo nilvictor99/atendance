@@ -65,37 +65,46 @@
 <template>
     <form
         @submit.prevent="submitForm"
-        class="bg-white p-6 rounded-lg shadow-md w-full mx-auto"
+        class="bg-white p-4 sm:p-6 rounded-lg shadow-md w-full mx-auto max-w-4xl"
     >
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-bold text-gray-900">Editar Asistencia</h2>
-            <div class="flex space-x-2 items-center">
+        <div
+            class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6"
+        >
+            <h2
+                class="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-0"
+            >
+                Editar Asistencia
+            </h2>
+            <div class="flex flex-wrap gap-2 items-center">
                 <span
                     v-if="staffName"
-                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 border border-blue-300"
+                    class="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 border border-blue-300"
                 >
                     <strong class="mr-1">Colaborador:</strong> {{ staffName }}
                 </span>
                 <span
                     v-if="staffType"
-                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-300"
+                    class="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-300"
                 >
                     <strong class="mr-1">Tipo:</strong> {{ $t(staffType) }}
                 </span>
                 <span
                     v-if="calendarYear"
-                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-800 border border-gray-300"
+                    class="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-800 border border-gray-300"
                 >
                     <strong class="mr-1">Calendario:</strong> {{ calendarYear }}
                 </span>
             </div>
         </div>
 
-        <div v-if="form.errors.general" class="mb-4 text-red-600">
+        <div
+            v-if="form.errors.general"
+            class="mb-4 text-red-600 text-sm sm:text-base"
+        >
             {{ form.errors.general }}
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
             <div>
                 <InputDateSimple
                     v-model="form.date"
@@ -127,7 +136,7 @@
                 />
                 <InputError class="mt-1" :message="form.errors.day_in" />
             </div>
-            <div>
+            <div class="sm:col-span-2 lg:col-span-1">
                 <InputTimeClassic
                     v-model="form.day_out"
                     label="Hora de Fin"
@@ -144,8 +153,15 @@
             </div>
         </div>
 
-        <div class="mt-6 flex justify-end space-x-4">
-            <ClasicButton type="button" variant="gray" @click="cancel">
+        <div
+            class="mt-6 flex flex-col sm:flex-row sm:justify-end sm:space-x-4 space-y-2 sm:space-y-0"
+        >
+            <ClasicButton
+                type="button"
+                variant="gray"
+                @click="cancel"
+                class="w-full flex justify-center sm:w-auto"
+            >
                 Cancelar
             </ClasicButton>
             <ClasicButton
@@ -153,6 +169,7 @@
                 variant="gray"
                 :loading="form.processing"
                 :disabled="form.processing"
+                class="w-full sm:w-auto flex justify-center"
             >
                 {{ form.processing ? 'Guardando...' : 'Actualizar' }}
             </ClasicButton>
