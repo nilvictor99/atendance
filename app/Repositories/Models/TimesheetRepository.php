@@ -77,8 +77,11 @@ class TimesheetRepository extends BaseRepository
 
     public function storeData(array $data)
     {
-        $data = $this->cleanData($data);
-        dd($data);
+        $staffId = $data['staff_id'] ?? null;
+        if (!$staffId || !is_numeric($staffId)) {
+            throw new \InvalidArgumentException('staff_id inválido');
+        }
+        dd($staffId);
         $currentTime = Carbon::now()->toTimeString();
         $userId = $this->userService->id();
         $currentDate = Carbon::now()->toDateString();
