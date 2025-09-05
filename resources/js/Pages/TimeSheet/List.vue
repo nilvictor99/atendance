@@ -75,6 +75,15 @@
             }
         );
     }
+    const formatWorkDate = (dayIn, dayOut) => {
+        if (!dayIn || !dayOut) return '';
+        const dateIn = new Date(dayIn).toISOString().split('T')[0];
+        const dateOut = new Date(dayOut).toISOString().split('T')[0];
+        return dateIn === dateOut ? dateIn : `${dateIn} - ${dateOut}`;
+    };
+    const formatTime = datetime => {
+        return datetime ? datetime.split(' ')[1] : '';
+    };
 </script>
 
 <template>
@@ -146,6 +155,12 @@
                                                     scope="col"
                                                     class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                                                 >
+                                                    Fecha
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                                                >
                                                     Colaborador
                                                 </th>
                                                 <th
@@ -158,13 +173,13 @@
                                                     scope="col"
                                                     class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                                                 >
-                                                    Ingreso
+                                                    Hora Ingreso
                                                 </th>
                                                 <th
                                                     scope="col"
                                                     class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
                                                 >
-                                                    Salida
+                                                    Hora Salida
                                                 </th>
                                                 <th
                                                     scope="col"
@@ -186,9 +201,22 @@
                                                 :key="timesheet.id"
                                             >
                                                 <td
+                                                    class="max-w-[200px] px-6 py-4 text-sm font-medium text-gray-800"
+                                                >
+                                                    {{
+                                                        timesheet.calendar ||
+                                                        'Sin calendario'
+                                                    }}
+                                                </td>
+                                                <td
                                                     class="max-w-[200px] px-4 py-4 text-sm font-medium text-gray-800"
                                                 >
-                                                    {{ timesheet.calendar }}
+                                                    {{
+                                                        formatWorkDate(
+                                                            timesheet.day_in,
+                                                            timesheet.day_out
+                                                        )
+                                                    }}
                                                 </td>
                                                 <td
                                                     class="max-w-[200px] px-4 py-4 text-sm text-gray-800"
@@ -216,12 +244,20 @@
                                                 <td
                                                     class="px-4 py-4 text-sm text-gray-800"
                                                 >
-                                                    {{ timesheet.day_in }}
+                                                    {{
+                                                        formatTime(
+                                                            timesheet.day_in
+                                                        )
+                                                    }}
                                                 </td>
                                                 <td
                                                     class="px-4 py-4 text-sm text-gray-800"
                                                 >
-                                                    {{ timesheet.day_out }}
+                                                    {{
+                                                        formatTime(
+                                                            timesheet.day_out
+                                                        )
+                                                    }}
                                                 </td>
                                                 <td
                                                     class="px-4 py-4 text-sm text-gray-800"
@@ -229,7 +265,7 @@
                                                     {{ timesheet.hours }}
                                                 </td>
                                                 <td
-                                                    class="flex items-center justify-end px-5 py-4 whitespace-nowrap text-sm font-medium"
+                                                    class="flex items-center justify-center px-5 py-4 whitespace-nowrap text-sm font-medium"
                                                 >
                                                     <Edit
                                                         @click="
