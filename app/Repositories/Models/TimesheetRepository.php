@@ -61,8 +61,8 @@ class TimesheetRepository extends BaseRepository
 
     private function processUpdateData(array $data): array
     {
-        $dayIn = $data['date'] . ' ' . $data['day_in'] . ':00';
-        $dayOut = $data['date'] . ' ' . $data['day_out'] . ':00';
+        $dayIn = $data['date'].' '.$data['day_in'].':00';
+        $dayOut = $data['date'].' '.$data['day_out'].':00';
 
         $dayInCarbon = Carbon::parse($dayIn);
         $dayOutCarbon = Carbon::parse($dayOut);
@@ -79,28 +79,28 @@ class TimesheetRepository extends BaseRepository
     {
         $qrData = $data['qr_data'] ?? null;
         $staffId = $this->extractIdFromQr($qrData);
-        dd($staffId);
-        $currentTime = Carbon::now()->toTimeString();
-        $userId = $this->userService->id();
+        $userId = $this->userService->getAuthUserId();
         $currentDate = Carbon::now()->toDateString();
         $currentTime = Carbon::now()->toTimeString();
-        $timesheet = $this->model->where('staff_id', $userId)
+        $timesheet = $this->model->where('staff_id', $staffId)
             ->whereDate('day_in', $currentDate)
             ->first();
 
         if (! $timesheet) {
             $timesheet = $this->model->create([
-                'user_id' => $userId->getAuthUserId(),
-                'staff_id' =>  $data,
-                'day_in' => $currentDate . ' ' . $currentTime,
+                'user_id' => $userId,
+                'staff_id' => $staffId,
+                'calendar' => Carbon::now()->year,
+                'day_in' => $currentDate.' '.$currentTime,
                 'day_out' => null,
                 'hours' => 0,
                 'type' => 'work',
             ]);
         } else {
             if (! $timesheet->day_out) {
-                $dayOut = $currentDate . ' ' . $currentTime;
-                $hours = Carbon::parse($timesheet->day_in)->diffInHours(Carbon::parse($dayOut)) + (Carbon::parse($timesheet->day_in)->diffInMinutes(Carbon::parse($dayOut)) % 60) / 60;
+                $dayOut = $currentDate.' '.$currentTime;
+                $hours = Carbon::parse($timesheet->day_in)->diffInHours(Carbon::parse($dayOut)) +
+                    (Carbon::parse($timesheet->day_in)->diffInMinutes(Carbon::parse($dayOut)) % 60) / 60;
                 $timesheet->update([
                     'day_out' => $dayOut,
                     'hours' => round($hours, 2),
@@ -119,6 +119,7 @@ class TimesheetRepository extends BaseRepository
                 return trim(str_replace('id:', '', $line));
             }
         }
+
         return null;
     }
 }
