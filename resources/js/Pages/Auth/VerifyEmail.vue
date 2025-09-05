@@ -3,7 +3,7 @@
     import { Head, Link, useForm } from '@inertiajs/vue3';
     import AuthenticationCard from '@/Components/Cards/AuthenticationCard.vue';
     import AuthenticationCardLogo from '@/Components/Cards/AuthenticationCardLogo.vue';
-    import PrimaryButton from '@/Components/Button/PrimaryButton.vue';
+    import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue';
 
     const props = defineProps({
         status: String,

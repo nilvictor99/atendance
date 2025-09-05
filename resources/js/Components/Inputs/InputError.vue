@@ -34,9 +34,9 @@
 </script>
 
 <template>
-    <div v-show="message">
+    <div v-show="message || $slots.default">
         <p :class="`text-sm ${getTextColor}`">
-            {{ message }}
+            <slot>{{ message }}</slot>
         </p>
     </div>
 </template>
