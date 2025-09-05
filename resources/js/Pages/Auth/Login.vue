@@ -48,20 +48,24 @@
                 <AuthenticationCardLogo />
             </template>
             <div
-                class="mt-2 mb-2 text-white text-center p-2 border-t-[5px] border-b-[5px] border-white/20 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse font-bold text-xl tracking-wider"
+                class="mt-2 mb-2 text-white text-center p-2 border-t-[5px] border-b-[5px] border-white/20 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse font-bold text-lg md:text-xl tracking-wider"
             >
                 <span class="animate-fade-in">Iniciar Sesión</span>
             </div>
             <form @submit.prevent="submit">
                 <div>
-                    <ClassicLabel :weight="'bold'" :size="'lg'" value="Email" />
+                    <ClassicLabel
+                        :weight="'bold'"
+                        :theme="'white'"
+                        :size="'lg'"
+                        value="Email"
+                    />
                     <TextInput
                         id="email"
                         v-model="form.email"
                         type="email"
                         placeholder="correo electrónico"
                         class="mt-1 block w-full"
-                        required
                         autofocus
                         autocomplete="username"
                     />
@@ -76,6 +80,7 @@
                     <ClassicLabel
                         :weight="'bold'"
                         :size="'lg'"
+                        :theme="'white'"
                         value="Password"
                     />
                     <InputRevealablePassword
@@ -83,7 +88,6 @@
                         v-model="form.password"
                         class="mt-1 block w-full"
                         placeholder="contraseña"
-                        required
                         autocomplete="current-password"
                     />
                     <InputError
@@ -106,12 +110,12 @@
                     </label>
                 </div>
 
-                <div class="flex items-center justify-end mt-4">
+                <div class="flex items-center justify-center mt-4">
                     <NativeButton
                         :class="{ 'opacity-15': form.processing }"
                         :theme="'gray'"
                         :disabled="form.processing"
-                        class="h-11"
+                        class="h-11 w-full md:w-full"
                     >
                         <LoadPoints v-if="form.processing" />
                         <span v-else>Iniciar Sesion</span>
@@ -120,23 +124,23 @@
             </form>
         </CardCustomLogin>
         <span
-            class="square square-tl absolute h-screen w-1/2 bg-[rgba(34,34,34,0.1)]"
+            class="square square-tl absolute h-screen w-1/2 bg-[rgba(34,34,34,0.1)] hidden md:block"
             style="top: -80%; left: -10%; z-index: 50; transform: rotate(45deg)"
         ></span>
         <span
-            class="square square-tr absolute h-screen w-1/2 bg-[rgba(255,255,255,0.1)]"
+            class="square square-tr absolute h-screen w-1/2 bg-[rgba(255,255,255,0.1)] hidden md:block"
             style="top: 0%; right: -30%; transform: rotate(45deg)"
         ></span>
         <span
-            class="square square-bl absolute h-screen w-1/2 bg-[rgba(255,255,255,0.1)]"
+            class="square square-bl absolute h-screen w-1/2 bg-[rgba(255,255,255,0.1)] hidden md:block"
             style="bottom: -70%; left: -15%; transform: rotate(45deg)"
         ></span>
         <span
-            class="square square-br absolute h-screen w-1/2 bg-[rgba(34,34,34,0.1)]"
+            class="square square-br absolute h-screen w-1/2 bg-[rgba(34,34,34,0.1)] hidden md:block"
             style="bottom: 0%; right: -40%; transform: rotate(45deg)"
         ></span>
         <span
-            class="star star1 absolute w-[50px] h-[50px] box-shadow transition duration-500"
+            class="star star1 absolute w-[50px] h-[50px] box-shadow transition duration-500 hidden md:block"
             style="
                 bottom: -10%;
                 left: -30%;
@@ -145,7 +149,7 @@
             "
         ></span>
         <span
-            class="star star2 absolute w-[50px] h-[50px] box-shadow transition duration-500"
+            class="star star2 absolute w-[50px] h-[50px] box-shadow transition duration-500 hidden md:block"
             style="
                 bottom: -30%;
                 left: -10%;
