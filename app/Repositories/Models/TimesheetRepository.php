@@ -77,6 +77,7 @@ class TimesheetRepository extends BaseRepository
 
     public function storeData(array $data)
     {
+        dd($data);
         $staffId = $data['staff_id'] ?? null;
         if (!$staffId || !is_numeric($staffId)) {
             throw new \InvalidArgumentException('staff_id inválido');
