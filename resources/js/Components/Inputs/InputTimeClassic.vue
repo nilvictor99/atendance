@@ -341,6 +341,7 @@
                                     v-for="hour in filteredHours"
                                     :key="hour"
                                     @click="selectHour(hour)"
+                                    type="button"
                                     :class="`w-full px-3 py-1 text-left text-sm hover:bg-gray-100 
                                         ${selectedHour === hour ? 'bg-gray-50' : ''} ${themeClasses.text}`"
                                 >
@@ -376,6 +377,7 @@
                                     v-for="minute in filteredMinutes"
                                     :key="minute"
                                     @click="selectMinute(minute)"
+                                    type="button"
                                     :class="`w-full px-3 py-1 text-left text-sm hover:bg-gray-100 
                                         ${selectedMinute === minute ? 'bg-gray-50' : ''} ${themeClasses.text}`"
                                 >

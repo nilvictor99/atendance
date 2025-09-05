@@ -74,13 +74,13 @@
                     v-if="staffName"
                     class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 border border-blue-300"
                 >
-                    <strong class="mr-1">Staff:</strong> {{ staffName }}
+                    <strong class="mr-1">Colaborador:</strong> {{ staffName }}
                 </span>
                 <span
                     v-if="staffType"
                     class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-300"
                 >
-                    <strong class="mr-1">Tipo:</strong> {{ staffType }}
+                    <strong class="mr-1">Tipo:</strong> {{ $t(staffType) }}
                 </span>
                 <span
                     v-if="calendarYear"
