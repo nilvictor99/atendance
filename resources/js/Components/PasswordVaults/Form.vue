@@ -72,17 +72,13 @@
 <template>
     <form
         @submit.prevent="submitForm"
-        class="bg-white p-6 rounded-lg shadow-md w-full mx-auto"
+        class="bg-white p-4 sm:p-6 rounded-lg shadow-md w-full max-w-4xl mx-auto"
     >
-        <h2 class="text-2xl font-bold mb-6 text-gray-900">
+        <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-gray-900">
             {{ mode === 'edit' ? 'Editar Contraseña' : 'Crear Contraseña' }}
         </h2>
 
-        <div v-if="form.errors.general" class="mb-4 text-red-600">
-            {{ form.errors.general }}
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
             <div>
                 <InputLabelClassic
                     v-model="form.name"
@@ -116,7 +112,7 @@
                 />
                 <InputError class="mt-1" :message="form.errors.username" />
             </div>
-            <div>
+            <div class="sm:col-span-2 lg:col-span-1">
                 <InputPasswordGenerate
                     v-model="form.password"
                     :generateRoute="route('generate-password')"
@@ -130,7 +126,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
             <div>
                 <InputLabelClassic
                     v-model="form.url"
@@ -148,22 +144,20 @@
                 <InputError class="mt-1" :message="form.errors.url" />
             </div>
             <div>
-                <div>
-                    <SelectClassic
-                        v-model="form.type"
-                        :options="[
-                            { value: 'private', label: 'Privado' },
-                            { value: 'public', label: 'Público' },
-                        ]"
-                        label="Tipo *"
-                        theme="gray"
-                        :disabled="false"
-                        placeholder="Seleccione un tipo"
-                        :multiple="false"
-                        :CleanButton="true"
-                    />
-                    <InputError class="mt-1" :message="form.errors.type" />
-                </div>
+                <SelectClassic
+                    v-model="form.type"
+                    :options="[
+                        { value: 'private', label: 'Privado' },
+                        { value: 'public', label: 'Público' },
+                    ]"
+                    label="Tipo"
+                    theme="gray"
+                    :disabled="false"
+                    placeholder="Seleccione un tipo"
+                    :multiple="false"
+                    :CleanButton="true"
+                />
+                <InputError class="mt-1" :message="form.errors.type" />
             </div>
         </div>
         <div class="mt-4">
@@ -177,8 +171,15 @@
                 :defaultValue="props.data.notes || ''"
             />
         </div>
-        <div class="mt-6 flex justify-end space-x-4">
-            <ClasicButton type="button" variant="gray" @click="cancel">
+        <div
+            class="mt-6 flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-4"
+        >
+            <ClasicButton
+                type="button"
+                variant="gray"
+                @click="cancel"
+                class="w-full sm:w-auto flex items-center justify-center"
+            >
                 Cancelar
             </ClasicButton>
             <ClasicButton
@@ -186,6 +187,7 @@
                 variant="gray"
                 :loading="form.processing"
                 :disabled="form.processing"
+                class="w-full sm:w-auto flex items-center justify-center"
             >
                 {{
                     form.processing
