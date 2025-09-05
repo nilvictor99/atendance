@@ -18,7 +18,11 @@
 
 <template>
     <Head title="Bienvenido">
-        <link rel="icon" type="image/x-icon" href="/System/favicons/logo.ico" />
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="/System/favicons/favicon.ico"
+        />
     </Head>
     <div
         class="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center relative overflow-hidden"

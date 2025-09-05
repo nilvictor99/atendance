@@ -37,7 +37,7 @@
             <link
                 rel="icon"
                 type="image/x-icon"
-                href="/System/favicons/logo.ico"
+                href="/System/favicons/favicon.ico"
             />
         </Head>
 

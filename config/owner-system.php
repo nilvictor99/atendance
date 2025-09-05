@@ -22,9 +22,9 @@ return [
     ],
 
     'settings' => [
-        'logo_white' => '/system/logos/white.webp',
-        'logo_black' => '/system/logos/black.webp',
-        'favicon-white' => '/system/favicons/favicon.ico',
+        'logo_white' => '/System/logos/logo_white.webp',
+        'logo_black' => '/System/logos/logo_black.webp',
+        'favicon' => '/System/favicons/favicon.ico',
         'primary_color' => env('PRIMARY_COLOR', Color::Indigo),
     ],
 

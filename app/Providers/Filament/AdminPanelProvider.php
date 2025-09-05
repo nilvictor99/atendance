@@ -35,9 +35,9 @@ class AdminPanelProvider extends PanelProvider
                 'secondary' => '#224654',
             ])
             ->sidebarCollapsibleOnDesktop()
-            ->favicon(asset('public/System/favicons/favicon.ico'))
-            ->darkModeBrandLogo(asset('/System/logos/logo_white.webp'))
-            ->brandLogo(asset('/System/logos/logo_black.webp'))
+            ->favicon(config('owner-system.settings.favicon'))
+            ->darkModeBrandLogo(config('owner-system.settings.logo_white'))
+            ->brandLogo(config('owner-system.settings.logo_black'))
             ->brandLogoHeight(fn () => request()->routeIs('filament.admin.auth.login') ? '6rem' : '4rem')
             ->sidebarWidth('15rem')
 

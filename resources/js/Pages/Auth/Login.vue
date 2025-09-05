@@ -33,7 +33,11 @@
 
 <template>
     <Head title="Iniciar Sesión">
-        <link rel="icon" type="image/x-icon" href="/System/favicons/logo.ico" />
+        <link
+            rel="icon"
+            type="image/x-icon"
+            href="/System/favicons/favicon.ico"
+        />
     </Head>
 
     <link
