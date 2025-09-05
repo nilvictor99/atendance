@@ -67,6 +67,7 @@
                         placeholder="correo electrónico"
                         class="mt-1 block w-full"
                         autofocus
+                        required
                         autocomplete="username"
                     />
                     <InputError
@@ -85,6 +86,7 @@
                     />
                     <InputRevealablePassword
                         id="password"
+                        required
                         v-model="form.password"
                         class="mt-1 block w-full"
                         placeholder="contraseña"
