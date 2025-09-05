@@ -4,6 +4,7 @@
     import Dropdown from '@/Components/Drops/Dropdown.vue';
     import DropdownLink from '@/Components/Navlinks/DropdownLink.vue';
     import Menu from '@/Components/Icons/Menu.vue';
+    import Arrow from '@/Components/Icons/Arrow.vue';
 
     defineProps({
         title: String,
@@ -19,13 +20,13 @@
     <header class="bg-white border-b border-gray-100">
         <div class="mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
-                <div class="flex items-center justify-between w-56">
+                <div class="flex items-center justify-between w-56 sm:w-56">
                     <Link :href="route('dashboard')">
                         <ApplicationMark class="block h-9 w-auto" />
                     </Link>
                     <button
                         @click="toggleSidebar"
-                        class="mr-8 text-gray-600 focus:outline-none"
+                        class="mr-8 text-gray-600 hover:bg-gray-100 focus:outline-none sm:mr-0"
                     >
                         <Menu class="h-7 w-7" />
                     </button>
@@ -57,20 +58,7 @@
                                 >
                                     {{ $page.props.auth.user.name }}
 
-                                    <svg
-                                        class="ms-2 -me-0.5 size-4"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="1.5"
-                                        stroke="currentColor"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                                        />
-                                    </svg>
+                                    <Arrow class="ml-2 -mr-0.5 h-4 w-4" />
                                 </button>
                             </span>
                         </template>
