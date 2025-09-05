@@ -110,12 +110,7 @@ class TimesheetController extends Controller
 
     public function scan(Request $request)
     {
-        dd($request->all());
-        $data = $request->all();
-        $qrData = json_decode($data['qrData'], true);
-
-        $this->timesheetService->storeData($qrData);
-
+        $this->timesheetService->storeData($request->all());
         return redirect()->route('timesheets.list')->banner('Asistencia Actualizada');
     }
 }

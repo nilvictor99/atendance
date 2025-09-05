@@ -61,8 +61,8 @@ class TimesheetRepository extends BaseRepository
 
     private function processUpdateData(array $data): array
     {
-        $dayIn = $data['date'].' '.$data['day_in'].':00';
-        $dayOut = $data['date'].' '.$data['day_out'].':00';
+        $dayIn = $data['date'] . ' ' . $data['day_in'] . ':00';
+        $dayOut = $data['date'] . ' ' . $data['day_out'] . ':00';
 
         $dayInCarbon = Carbon::parse($dayIn);
         $dayOutCarbon = Carbon::parse($dayOut);
@@ -77,6 +77,8 @@ class TimesheetRepository extends BaseRepository
 
     public function storeData(array $data)
     {
+        $data = $this->cleanData($data);
+        dd($data);
         $currentTime = Carbon::now()->toTimeString();
         $userId = $this->userService->id();
         $currentDate = Carbon::now()->toDateString();
@@ -88,15 +90,15 @@ class TimesheetRepository extends BaseRepository
         if (! $timesheet) {
             $timesheet = $this->model->create([
                 'user_id' => $userId->getAuthUserId(),
-                'staff_id' => $data['staff_id'],
-                'day_in' => $currentDate.' '.$currentTime,
+                'staff_id' =>  $data,
+                'day_in' => $currentDate . ' ' . $currentTime,
                 'day_out' => null,
                 'hours' => 0,
                 'type' => 'work',
             ]);
         } else {
             if (! $timesheet->day_out) {
-                $dayOut = $currentDate.' '.$currentTime;
+                $dayOut = $currentDate . ' ' . $currentTime;
                 $hours = Carbon::parse($timesheet->day_in)->diffInHours(Carbon::parse($dayOut)) + (Carbon::parse($timesheet->day_in)->diffInMinutes(Carbon::parse($dayOut)) % 60) / 60;
                 $timesheet->update([
                     'day_out' => $dayOut,
@@ -106,5 +108,13 @@ class TimesheetRepository extends BaseRepository
         }
 
         return $timesheet;
+    }
+
+    public function cleanData($data)
+    {
+        $data = preg_replace('/\s+/', ' ', $data);
+        $data = trim($data);
+
+        return $data;
     }
 }
