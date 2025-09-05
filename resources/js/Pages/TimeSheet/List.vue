@@ -78,13 +78,18 @@
         );
     }
     const formatWorkDate = (dayIn, dayOut) => {
-        if (!dayIn || !dayOut) return '';
+        if (!dayIn) return '';
         const dateIn = new Date(dayIn).toISOString().split('T')[0];
+        if (!dayOut) {
+            return dateIn;
+        }
         const dateOut = new Date(dayOut).toISOString().split('T')[0];
         return dateIn === dateOut ? dateIn : `${dateIn} - ${dateOut}`;
     };
     const formatTime = datetime => {
-        return datetime ? datetime.split(' ')[1] : '';
+        if (!datetime) return '';
+        const time = datetime.split(' ')[1];
+        return time ? time.substring(0, 5) : '';
     };
 </script>
 
@@ -163,37 +168,37 @@
                                                 </th>
                                                 <th
                                                     scope="col"
-                                                    class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase"
                                                 >
                                                     Fecha
                                                 </th>
                                                 <th
                                                     scope="col"
-                                                    class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase"
                                                 >
                                                     Colaborador
                                                 </th>
                                                 <th
                                                     scope="col"
-                                                    class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase"
                                                 >
                                                     Tipo
                                                 </th>
                                                 <th
                                                     scope="col"
-                                                    class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase"
                                                 >
                                                     Hora Ingreso
                                                 </th>
                                                 <th
                                                     scope="col"
-                                                    class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase"
                                                 >
                                                     Hora Salida
                                                 </th>
                                                 <th
                                                     scope="col"
-                                                    class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase"
+                                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase"
                                                 >
                                                     Horas
                                                 </th>
@@ -219,7 +224,7 @@
                                                     }}
                                                 </td>
                                                 <td
-                                                    class="max-w-[200px] px-4 py-4 text-sm font-medium text-gray-800"
+                                                    class="max-w-[200px] text-center px-4 py-4 text-sm font-medium text-gray-800"
                                                 >
                                                     {{
                                                         formatWorkDate(
@@ -229,7 +234,7 @@
                                                     }}
                                                 </td>
                                                 <td
-                                                    class="max-w-[200px] px-4 py-4 text-sm text-gray-800"
+                                                    class="max-w-[200px] text-center px-4 py-4 text-sm text-gray-800"
                                                 >
                                                     {{
                                                         timesheet.staff?.name ||
@@ -237,40 +242,60 @@
                                                     }}
                                                 </td>
                                                 <td
-                                                    class="px-4 py-4 text-sm text-gray-800"
+                                                    class="px-4 py-4 text-center text-sm text-gray-800"
                                                 >
                                                     <span
                                                         :class="
                                                             timesheet.type ===
                                                             'work'
                                                                 ? 'bg-green-100 text-green-800'
-                                                                : 'bg-gray-100 text-gray-800'
+                                                                : 'bg-blue-100 text-blue-800'
                                                         "
-                                                        class="px-2 py-1 rounded-full text-xs font-medium inline-block"
+                                                        class="px-2 py-1 rounded-full font-semibold inline-block"
                                                     >
                                                         {{ $t(timesheet.type) }}
                                                     </span>
                                                 </td>
                                                 <td
-                                                    class="px-4 py-4 text-sm text-gray-800"
+                                                    class="px-4 py-4 text-center text-sm text-gray-800"
                                                 >
-                                                    {{
-                                                        formatTime(
-                                                            timesheet.day_in
-                                                        )
-                                                    }}
+                                                    <span
+                                                        :class="
+                                                            timesheet.type ===
+                                                            'work'
+                                                                ? 'bg-green-100 text-green-800'
+                                                                : 'bg-blue-100 text-blue-800'
+                                                        "
+                                                        class="px-2 py-1 rounded-md font-semibold inline-block"
+                                                    >
+                                                        {{
+                                                            formatTime(
+                                                                timesheet.day_in
+                                                            )
+                                                        }}
+                                                    </span>
                                                 </td>
                                                 <td
-                                                    class="px-4 py-4 text-sm text-gray-800"
+                                                    class="px-4 py-4 text-center text-sm text-gray-800"
                                                 >
-                                                    {{
-                                                        formatTime(
-                                                            timesheet.day_out
-                                                        )
-                                                    }}
+                                                    <span
+                                                        :class="
+                                                            timesheet.type ===
+                                                            'work'
+                                                                ? 'bg-green-100 text-green-800'
+                                                                : 'bg-blue-100 text-blue-800'
+                                                        "
+                                                        class="px-2 py-1 rounded-md font-semibold inline-block"
+                                                    >
+                                                        {{
+                                                            formatTime(
+                                                                timesheet.day_out
+                                                            )
+                                                        }}
+                                                    </span>
                                                 </td>
                                                 <td
-                                                    class="px-4 py-4 text-sm text-gray-800"
+                                                    class="px-4 py-4 text-center text-sm text-gray-800"
                                                 >
                                                     {{ timesheet.hours }}
                                                 </td>
