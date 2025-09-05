@@ -9,6 +9,7 @@
     import DateRangeFilter from '@/Components/Sections/SectionDateRangeFilter.vue';
     import InputSelectClasic from '@/Components/Inputs/InputSelectClasic.vue';
     import ModalQrGenerate from '@/Components/TimeSheets/ModalQrGenerate.vue';
+    import ModalQrScanner from '@/Components/TimeSheets/ModalQrScanner.vue';
 
     const props = defineProps({
         timesheets: {
@@ -32,6 +33,7 @@
 
     const showQrModal = ref(false);
     const qrCode = ref('');
+    const showScanner = ref(false);
 
     const generateQr = async () => {
         const { qrCode: code } = await fetch(route('generate'), {
@@ -130,9 +132,17 @@
                             placeholder="Buscar Nombre, Usuario o Url"
                             @search="handleSearch"
                         />
-                        <ClasicButton @click="generateQr">
-                            {{ $t('Create Timesheet') }}
-                        </ClasicButton>
+                        <div class="flex gap-2">
+                            <ClasicButton @click="generateQr">
+                                {{ $t('Create Timesheet') }}
+                            </ClasicButton>
+                            <ClasicButton
+                                @click="showScanner = true"
+                                variant="success"
+                            >
+                                {{ $t('Scan QR') }}
+                            </ClasicButton>
+                        </div>
                     </div>
                     <div class="flex flex-col space-y-4">
                         <div class="overflow-x-auto">
@@ -299,5 +309,6 @@
             :qr-code="qrCode"
             @close="showQrModal = false"
         />
+        <ModalQrScanner :show="showScanner" @close="showScanner = false" />
     </AppLayout>
 </template>

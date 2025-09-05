@@ -53,6 +53,7 @@
                     light: 'bg-white text-gray-800 hover:bg-gray-100 focus:bg-gray-200 border-gray-300',
                     dark: 'bg-gray-800 text-white hover:bg-gray-700 focus:bg-gray-600 border-gray-600',
                     gray: 'bg-gray-500 text-white hover:bg-gray-600 focus:bg-gray-700 border-gray-600',
+                    blue: 'bg-[#04335c] text-white hover:bg-[#032a4a] focus:bg-[#032a4a] border-transparent',
                 };
 
                 return [

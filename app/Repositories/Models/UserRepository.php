@@ -29,4 +29,9 @@ class UserRepository extends BaseRepository
 
         return $user;
     }
+
+    public function getAuthUserId()
+    {
+        return $this->AuthService->getAuthUser()->id;
+    }
 }
