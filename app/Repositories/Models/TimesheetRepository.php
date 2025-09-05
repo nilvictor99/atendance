@@ -77,11 +77,8 @@ class TimesheetRepository extends BaseRepository
 
     public function storeData(array $data)
     {
-        dd($data);
-        $staffId = $data['staff_id'] ?? null;
-        if (!$staffId || !is_numeric($staffId)) {
-            throw new \InvalidArgumentException('staff_id inválido');
-        }
+        $qrData = $data['qr_data'] ?? null;
+        $staffId = $this->extractIdFromQr($qrData);
         dd($staffId);
         $currentTime = Carbon::now()->toTimeString();
         $userId = $this->userService->id();
@@ -114,11 +111,14 @@ class TimesheetRepository extends BaseRepository
         return $timesheet;
     }
 
-    public function cleanData($data)
+    private function extractIdFromQr(string $qrData): ?string
     {
-        $data = preg_replace('/\s+/', ' ', $data);
-        $data = trim($data);
-
-        return $data;
+        $lines = explode("\n", trim($qrData));
+        foreach ($lines as $line) {
+            if (strpos($line, 'id:') === 0) {
+                return trim(str_replace('id:', '', $line));
+            }
+        }
+        return null;
     }
 }
