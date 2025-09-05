@@ -379,5 +379,6 @@
     "Log Out Other Browser Sessions": "Cerrar Sesión en Otras Sesiones del Navegador",
     "Done.": "Hecho.",
     "Please enter your password to confirm you would like to log out of your other browser sessions across all of your devices.": "Por favor, ingrese su contraseña para confirmar que desea cerrar sesión en sus otras sesiones de navegador en todos sus dispositivos.",
-    "Requested device not found": "Dispositivo no encontrado."
+    "Requested device not found": "Dispositivo no encontrado.",
+    "Scan QR": "Escanear QR"
 }
