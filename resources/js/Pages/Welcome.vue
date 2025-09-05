@@ -17,7 +17,9 @@
 </script>
 
 <template>
-    <Head title="Bienvenido" />
+    <Head title="Bienvenido">
+        <link rel="icon" type="image/x-icon" href="/System/favicons/logo.ico" />
+    </Head>
     <div
         class="min-h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center relative overflow-hidden"
         style="background-image: url('/System/Samples/background.webp')"

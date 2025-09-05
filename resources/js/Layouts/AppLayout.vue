@@ -33,7 +33,13 @@
 
 <template>
     <div>
-        <Head :title="title" />
+        <Head :title="title">
+            <link
+                rel="icon"
+                type="image/x-icon"
+                href="/System/favicons/logo.ico"
+            />
+        </Head>
 
         <Banner />
 
