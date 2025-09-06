@@ -49,8 +49,8 @@
 
 <template>
     <AppLayout title="Password Vault">
-        <section class="mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full max-w-7xl">
-            <div class="flex flex-col gap-6 mt-4">
+        <section class="mx-auto px-4 sm:px-6 lg:px-8 py-2 w-full max-w-7xl">
+            <div class="flex flex-col gap-4 mt-1">
                 <!-- Filtros -->
                 <div class="bg-white shadow-lg rounded-lg p-4 md:p-6">
                     <div

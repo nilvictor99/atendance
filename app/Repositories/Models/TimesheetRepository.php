@@ -94,7 +94,7 @@ class TimesheetRepository extends BaseRepository
                 'day_in' => $currentDate.' '.$currentTime,
                 'day_out' => null,
                 'hours' => 0,
-                'type' => 'work',
+                'type' => $data['type'] ?? 'work',
             ]);
         } else {
             if (! $timesheet->day_out) {
