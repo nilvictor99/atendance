@@ -8,6 +8,8 @@
     import InputError from '../Inputs/InputError.vue';
     import LoadPoints from '@/Components/Icons/LoadPoints.vue';
     import InputSelectClasic from '../Inputs/InputSelectClasic.vue';
+    import Bulb from '@/Components/Icons/Bulb.vue';
+    import BulbOff from '@/Components/Icons/BulbOff.vue';
 
     const props = defineProps({
         show: {
@@ -23,6 +25,10 @@
     const cameraError = ref('');
     const loading = ref(false);
     const selectedCamera = ref('work');
+    const torchEnabled = ref(false);
+    const toggleTorch = () => {
+        torchEnabled.value = !torchEnabled.value;
+    };
 
     watch(
         () => props.show,
@@ -132,7 +138,16 @@
                         variant="danger"
                         class="w-full sm:w-auto flex justify-center"
                     >
-                        Detener Escaneo
+                        Detener
+                    </ClasicButton>
+                    <ClasicButton
+                        v-if="scanning"
+                        @click="toggleTorch"
+                        variant="gray"
+                        class="w-full sm:w-auto flex justify-center items-center"
+                    >
+                        <Bulb v-if="!torchEnabled" class="w-5 h-5" />
+                        <BulbOff v-else class="w-5 h-5" />
                     </ClasicButton>
                 </div>
                 <div v-if="scanning" class="mt-4 relative">
@@ -146,7 +161,7 @@
                         @detect="onDetect"
                         @error="onError"
                         :formats="['qr_code']"
-                        :torch="false"
+                        :torch="torchEnabled"
                         class="rounded-lg border border-gray-300 shadow-md w-full max-w-xs sm:max-w-md lg:max-w-lg mx-auto"
                     />
                     <InputError class="mt-2 text-center text-sm sm:text-base">
