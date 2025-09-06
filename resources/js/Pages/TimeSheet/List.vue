@@ -3,7 +3,7 @@
     import AppLayout from '@/Layouts/AppLayout.vue';
     import ClasicButton from '@/Components/Buttons/ClasicButton.vue';
     import { ref } from 'vue';
-    import { router } from '@inertiajs/vue3';
+    import { router, usePoll } from '@inertiajs/vue3';
     import Edit from '@/Components/Buttons/Edit.vue';
     import InputListSearch from '@/Components/Inputs/InputListSearch.vue';
     import DateRangeFilter from '@/Components/Sections/SectionDateRangeFilter.vue';
@@ -55,6 +55,7 @@
         text: staff.name || 'Sin nombre',
     }));
 
+    usePoll(5000, { only: ['timesheets'] });
     function handleSearch(val) {
         if (typeof val === 'object' && val !== null) {
             dateRange.value = val;
