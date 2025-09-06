@@ -75,42 +75,6 @@ class TimesheetRepository extends BaseRepository
         ];
     }
 
-    public function storeData(array $data)
-    {
-        $qrData = $data['qr_data'] ?? null;
-        $staffId = $this->extractIdFromQr($qrData);
-        $userId = $this->userService->getAuthUserId();
-        $currentDate = Carbon::now()->toDateString();
-        $currentTime = Carbon::now()->toTimeString();
-        $timesheet = $this->model->where('staff_id', $staffId)
-            ->whereDate('day_in', $currentDate)
-            ->first();
-
-        if (! $timesheet) {
-            $timesheet = $this->model->create([
-                'user_id' => $userId,
-                'staff_id' => $staffId,
-                'calendar' => Carbon::now()->year,
-                'day_in' => $currentDate.' '.$currentTime,
-                'day_out' => null,
-                'hours' => 0,
-                'type' => 'work',
-            ]);
-        } else {
-            if (! $timesheet->day_out) {
-                $dayOut = $currentDate.' '.$currentTime;
-                $hours = Carbon::parse($timesheet->day_in)->diffInHours(Carbon::parse($dayOut)) +
-                    (Carbon::parse($timesheet->day_in)->diffInMinutes(Carbon::parse($dayOut)) % 60) / 60;
-                $timesheet->update([
-                    'day_out' => $dayOut,
-                    'hours' => round($hours, 2),
-                ]);
-            }
-        }
-
-        return $timesheet;
-    }
-
     private function extractIdFromQr(string $qrData): ?string
     {
         $lines = explode("\n", trim($qrData));
@@ -121,5 +85,86 @@ class TimesheetRepository extends BaseRepository
         }
 
         return null;
+    }
+
+    private function prepareData(array $data): array
+    {
+        $qrData = $data['qr_data'] ?? null;
+        $staffId = $this->extractIdFromQr($qrData);
+        $userId = $this->userService->getAuthUserId();
+        $currentDate = Carbon::now()->toDateString();
+        $currentTime = Carbon::now()->toTimeString();
+        $newType = $data['type'] ?? 'work';
+
+        return [
+            'staffId' => $staffId,
+            'userId' => $userId,
+            'currentDate' => $currentDate,
+            'currentTime' => $currentTime,
+            'newType' => $newType,
+        ];
+    }
+
+    private function handleTimesheetLogic(array $prepared): Timesheet
+    {
+        $staffId = $prepared['staffId'];
+        $userId = $prepared['userId'];
+        $currentDate = $prepared['currentDate'];
+        $currentTime = $prepared['currentTime'];
+        $newType = $prepared['newType'];
+
+        $openTimesheet = $this->model->forStaffAndDate($staffId, $currentDate)->open()->first();
+
+        if ($openTimesheet) {
+            if ($openTimesheet->type === $newType) {
+                $dayOut = $currentDate.' '.$currentTime;
+                $hours = Carbon::parse($openTimesheet->day_in)->diffInHours(Carbon::parse($dayOut)) +
+                    (Carbon::parse($openTimesheet->day_in)->diffInMinutes(Carbon::parse($dayOut)) % 60) / 60;
+                $openTimesheet->update([
+                    'day_out' => $dayOut,
+                    'hours' => round($hours, 2),
+                ]);
+
+                return $openTimesheet;
+            } else {
+                $dayOut = $currentDate.' '.$currentTime;
+                $hours = Carbon::parse($openTimesheet->day_in)->diffInHours(Carbon::parse($dayOut)) +
+                    (Carbon::parse($openTimesheet->day_in)->diffInMinutes(Carbon::parse($dayOut)) % 60) / 60;
+                $openTimesheet->update([
+                    'day_out' => $dayOut,
+                    'hours' => round($hours, 2),
+                ]);
+                $timesheet = $this->model->create([
+                    'user_id' => $userId,
+                    'staff_id' => $staffId,
+                    'calendar' => Carbon::now()->year,
+                    'day_in' => $currentDate.' '.$currentTime,
+                    'day_out' => null,
+                    'hours' => 0,
+                    'type' => $newType,
+                ]);
+
+                return $timesheet;
+            }
+        } else {
+            $timesheet = $this->model->create([
+                'user_id' => $userId,
+                'staff_id' => $staffId,
+                'calendar' => Carbon::now()->year,
+                'day_in' => $currentDate.' '.$currentTime,
+                'day_out' => null,
+                'hours' => 0,
+                'type' => $newType,
+            ]);
+
+            return $timesheet;
+        }
+    }
+
+    public function storeData(array $data): Timesheet
+    {
+        $prepared = $this->prepareData($data);
+
+        return $this->handleTimesheetLogic($prepared);
     }
 }

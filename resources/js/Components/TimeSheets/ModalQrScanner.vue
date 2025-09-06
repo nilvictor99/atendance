@@ -7,6 +7,7 @@
     import Modal from '../Modals/Modal.vue';
     import InputError from '../Inputs/InputError.vue';
     import LoadPoints from '@/Components/Icons/LoadPoints.vue';
+    import InputSelectClasic from '../Inputs/InputSelectClasic.vue';
 
     const props = defineProps({
         show: {
@@ -21,6 +22,7 @@
     const error = ref('');
     const cameraError = ref('');
     const loading = ref(false);
+    const selectedCamera = ref('work');
 
     watch(
         () => props.show,
@@ -38,7 +40,7 @@
             loading.value = false;
             router.post(
                 route('scan'),
-                { qr_data: result },
+                { qr_data: result, type: selectedCamera.value },
                 {
                     onSuccess: () => {
                         emit('close');
@@ -56,6 +58,10 @@
     };
 
     const startScanning = () => {
+        if (!selectedCamera.value) {
+            error.value = 'Selecciona un tipo antes de escanear.';
+            return;
+        }
         scanning.value = true;
         error.value = '';
         cameraError.value = '';
@@ -75,7 +81,7 @@
 
 <template>
     <Modal :show="props.show" @close="closeModal" maxWidth="md">
-        <div class="p-4 sm:p-6 lg:p-8">
+        <div class="p-6 sm:p-6 lg:p-8">
             <div class="flex justify-between items-center mb-4">
                 <h2
                     class="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-800"
@@ -92,17 +98,34 @@
 
             <div class="qr-scanner">
                 <div
-                    class="flex flex-col sm:flex-row gap-2 p-4 justify-center mb-4"
+                    class="flex flex-col sm:flex-row gap-2 p-2 justify-center mb-4"
                 >
-                    <ClasicButton
-                        @click="startScanning"
-                        :disabled="scanning"
-                        variant="blue"
-                        class="w-full sm:w-auto flex justify-center"
+                    <div
+                        class="flex flex-col sm:flex-col gap-2 w-full sm:w-[200px]"
                     >
-                        <LoadPoints v-if="scanning" :variant="'white'" />
-                        <span v-else>Iniciar Escaneo</span>
-                    </ClasicButton>
+                        <InputSelectClasic
+                            v-if="!scanning"
+                            v-model="selectedCamera"
+                            :options="[
+                                { id: 'work', text: 'Trabajo' },
+                                { id: 'break', text: 'Descanso' },
+                            ]"
+                            placeholder="Tipo"
+                            theme="gray"
+                            :required="true"
+                            :CleanButton="true"
+                            class="w-full sm:w-auto"
+                        />
+                        <ClasicButton
+                            @click="startScanning"
+                            :disabled="scanning"
+                            variant="blue"
+                            class="w-full sm:w-auto flex justify-center"
+                        >
+                            <LoadPoints v-if="scanning" :variant="'white'" />
+                            <span v-else>Iniciar Escaneo</span>
+                        </ClasicButton>
+                    </div>
                     <ClasicButton
                         v-if="scanning"
                         @click="stopScanning"

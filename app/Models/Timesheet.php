@@ -84,4 +84,14 @@ class Timesheet extends Model
 
         return $query;
     }
+
+    public function scopeForStaffAndDate(Builder $query, $staffId, $currentDate)
+    {
+        return $query->where('staff_id', $staffId)->whereDate('day_in', $currentDate);
+    }
+
+    public function scopeOpen(Builder $query)
+    {
+        return $query->whereNull('day_out');
+    }
 }

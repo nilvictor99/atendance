@@ -95,8 +95,8 @@
 
 <template>
     <AppLayout title="Timesheets">
-        <section class="mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full max-w-7xl">
-            <div class="flex flex-col gap-6 mt-6">
+        <section class="mx-auto px-4 sm:px-6 lg:px-8 py-2 w-full max-w-7xl">
+            <div class="flex flex-col gap-4 mt-1">
                 <!-- Filters Section -->
                 <div class="bg-white shadow-lg rounded-xl p-6">
                     <div
