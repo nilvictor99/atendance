@@ -386,5 +386,17 @@
     "Present Today": "Presentes Hoy",
     "Absent Today": "Ausentes Hoy",
     "Attendance Rate": "Tasa de Asistencia",
-    "camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP.": "Acceso a la cámara solo en contexto seguro. Usa HTTPS o localhost, no HTTP."
+    "camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP.": "Acceso a la cámara solo en contexto seguro. Usa HTTPS o localhost, no HTTP.",
+    "scan_qr_code": "Escanear código QR",
+    "close_modal": "Cerrar ventana",
+    "tabs.stream": "Cámara",
+    "tabs.capture": "Capturar",
+    "tabs.dropzone": "Arrastrar",
+    "code_detected": "¡Código detectado!",
+    "scan_another": "Escanear otro",
+    "start_camera": "Iniciar cámara",
+    "stop_camera": "Detener cámara", 
+    "turn_on_flash": "Encender flash",
+    "turn_off_flash": "Apagar flash",
+    "drag_image_here": "Arrastre una imagen aquí"
 }
