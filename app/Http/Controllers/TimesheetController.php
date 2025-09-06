@@ -110,7 +110,6 @@ class TimesheetController extends Controller
 
     public function scan(Request $request)
     {
-        dd($request->all());
         $this->timesheetService->storeData($request->all());
 
         return redirect()->route('timesheets.list')->banner('Asistencia Actualizada');
