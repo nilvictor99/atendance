@@ -34,30 +34,28 @@
 </script>
 
 <template>
-    <div class="relative">
-        <div class="flex">
+    <div class="relative w-full">
+        <div class="flex w-full relative">
             <span
                 class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
             >
-                <Search class="w-6 h-6 text-gray-500 font-bold" />
+                <Search class="w-5 h-5 sm:w-6 sm:h-6 text-gray-500 font-bold" />
             </span>
             <input
-                :class="[
-                    'block w-96 pl-10 text-gray-900 bg-transparent bg-white border border-white outline-none dark:border-white focus:ring-2 focus:ring-white focus:ring-opacity-5 focus:border-white font-bold dark:bg-gray-100',
-                    cleanButton && (searchTerm || '').length > 0
-                        ? 'rounded-r-none rounded-l-md'
-                        : 'rounded-md',
-                ]"
+                class="block w-full pl-10 pr-10 py-2 text-sm sm:text-base text-gray-900 bg-transparent bg-white border border-white outline-none dark:border-white focus:ring-2 focus:ring-white focus:ring-opacity-5 focus:border-white font-bold dark:bg-gray-100 transition-all duration-200 rounded-md"
                 :placeholder="placeholder"
                 v-model="searchTerm"
                 type="text"
                 autocomplete="off"
             />
             <ButtonClean
-                v-if="cleanButton && (searchTerm || '').length > 0"
+                v-if="cleanButton && searchTerm"
                 @click="clearSearch"
-                :isDeleting="(searchTerm || '').length > 0"
-                class="w-8 h-[40px] top-[1px] right-[-31px] flex items-center"
+                :isDeleting="!!searchTerm"
+                size="small"
+                :disabled="false"
+                class="absolute right-2 top-1/2 transform -translate-y-1/2"
+                buttonClass="bg-[#3c1415] w-8 h-8 flex items-center justify-center p-2 text-white rounded-md hover:bg-[#5e0f0b] focus:outline-none"
             />
         </div>
     </div>
