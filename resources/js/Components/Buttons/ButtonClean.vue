@@ -1,8 +1,8 @@
 <script setup>
-    import { defineEmits } from 'vue';
+    import { defineEmits, ref, computed } from 'vue';
     import Backspace from '../Icons/Backspace.vue';
 
-    defineProps({
+    const props = defineProps({
         buttonClass: {
             type: String,
             default:
@@ -12,16 +12,50 @@
             type: Boolean,
             default: false,
         },
+        size: {
+            type: String,
+            default: 'medium',
+            validator: value => ['small', 'medium', 'large'].includes(value),
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
+        },
     });
 
     const emit = defineEmits(['click']);
+    const isHovered = ref(false);
 
     function onClick() {
-        emit('click');
+        if (!props.disabled) {
+            emit('click');
+        }
     }
+
+    const computedClass = computed(() => {
+        return [
+            props.buttonClass,
+            {
+                'opacity-50 cursor-not-allowed': props.disabled,
+                'w-12 h-[32px]': props.size === 'small',
+                'w-20 h-[52px]': props.size === 'large',
+                'scale-105': isHovered.value && !props.disabled,
+            },
+        ];
+    });
 </script>
+
 <template>
-    <button type="button" @click="onClick" :class="buttonClass">
-        <Backspace />
+    <button
+        type="button"
+        @click="onClick"
+        :class="computedClass"
+        :disabled="disabled"
+        @mouseenter="isHovered = true"
+        @mouseleave="isHovered = false"
+    >
+        <div class="relative">
+            <Backspace :class="{ 'animate-pulse': isDeleting }" />
+        </div>
     </button>
 </template>

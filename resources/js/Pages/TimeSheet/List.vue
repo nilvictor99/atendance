@@ -133,32 +133,28 @@
 
                 <div class="bg-white shadow-lg rounded-xl p-6">
                     <div
-                        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 items-end"
+                        class="flex flex-col sm:flex-row gap-4 mb-6 items-center"
                     >
-                        <div class="col-span-1 sm:col-span-2 lg:col-span-2">
-                            <InputListSearch
-                                v-model="search"
-                                :cleanButton="true"
-                                placeholder="Buscar Nombre, Usuario o Url"
-                                @search="handleSearch"
-                                class="w-full"
-                            />
-                        </div>
-                        <div class="col-span-1 flex flex-col sm:flex-row gap-3">
-                            <ClasicButton
-                                @click="generateQr"
-                                class="w-full sm:flex-1 justify-center text-center"
-                            >
-                                {{ $t('Create Timesheet') }}
-                            </ClasicButton>
-                            <ClasicButton
-                                @click="showScanner = true"
-                                variant="success"
-                                class="w-full sm:flex-1 justify-center text-center"
-                            >
-                                {{ $t('Scan QR') }}
-                            </ClasicButton>
-                        </div>
+                        <InputListSearch
+                            v-model="search"
+                            :cleanButton="true"
+                            placeholder="Buscar Nombre, Usuario o Url"
+                            @search="handleSearch"
+                            class="flex-1"
+                        />
+                        <ClasicButton
+                            @click="generateQr"
+                            class="flex-1 sm:flex-none w-full sm:w-auto flex justify-center"
+                        >
+                            {{ $t('Create Timesheet') }}
+                        </ClasicButton>
+                        <ClasicButton
+                            @click="showScanner = true"
+                            variant="success"
+                            class="flex-1 sm:flex-none w-full sm:w-auto flex justify-center"
+                        >
+                            {{ $t('Scan QR') }}
+                        </ClasicButton>
                     </div>
 
                     <div class="overflow-x-auto">

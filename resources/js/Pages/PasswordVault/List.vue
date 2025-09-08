@@ -71,20 +71,20 @@
 
                 <div class="bg-white shadow-lg rounded-lg p-4 md:p-6">
                     <div
-                        class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4"
+                        class="flex flex-col sm:flex-row gap-4 mb-6 items-center"
                     >
                         <InputListSearch
                             v-model="search"
                             :cleanButton="true"
                             placeholder="Buscar por nombre, usuario o URL"
                             @search="handleSearch"
-                            class="w-full sm:w-auto"
+                            class="flex-1"
                         />
                         <ClasicButton
                             @click="
                                 $inertia.visit(route('password-vault.create'))
                             "
-                            class="w-full sm:w-auto flex items-center justify-center"
+                            class="flex-1 sm:flex-none w-full sm:w-auto flex justify-center"
                         >
                             Nueva Contraseña
                         </ClasicButton>
