@@ -68,19 +68,19 @@
                                     :href="route('dashboard')"
                                     :active="route().current('dashboard')"
                                 >
-                                    Dashboard
+                                    {{ $t('Dashboard') }}
                                 </NavLink>
                                 <NavLink
                                     :href="route('timesheet')"
                                     :active="route().current('timesheet')"
                                 >
-                                    Asistencias
+                                    {{ $t('Timesheet') }}
                                 </NavLink>
                                 <NavLink
                                     :href="route('password-vault')"
                                     :active="route().current('password-vault')"
                                 >
-                                    Contraseñas
+                                    {{ $t('Password Vault') }}
                                 </NavLink>
                             </div>
                         </div>
@@ -194,19 +194,20 @@
                                 </template>
 
                                 <template #content>
-                                    <DropdownLink :href="route('profile.show')"
-                                        >Profile</DropdownLink
+                                    <DropdownLink
+                                        :href="route('profile.show')"
+                                        >{{ $t('Profile') }}</DropdownLink
                                     >
-                                    <DropdownLink href="/admin"
-                                        >Panel Administrativo</DropdownLink
-                                    >
+                                    <DropdownLink href="/admin" as="a">{{
+                                        $t('Panel Administration')
+                                    }}</DropdownLink>
                                     <div class="border-t border-gray-100"></div>
                                     <form @submit.prevent="logout">
                                         <button
                                             type="submit"
                                             class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                         >
-                                            Logout
+                                            {{ $t('Log Out') }}
                                         </button>
                                     </form>
                                 </template>
@@ -264,19 +265,19 @@
                             :href="route('dashboard')"
                             :active="route().current('dashboard')"
                         >
-                            Dashboard
+                            {{ $t('Dashboard') }}
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             :href="route('timesheet')"
                             :active="route().current('timesheet')"
                         >
-                            Asistencias
+                            {{ $t('Timesheet') }}
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             :href="route('password-vault')"
                             :active="route().current('password-vault')"
                         >
-                            Contraseñas
+                            {{ $t('Password Vault') }}
                         </ResponsiveNavLink>
                     </div>
                 </div>

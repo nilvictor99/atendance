@@ -398,5 +398,8 @@
     "stop_camera": "Detener cámara", 
     "turn_on_flash": "Encender flash",
     "turn_off_flash": "Apagar flash",
-    "drag_image_here": "Arrastre una imagen aquí"
+    "drag_image_here": "Arrastre una imagen aquí",
+    "Timesheet": "Asistencias",
+    "Password Vault": "Contraseñas",
+    "Dashboard": "Dashboard"
 }
