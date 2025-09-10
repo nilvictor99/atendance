@@ -1,10 +1,39 @@
 <script setup>
     import { computed } from 'vue';
-    import { Link } from '@inertiajs/vue3';
+    import { Link, usePage } from '@inertiajs/vue3';
 
     const props = defineProps({
         href: String,
         active: Boolean,
+        roles: {
+            type: Array,
+            default: () => [],
+        },
+        permissions: {
+            type: Array,
+            default: () => [],
+        },
+    });
+
+    const hasAccess = computed(() => {
+        if (props.roles.length === 0 && props.permissions.length === 0) {
+            return true;
+        }
+
+        const user = usePage().props.auth?.user;
+        if (!user) return false;
+
+        const hasRole =
+            props.roles.length === 0 ||
+            props.roles.some(role => user.roles.includes(role));
+
+        const hasPermission =
+            props.permissions.length === 0 ||
+            props.permissions.some(permission =>
+                user.permissions.includes(permission)
+            );
+
+        return hasRole && hasPermission;
     });
 
     const classes = computed(() => {
@@ -15,7 +44,7 @@
 </script>
 
 <template>
-    <Link :href="href" :class="classes">
+    <Link v-if="hasAccess" :href="href" :class="classes">
         <slot />
     </Link>
 </template>

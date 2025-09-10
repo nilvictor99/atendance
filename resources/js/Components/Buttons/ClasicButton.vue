@@ -21,6 +21,14 @@
                 type: String,
                 default: 'gray',
             },
+            roles: {
+                type: Array,
+                default: () => [],
+            },
+            permissions: {
+                type: Array,
+                default: () => [],
+            },
         },
         computed: {
             textSize() {
@@ -61,12 +69,36 @@
                     variantClasses[this.variant] || variantClasses.primary,
                 ];
             },
+            hasAccess() {
+                if (this.roles.length === 0 && this.permissions.length === 0) {
+                    return true;
+                }
+
+                const user = this.$page?.props?.auth?.user;
+                if (!user) return false;
+                const hasRole =
+                    this.roles.length === 0 ||
+                    this.roles.some(role => user.roles.includes(role));
+
+                const hasPermission =
+                    this.permissions.length === 0 ||
+                    this.permissions.some(permission =>
+                        user.permissions.includes(permission)
+                    );
+
+                return hasRole && hasPermission;
+            },
         },
     };
 </script>
 
 <template>
-    <button :type="type" :class="buttonClasses" :disabled="loading || disabled">
+    <button
+        v-if="hasAccess"
+        :type="type"
+        :class="buttonClasses"
+        :disabled="loading || disabled"
+    >
         <span
             v-if="loading"
             class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent rounded-full"

@@ -1,6 +1,6 @@
 <script setup>
     import AppLayout from '@/Layouts/AppLayout.vue';
-    import { ref } from 'vue';
+    import { ref, computed } from 'vue';
 
     const totalEmployees = ref(150);
     const presentToday = ref(142);
@@ -11,7 +11,7 @@
         auth: Object,
     });
 
-    const { name, email, profile_photo_url } = props.auth.user;
+    const { roles, name, email, profile_photo_url } = props.auth.user;
 
     const optionsAccess = [
         {
@@ -19,14 +19,24 @@
             route: 'timesheet',
             background:
                 'https://i.pinimg.com/736x/ce/c4/b3/cec4b3cc815353d62435bb666868594a.jpg',
+            roles: ['super usuario', 'super_admin', 'Staff'],
         },
         {
             name: 'Contraseñas',
             route: 'password-vault',
             background:
                 'https://i.pinimg.com/736x/ae/48/4a/ae484a15a84631934a735e96ad73147d.jpg',
+            roles: ['super usuario', 'super_admin', 'Staff'],
         },
     ];
+
+    const filteredOptions = computed(() => {
+        return optionsAccess.filter(option => isAccess(option.roles));
+    });
+
+    const isAccess = rolesUnit => {
+        return roles.some(role => rolesUnit.includes(role));
+    };
 </script>
 
 <template>
@@ -49,6 +59,7 @@
                             ></div>
                         </div>
                         <div
+                            v-if="['Mozo'].some(role => roles.includes(role))"
                             class="absolute -translate-x-1/2 left-1/2 -bottom-8 cursor-pointer"
                         >
                             <a :href="route('dashboard')" class="block">
@@ -155,8 +166,8 @@
                         class="grid grid-cols-1 gap-6 px-4 sm:px-6 lg:px-10 mt-5 sm:grid-cols-2 lg:grid-cols-2"
                     >
                         <div
-                            v-for="option in optionsAccess"
-                            :key="option.name"
+                            v-for="option in filteredOptions"
+                            :key="option.roles"
                             class="overflow-hidden transition-transform duration-300 transform rounded-xl hover:scale-105 shadow-lg hover:shadow-2xl"
                         >
                             <a :href="option.route" class="block">
