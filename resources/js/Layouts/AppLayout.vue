@@ -73,12 +73,24 @@
                                 <NavLink
                                     :href="route('timesheet')"
                                     :active="route().current('timesheet')"
+                                    :roles="[
+                                        'super usuario',
+                                        'super_admin',
+                                        'Staff',
+                                    ]"
+                                    :permissions="['view_timesheet']"
                                 >
                                     {{ $t('Timesheet') }}
                                 </NavLink>
                                 <NavLink
                                     :href="route('password-vault')"
                                     :active="route().current('password-vault')"
+                                    :roles="[
+                                        'super usuario',
+                                        'super_admin',
+                                        'Staff',
+                                    ]"
+                                    :permissions="['view_password::vault']"
                                 >
                                     {{ $t('Password Vault') }}
                                 </NavLink>
@@ -198,9 +210,18 @@
                                         :href="route('profile.show')"
                                         >{{ $t('Profile') }}</DropdownLink
                                     >
-                                    <DropdownLink href="/admin" as="a">{{
-                                        $t('Panel Administration')
-                                    }}</DropdownLink>
+                                    <DropdownLink
+                                        :roles="[
+                                            'super usuario',
+                                            'super_admin',
+                                        ]"
+                                        :permissions="[]"
+                                        href="/admin"
+                                        as="a"
+                                        >{{
+                                            $t('Panel Administration')
+                                        }}</DropdownLink
+                                    >
                                     <div class="border-t border-gray-100"></div>
                                     <form @submit.prevent="logout">
                                         <button

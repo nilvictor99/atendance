@@ -1,14 +1,44 @@
 <script setup>
-    import { Link } from '@inertiajs/vue3';
+    import { Link, usePage } from '@inertiajs/vue3';
+    import { computed } from 'vue';
 
-    defineProps({
+    const props = defineProps({
         href: String,
         as: String,
+        roles: {
+            type: Array,
+            default: () => [],
+        },
+        permissions: {
+            type: Array,
+            default: () => [],
+        },
+    });
+
+    const hasAccess = computed(() => {
+        if (props.roles.length === 0 && props.permissions.length === 0) {
+            return true;
+        }
+
+        const user = usePage().props.auth?.user;
+        if (!user) return false;
+
+        const hasRole =
+            props.roles.length === 0 ||
+            props.roles.some(role => user.roles.includes(role));
+
+        const hasPermission =
+            props.permissions.length === 0 ||
+            props.permissions.some(permission =>
+                user.permissions.includes(permission)
+            );
+
+        return hasRole && hasPermission;
     });
 </script>
 
 <template>
-    <div>
+    <div v-if="hasAccess">
         <button
             v-if="as == 'button'"
             type="submit"
