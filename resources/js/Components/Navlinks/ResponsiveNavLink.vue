@@ -1,11 +1,32 @@
 <script setup>
     import { computed } from 'vue';
-    import { Link } from '@inertiajs/vue3';
+    import { Link, usePage } from '@inertiajs/vue3';
 
     const props = defineProps({
         active: Boolean,
         href: String,
         as: String,
+        roles: {
+            type: Array,
+            default: () => [],
+        },
+        permissions: {
+            type: Array,
+            default: () => [],
+        },
+    });
+
+    const hasAccess = computed(() => {
+        const user = usePage().props.auth?.user;
+        if (!user) return false;
+        if (!props.roles.length && !props.permissions.length) return true;
+
+        return (
+            props.roles.some(role => user.roles.includes(role)) ||
+            props.permissions.some(permission =>
+                user.permissions.includes(permission)
+            )
+        );
     });
 
     const classes = computed(() => {
@@ -16,7 +37,7 @@
 </script>
 
 <template>
-    <div>
+    <div v-if="hasAccess">
         <button
             v-if="as == 'button'"
             :class="classes"

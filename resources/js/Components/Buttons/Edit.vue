@@ -15,23 +15,16 @@
     });
 
     const hasAccess = computed(() => {
-        if (props.roles.length === 0 && props.permissions.length === 0) {
-            return true;
-        }
-
         const user = usePage().props.auth?.user;
         if (!user) return false;
+        if (!props.roles.length && !props.permissions.length) return true;
 
-        const hasRole =
-            props.roles.length === 0 ||
-            props.roles.some(role => user.roles.includes(role));
-        const hasPermission =
-            props.permissions.length === 0 ||
+        return (
+            props.roles.some(role => user.roles.includes(role)) ||
             props.permissions.some(permission =>
                 user.permissions.includes(permission)
-            );
-
-        return hasRole && hasPermission;
+            )
+        );
     });
 
     defineEmits(['click']);

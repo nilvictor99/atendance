@@ -215,7 +215,6 @@
                                             'super usuario',
                                             'super_admin',
                                         ]"
-                                        :permissions="[]"
                                         href="/admin"
                                         as="a"
                                         >{{
@@ -289,12 +288,16 @@
                             {{ $t('Dashboard') }}
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
+                            :roles="['super usuario', 'super_admin', 'Staff']"
+                            :permissions="['view_timesheet']"
                             :href="route('timesheet')"
                             :active="route().current('timesheet')"
                         >
                             {{ $t('Timesheet') }}
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
+                            :roles="['super usuario', 'super_admin', 'Staff']"
+                            :permissions="['view_password::vault']"
                             :href="route('password-vault')"
                             :active="route().current('password-vault')"
                         >
