@@ -143,12 +143,16 @@
                             class="flex-1"
                         />
                         <ClasicButton
+                            :roles="['super usuario', 'super_admin', 'Staff']"
+                            :permissions="[]"
                             @click="generateQr"
                             class="flex-1 sm:flex-none w-full sm:w-auto flex justify-center"
                         >
                             {{ $t('Create Timesheet') }}
                         </ClasicButton>
                         <ClasicButton
+                            :roles="['super usuario', 'super_admin', 'Staff']"
+                            :permissions="['create_timesheet']"
                             @click="showScanner = true"
                             variant="success"
                             class="flex-1 sm:flex-none w-full sm:w-auto flex justify-center"
