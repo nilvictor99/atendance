@@ -72,7 +72,7 @@
 <template>
     <form
         @submit.prevent="submitForm"
-        class="bg-white p-4 sm:p-6 rounded-lg shadow-md w-full max-w-4xl mx-auto"
+        class="bg-white p-4 sm:p-6 rounded-lg shadow-md w-full max-w-7xl mx-auto"
     >
         <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-gray-900">
             {{ mode === 'edit' ? 'Editar Contraseña' : 'Crear Contraseña' }}
