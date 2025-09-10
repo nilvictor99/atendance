@@ -1,11 +1,44 @@
 <script setup>
     import Edit from '@/Components/Icons/Edit.vue';
+    import { computed } from 'vue';
+    import { usePage } from '@inertiajs/vue3';
+
+    const props = defineProps({
+        roles: {
+            type: Array,
+            default: () => [],
+        },
+        permissions: {
+            type: Array,
+            default: () => [],
+        },
+    });
+
+    const hasAccess = computed(() => {
+        if (props.roles.length === 0 && props.permissions.length === 0) {
+            return true;
+        }
+
+        const user = usePage().props.auth?.user;
+        if (!user) return false;
+
+        const hasRole =
+            props.roles.length === 0 ||
+            props.roles.some(role => user.roles.includes(role));
+        const hasPermission =
+            props.permissions.length === 0 ||
+            props.permissions.some(permission =>
+                user.permissions.includes(permission)
+            );
+
+        return hasRole && hasPermission;
+    });
 
     defineEmits(['click']);
 </script>
 
 <template>
-    <section class="tooltip tooltip-warning" data-tip="Editar">
+    <section v-if="hasAccess" class="tooltip tooltip-warning" data-tip="Editar">
         <button
             @click="$emit('click')"
             class="btn btn-link btn-lg p-1 hover:bg-gray-100 rounded-md inline-flex items-center gap-x-4 font-bold rounded-lg border border-transparent text-gray-500 hover:text-gray-600 focus:outline-none text-center"

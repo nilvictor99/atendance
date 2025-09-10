@@ -81,6 +81,8 @@
                             class="flex-1"
                         />
                         <ClasicButton
+                            :roles="['super usuario', 'super_admin', 'Staff']"
+                            :permissions="['create_password::vault']"
                             @click="
                                 $inertia.visit(route('password-vault.create'))
                             "
@@ -200,6 +202,13 @@
                                         class="px-4 py-4 text-center text-sm font-medium"
                                     >
                                         <Edit
+                                            :roles="[
+                                                'super usuario',
+                                                'super_admin',
+                                            ]"
+                                            :permissions="[
+                                                'update_password::vault',
+                                            ]"
                                             @click="
                                                 $inertia.visit(
                                                     route(

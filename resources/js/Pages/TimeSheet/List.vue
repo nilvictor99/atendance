@@ -283,6 +283,11 @@
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         <Edit
+                                            :roles="[
+                                                'super usuario',
+                                                'super_admin',
+                                            ]"
+                                            :permissions="['update_timesheet']"
                                             @click="
                                                 $inertia.visit(
                                                     route('timesheets.edit', {
