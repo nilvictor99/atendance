@@ -151,7 +151,7 @@
                             {{ $t('Create Timesheet') }}
                         </ClasicButton>
                         <ClasicButton
-                            :roles="['super usuario', 'super_admin', 'Staff']"
+                            :roles="['super usuario', 'super_admin']"
                             :permissions="['create_timesheet']"
                             @click="showScanner = true"
                             variant="success"
