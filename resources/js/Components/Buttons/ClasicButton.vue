@@ -1,6 +1,7 @@
 <script setup>
     import { computed } from 'vue';
     import { usePage } from '@inertiajs/vue3';
+    import Loader from '../Icons/Loader.vue';
 
     const props = defineProps({
         loading: {
@@ -96,11 +97,11 @@
     >
         <span
             v-if="loading"
-            class="animate-spin inline-block size-4 border-[3px] border-current border-t-transparent rounded-full"
+            class="animate-spin"
             role="status"
             aria-label="loading"
         >
-            <span class="sr-only">Loading...</span>
+            <Loader class="size-5" />
         </span>
         <span v-if="!loading || size !== 'square'">
             <slot></slot>

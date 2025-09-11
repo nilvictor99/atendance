@@ -49,4 +49,11 @@ class PasswordVaultRepository extends BaseRepository
 
         return $record;
     }
+
+    public function deleteData($id)
+    {
+        $record = $this->model->findOrFail($id);
+
+        return $record->delete();
+    }
 }
