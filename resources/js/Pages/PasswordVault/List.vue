@@ -9,6 +9,8 @@
     import DateRangeFilter from '@/Components/Sections/SectionDateRangeFilter.vue';
     import CustomTooltip from '@/Components/Utils/CustomTooltip.vue';
     import CopyableText from '@/Components/Utils/CopyableText.vue';
+    import Delete from '@/Components/Buttons/Delete.vue';
+    import ModalDelete from '@/Components/Modals/ModalDelete.vue';
 
     const props = defineProps({
         passwordVaults: {
@@ -25,6 +27,9 @@
         },
     });
 
+    const isDeleting = ref(false);
+    const showDeleteModal = ref(false);
+    const vaultToDelete = ref(null);
     const search = ref(props.search);
     const dateRange = ref(props.dateRange || { start: '', end: '' });
 
@@ -45,6 +50,28 @@
             }
         );
     }
+
+    const handleDelete = vault => {
+        vaultToDelete.value = vault.id;
+        showDeleteModal.value = true;
+    };
+
+    const confirmDelete = () => {
+        if (!vaultToDelete.value) return;
+        isDeleting.value = true;
+        router.delete(
+            route('password-vault.destroy', { id: vaultToDelete.value }),
+            {
+                preserveScroll: true,
+                onFinish: () => {
+                    isDeleting.value = false;
+                    showDeleteModal.value = false;
+                    vaultToDelete.value = null;
+                },
+                onError: console.error,
+            }
+        );
+    };
 </script>
 
 <template>
@@ -199,7 +226,7 @@
                                         </span>
                                     </td>
                                     <td
-                                        class="px-4 py-4 text-center text-sm font-medium"
+                                        class="flex justify-center px-4 py-4 text-center text-sm font-medium"
                                     >
                                         <Edit
                                             :roles="[
@@ -219,6 +246,18 @@
                                             "
                                             class="text-indigo-600 hover:text-indigo-900 cursor-pointer"
                                         />
+                                        <Delete
+                                            :roles="[
+                                                'super usuario',
+                                                'super_admin',
+                                            ]"
+                                            :permissions="[
+                                                'delete_password::vault',
+                                            ]"
+                                            @click="handleDelete(vault)"
+                                            class="text-red-600 hover:text-red-900 cursor-pointer"
+                                            :disabled="isDeleting"
+                                        />
                                     </td>
                                 </tr>
                             </tbody>
@@ -230,5 +269,16 @@
                 </div>
             </div>
         </section>
+
+        <ModalDelete
+            :show="showDeleteModal"
+            title="Eliminar Contraseña"
+            description="¿Está seguro que desea eliminar esta contraseña? Esta acción no se puede deshacer."
+            itemType="Contraseña"
+            :itemId="vaultToDelete"
+            @close="showDeleteModal = false"
+            @confirm="confirmDelete"
+            :loading="isDeleting"
+        />
     </AppLayout>
 </template>

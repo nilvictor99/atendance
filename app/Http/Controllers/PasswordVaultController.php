@@ -81,8 +81,10 @@ class PasswordVaultController extends Controller
         return redirect()->route('password-vault.list')->banner('Contraseña Actualizada');
     }
 
-    public function destroy(PasswordVault $passwordVault)
+    public function destroy(Request $request)
     {
-        //
+        $this->passwordVaultService->deleteData($request->id);
+
+        return redirect()->route('password-vault.list')->banner('Contraseña Eliminada');
     }
 }

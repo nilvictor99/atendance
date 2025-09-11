@@ -41,5 +41,6 @@ Route::middleware([
         Route::post('/password-vault/store', 'store')->name('password-vault.store');
         Route::get('/password-vault/{id}/edit', 'edit')->name('password-vault.edit');
         Route::put('/password-vault/{id}/update', 'update')->name('password-vault.update');
+        Route::delete('/password-vault/{id}/delete', 'destroy')->name('password-vault.destroy');
     });
 });
