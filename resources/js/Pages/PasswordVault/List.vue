@@ -29,6 +29,10 @@
             type: Object,
             default: () => ({ start: '', end: '' }),
         },
+        users: {
+            type: Array,
+            default: () => [],
+        },
     });
 
     const isDeleting = ref(false);
@@ -354,6 +358,7 @@
         <ModalShare
             :show="showShareModal"
             :vaults="selectedVaultsData"
+            :users="users"
             @close="showShareModal = false"
         />
     </AppLayout>

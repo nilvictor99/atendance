@@ -42,6 +42,7 @@
         return props.users.map(user => ({
             value: user.id,
             label: user.name,
+            image: user.profile_photo_url,
         }));
     });
 
@@ -105,6 +106,10 @@
                             placeholder="Seleccione un usuario"
                             :multiple="false"
                             :CleanButton="false"
+                            :showImages="true"
+                            imageKey="image"
+                            imageSize="sm"
+                            fallbackImage="https://ui-avatars.com/api/?name=u&color=7F9CF5&background=EBF4FF"
                         />
                         <InputError
                             :message="form.errors.user_id"
