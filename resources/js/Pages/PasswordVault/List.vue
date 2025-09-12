@@ -2,7 +2,7 @@
     import Pagination from '@/Components/Sections/SectionPagination.vue';
     import AppLayout from '@/Layouts/AppLayout.vue';
     import ClasicButton from '@/Components/Buttons/ClasicButton.vue';
-    import { ref } from 'vue';
+    import { ref, computed } from 'vue';
     import { router } from '@inertiajs/vue3';
     import Edit from '@/Components/Buttons/Edit.vue';
     import InputListSearch from '@/Components/Inputs/InputListSearch.vue';
@@ -11,6 +11,10 @@
     import CopyableText from '@/Components/Utils/CopyableText.vue';
     import Delete from '@/Components/Buttons/Delete.vue';
     import ModalDelete from '@/Components/Modals/ModalDelete.vue';
+    import SmartCheckbox from '@/Components/Inputs/SmartCheckbox.vue';
+    import ModalShare from '@/Components/PasswordVaults/ModalShare.vue';
+    import Share from '@/Components/Icons/Share.vue';
+    import Key from '@/Components/Icons/Key.vue';
 
     const props = defineProps({
         passwordVaults: {
@@ -32,6 +36,30 @@
     const vaultToDelete = ref(null);
     const search = ref(props.search);
     const dateRange = ref(props.dateRange || { start: '', end: '' });
+    const showShareModal = ref(false);
+    const selectedVaults = ref([]);
+
+    const selectedVaultsData = computed(() => {
+        return props.passwordVaults.data.filter(
+            vault =>
+                selectedVaults.value.includes(vault.id) &&
+                vault.type === 'private'
+        );
+    });
+
+    const privateVaultIds = computed(() => {
+        return props.passwordVaults.data
+            .filter(vault => vault.type === 'private')
+            .map(vault => vault.id);
+    });
+
+    const canShare = computed(() => selectedVaults.value.length > 0);
+
+    const selectAllTooltip = computed(() => {
+        return selectedVaults.value.length === privateVaultIds.value.length
+            ? 'Deseleccionar todo'
+            : 'Seleccionar todo';
+    });
 
     function handleSearch(val) {
         if (typeof val === 'object' && val !== null) {
@@ -71,6 +99,10 @@
                 onError: console.error,
             }
         );
+    };
+
+    const handleShare = () => {
+        showShareModal.value = true;
     };
 </script>
 
@@ -115,7 +147,20 @@
                             "
                             class="flex-1 sm:flex-none w-full sm:w-auto flex justify-center"
                         >
-                            Nueva Contraseña
+                            <div class="flex flex-row items-center">
+                                <Key class="h-5 w-5 mr-2" />
+                                Agregar Contraseña
+                            </div>
+                        </ClasicButton>
+                        <ClasicButton
+                            v-if="canShare"
+                            @click="handleShare"
+                            class="flex-1 sm:flex-none w-full sm:w-auto flex items-center justify-center"
+                        >
+                            <div class="flex flex-row items-center">
+                                Compartir
+                                <Share class="ml-2 h-5 w-5" />
+                            </div>
                         </ClasicButton>
                     </div>
 
@@ -125,6 +170,22 @@
                         >
                             <thead class="bg-gray-50">
                                 <tr>
+                                    <th
+                                        scope="col"
+                                        class="px-4 py-3 text-center w-10"
+                                    >
+                                        <div
+                                            class="flex items-center justify-center"
+                                        >
+                                            <SmartCheckbox
+                                                mode="selectAll"
+                                                :all-values="privateVaultIds"
+                                                v-model="selectedVaults"
+                                                color="gray"
+                                                :tooltip="selectAllTooltip"
+                                            />
+                                        </div>
+                                    </th>
                                     <th
                                         scope="col"
                                         class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
@@ -169,6 +230,15 @@
                                     :key="vault.id"
                                     class="hover:bg-gray-50 transition-colors"
                                 >
+                                    <td class="px-4 py-4 text-center">
+                                        <SmartCheckbox
+                                            v-if="vault.type === 'private'"
+                                            mode="multi"
+                                            :value="vault.id"
+                                            v-model="selectedVaults"
+                                            color="gray"
+                                        />
+                                    </td>
                                     <td
                                         class="px-4 py-4 text-sm font-medium text-gray-900 truncate max-w-xs"
                                     >
@@ -279,6 +349,12 @@
             @close="showDeleteModal = false"
             @confirm="confirmDelete"
             :loading="isDeleting"
+        />
+
+        <ModalShare
+            :show="showShareModal"
+            :vaults="selectedVaultsData"
+            @close="showShareModal = false"
         />
     </AppLayout>
 </template>

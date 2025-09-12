@@ -1,6 +1,7 @@
 <script setup>
     import { computed, ref, watch, onBeforeUnmount } from 'vue';
     import XIcon from '@/Components/Icons/XIcon.vue';
+    import ClassicLabel from '../Labels/ClassicLabel.vue';
 
     const props = defineProps({
         modelValue: [String, Number, Array],
@@ -39,6 +40,26 @@
             emit('change', value);
         },
     });
+
+    const labelTheme = computed(() => {
+        const themeMap = {
+            orange: 'gray',
+            red: 'primary',
+            green: 'gray',
+            yellow: 'gray',
+            gray: 'gray',
+            lightgray: 'gray',
+            purple: 'gray',
+            blue: 'gray',
+        };
+        return themeMap[props.theme.toLowerCase()] || 'gray';
+    });
+
+    const labelWeight = 'semibold';
+    const labelSize = 'sm';
+    const labelTransform = 'normal';
+    const labelRequired = false;
+
     const themeClasses = computed(() => {
         const themes = {
             orange: {
@@ -288,9 +309,17 @@
 
 <template>
     <div class="gap-1 relative w-full" ref="selectRef">
-        <label v-if="label" class="font-semibold mb-1" :for="'select-' + _uid">
-            {{ label }}
-        </label>
+        <ClassicLabel
+            v-if="label"
+            :value="label"
+            :theme="labelTheme"
+            :weight="labelWeight"
+            :size="labelSize"
+            :transform="labelTransform"
+            :required="labelRequired"
+            class="mb-2"
+            :for="'select-' + _uid"
+        />
         <div
             :class="[
                 'mt-2 w-full rounded-md py-2 px-3 transition duration-200 outline-none flex items-center flex-wrap min-h-[42px] relative border',
@@ -340,7 +369,6 @@
                 </template>
                 <span v-else class="text-gray-400">{{ placeholder }}</span>
             </template>
-            <!-- Valor seleccionado para selección simple -->
             <template v-else>
                 <span v-if="selectedValue" :class="themeClasses.badgeText">
                     {{
@@ -377,7 +405,6 @@
                     />
                 </svg>
             </div>
-            <!-- Botón limpiar selección -->
             <button
                 v-if="CleanButton && selectedValue"
                 type="button"
@@ -394,7 +421,8 @@
             v-if="showDropdown"
             :id="'dropdown-' + _uid"
             :class="[
-                'absolute z-[9999] mt-1 w-full bg-white rounded-md shadow-lg max-h-60 overflow-auto select-dropdown',
+                'absolute z-[9999] mt-1 w-full bg-white rounded-md shadow-lg max-h-60 overflow-auto transform transition-all duration-200 ease-in-out',
+                'animate-[fadeIn_0.2s_ease-in-out]',
                 themeClasses.dropdownBorder,
             ]"
             role="listbox"
@@ -428,20 +456,3 @@
         </div>
     </div>
 </template>
-
-<style scoped>
-    .select-dropdown {
-        animation: dropdown 0.2s ease;
-    }
-
-    @keyframes dropdown {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-</style>
