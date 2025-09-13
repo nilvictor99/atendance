@@ -10,6 +10,7 @@
     import InputSelectClasic from '@/Components/Inputs/InputSelectClasic.vue';
     import ModalQrGenerate from '@/Components/TimeSheets/ModalQrGenerate.vue';
     import ModalQrScanner from '@/Components/TimeSheets/ModalQrScanner.vue';
+    import PerPageSelector from '@/Components/Utils/PerPageSelector.vue';
 
     const props = defineProps({
         timesheets: {
@@ -29,11 +30,16 @@
             default: () => [],
         },
         staffId: { type: [String, Number], default: '' },
+        perPage: {
+            type: Number,
+            default: 5,
+        },
     });
 
     const showQrModal = ref(false);
     const qrCode = ref('');
     const showScanner = ref(false);
+    const perPage = ref(props.perPage ?? 5);
 
     const generateQr = async () => {
         const { qrCode: code } = await fetch(route('generate'), {
@@ -71,6 +77,8 @@
                 start: dateRange.value.start,
                 end: dateRange.value.end,
                 staff_id: staffId.value,
+                page: 1,
+                per_page: perPage.value,
             },
             {
                 preserveState: true,
@@ -302,9 +310,20 @@
                             </tbody>
                         </table>
                     </div>
-
-                    <!-- Pagination -->
-                    <div class="mt-6">
+                    <div
+                        class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+                    >
+                        <PerPageSelector
+                            v-model="perPage"
+                            :options="[5, 10, 25, 50, 100]"
+                            label=""
+                            labelPosition="left"
+                            theme="indigo"
+                            :bold="true"
+                            :clearButton="true"
+                            :disabled="isLoading"
+                            @change="val => handleSearch(val, 'per-page')"
+                        />
                         <Pagination :pagination="timesheets" />
                     </div>
                 </div>

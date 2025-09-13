@@ -31,8 +31,9 @@ class TimesheetController extends Controller
         $startDate = $request->input('start');
         $endDate = $request->input('end');
         $staffId = $request->input('staff_id');
+        $perPage = $request->input('per_page', 5);
         $staff = $this->userService->getStaffsWithTimeSheets();
-        $timesheets = $this->timesheetService->getModel($search, $startDate, $endDate, $staffId);
+        $timesheets = $this->timesheetService->getModel($search, $startDate, $endDate, $staffId, $perPage);
 
         return Inertia::render('TimeSheet/List', [
             'timesheets' => $timesheets,
@@ -43,6 +44,7 @@ class TimesheetController extends Controller
             ],
             'staff' => $staff,
             'staffId' => $staffId,
+            'perPage' => $perPage,
         ]);
     }
 
