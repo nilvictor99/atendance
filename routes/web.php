@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PasswordShareController;
 use App\Http\Controllers\PasswordVaultController;
 use App\Http\Controllers\TimesheetController;
 use Illuminate\Foundation\Application;
@@ -42,5 +43,9 @@ Route::middleware([
         Route::get('/password-vault/{id}/edit', 'edit')->name('password-vault.edit');
         Route::put('/password-vault/{id}/update', 'update')->name('password-vault.update');
         Route::delete('/password-vault/{id}/delete', 'destroy')->name('password-vault.destroy');
+    });
+
+    Route::controller(PasswordShareController::class)->group(function () {
+        Route::post('/password-share/store', 'store')->name('password-share.store');
     });
 });

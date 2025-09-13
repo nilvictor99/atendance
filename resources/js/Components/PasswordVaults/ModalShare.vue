@@ -57,7 +57,7 @@
     };
 
     const shareVaults = () => {
-        form.post(route('password-vault.share'), {
+        form.post(route('password-share.store'), {
             preserveScroll: true,
             onSuccess: () => {
                 closeModal();
@@ -109,7 +109,7 @@
                             :showImages="true"
                             imageKey="image"
                             imageSize="sm"
-                            fallbackImage="https://ui-avatars.com/api/?name=u&color=7F9CF5&background=EBF4FF"
+                            fallbackImage="https://ui-avatars.com/api/?name=u&color=7F9CF5&background=EBF4FF /System/Samples/userimage.webp"
                         />
                         <InputError
                             :message="form.errors.user_id"
@@ -161,7 +161,7 @@
                     </ClasicButton>
                     <ClasicButton
                         type="submit"
-                        variant="primary"
+                        variant="blue"
                         :disabled="!form.user_id || form.processing"
                         :loading="form.processing"
                     >

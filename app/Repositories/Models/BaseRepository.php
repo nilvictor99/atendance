@@ -160,4 +160,20 @@ class BaseRepository implements ModelRepositoryInterface
 
         return $query->get();
     }
+
+    public function createMany(array $records): \Illuminate\Support\Collection
+    {
+        $now = now();
+
+        $records = collect($records)->map(function ($record) use ($now) {
+            return array_merge($record, [
+                'created_at' => $now,
+                'updated_at' => $now,
+            ]);
+        })->all();
+
+        $this->model->insert($records);
+
+        return collect($records);
+    }
 }

@@ -465,7 +465,7 @@
             v-if="showDropdown"
             :id="'dropdown-' + _uid"
             :class="[
-                'absolute z-50 mt-1 w-full bg-white rounded-md shadow-lg max-h-60 overflow-auto select-dropdown',
+                'max-h-40 absolute z-50 mt-1 w-full bg-white rounded-md shadow-lg overflow-auto select-dropdown',
                 themeClasses.dropdownBorder,
             ]"
             role="listbox"
