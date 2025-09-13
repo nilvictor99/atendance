@@ -20,6 +20,11 @@ class PasswordShareRepository extends BaseRepository
     public function getModel($search = null, $startDate = null, $endDate = null)
     {
         $query = $this->model->withRelations();
+
+        if ($this->userService->getAuthUser()->hasRole('Staff')) {
+            $query->filterByUserAccess($this->userService->getAuthUserId());
+        }
+
         if ($search || $startDate || $endDate) {
             $query->searchData($search, $startDate, $endDate);
         }

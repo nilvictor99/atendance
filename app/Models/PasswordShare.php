@@ -82,4 +82,12 @@ class PasswordShare extends Model
 
         return $query;
     }
+
+    public function scopeFilterByUserAccess(Builder $query, $userId)
+    {
+        return $query->where(function ($query) use ($userId) {
+            $query->where('shared_by', $userId)
+                ->orWhere('shared_with', $userId);
+        });
+    }
 }
