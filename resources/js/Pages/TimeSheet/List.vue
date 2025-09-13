@@ -128,6 +128,8 @@
                                 id: props.staffId,
                                 text: selectedStaffText,
                             }"
+                            :roles="['super usuario', 'super_admin']"
+                            :permissions="[]"
                             label="Colaboradores"
                             placeholder="Colaborador"
                             :disabled="false"
@@ -311,6 +313,7 @@
                         </table>
                     </div>
                     <div
+                        v-if="timesheets.data?.length > 4"
                         class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4"
                     >
                         <PerPageSelector
