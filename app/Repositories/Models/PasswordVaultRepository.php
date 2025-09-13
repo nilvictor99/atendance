@@ -3,23 +3,32 @@
 namespace App\Repositories\Models;
 
 use App\Models\PasswordVault;
+use App\Services\Models\UserService;
 use App\Services\Utils\PasswordGeneratorService;
 
 class PasswordVaultRepository extends BaseRepository
 {
     private $PasswordGeneratorService;
 
+    private $userService;
+
     const RELATIONS = [];
 
-    public function __construct(PasswordVault $model, PasswordGeneratorService $PasswordGeneratorService)
+    public function __construct(PasswordVault $model, PasswordGeneratorService $PasswordGeneratorService, UserService $userService)
     {
         parent::__construct($model, self::RELATIONS);
         $this->PasswordGeneratorService = $PasswordGeneratorService;
+        $this->userService = $userService;
     }
 
     public function getModel($search = null, $startDate = null, $endDate = null)
     {
         $query = $this->model->withUserProfile();
+
+        if ($this->userService->getAuthUser()->hasRole('Staff')) {
+            $query->filterByUserAccess($this->userService->getAuthUserId());
+        }
+
         if ($search || $startDate || $endDate) {
             $query->searchData($search, $startDate, $endDate);
         }
