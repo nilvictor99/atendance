@@ -59,14 +59,21 @@ class PasswordShareController extends Controller
         //
     }
 
-    public function edit(PasswordShare $passwordShare)
+    public function edit(Request $request)
     {
-        //
+        $data = $this->passwordShareService->getDataById($request->id);
+
+        return Inertia::render('PasswordShare/Edit', [
+            'data' => $data,
+        ]);
     }
 
-    public function update(Request $request, PasswordShare $passwordShare)
+    public function update(Request $request)
     {
-        //
+        $data = $request->all();
+        $this->passwordShareService->updateData($request->id, $data);
+
+        return redirect()->route('password-share.list')->banner('Acceso compartido actualizado.');
     }
 
     public function destroy(Request $request)

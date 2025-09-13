@@ -39,6 +39,19 @@ class PasswordShareRepository extends BaseRepository
         return $this->createMany($records);
     }
 
+    public function getDataById($id)
+    {
+        return $this->model->withRelations()->findOrFail($id);
+    }
+
+    public function updateData($id, array $data)
+    {
+        $record = $this->model->findOrFail($id);
+        $record->update($data);
+
+        return $record;
+    }
+
     public function deleteData($id)
     {
         $record = $this->model->findOrFail($id);

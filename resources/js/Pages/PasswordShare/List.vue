@@ -178,7 +178,7 @@
                                             @click="
                                                 $inertia.visit(
                                                     route(
-                                                        'password-shares.edit',
+                                                        'password-share.edit',
                                                         { id: share.id }
                                                     )
                                                 )
