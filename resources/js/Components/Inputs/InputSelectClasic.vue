@@ -2,6 +2,7 @@
     import { computed, ref, watch, onBeforeUnmount } from 'vue';
     import XIcon from '@/Components/Icons/XIcon.vue';
     import ClassicLabel from '../Labels/ClassicLabel.vue';
+    import { usePage } from '@inertiajs/vue3';
 
     const props = defineProps({
         modelValue: [String, Number, Array],
@@ -18,6 +19,14 @@
         initialValue: {
             type: [String, Number, Object],
             default: null,
+        },
+        roles: {
+            type: Array,
+            default: () => [],
+        },
+        permissions: {
+            type: Array,
+            default: () => [],
         },
     });
 
@@ -305,10 +314,23 @@
         emit('update:modelValue', '');
         emit('change', '');
     }
+
+    const hasAccess = computed(() => {
+        const user = usePage().props.auth?.user;
+        if (!user) return false;
+        if (!props.roles.length && !props.permissions.length) return true;
+
+        return (
+            props.roles.some(role => user.roles.includes(role)) ||
+            props.permissions.some(permission =>
+                user.permissions.includes(permission)
+            )
+        );
+    });
 </script>
 
 <template>
-    <div class="gap-1 relative w-full" ref="selectRef">
+    <div v-if="hasAccess" class="gap-1 relative w-full" ref="selectRef">
         <ClassicLabel
             v-if="label"
             :value="label"
