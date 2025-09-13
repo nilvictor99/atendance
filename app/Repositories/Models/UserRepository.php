@@ -34,4 +34,11 @@ class UserRepository extends BaseRepository
     {
         return $this->AuthService->getAuthUser()->id;
     }
+
+    public function getWithoutAuthUser()
+    {
+        return $this->model->withNotEmail()
+            ->whereNot('id', $this->AuthService->getAuthUser()->id)
+            ->get();
+    }
 }

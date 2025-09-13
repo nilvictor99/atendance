@@ -128,4 +128,9 @@ class User extends Authenticatable
     {
         return $query->select(['id', 'name', 'email']);
     }
+
+    public function scopeWithNotEmail(Builder $query)
+    {
+        return $query->select(['id', 'name']);
+    }
 }

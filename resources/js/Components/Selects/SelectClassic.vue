@@ -2,6 +2,8 @@
     import { computed, ref, watch, onBeforeUnmount } from 'vue';
     import XIcon from '@/Components/Icons/XIcon.vue';
     import ClassicLabel from '../Labels/ClassicLabel.vue';
+    import Avatar from '../Utils/Avatar.vue';
+    import ArrowDown from '../Icons/ArrowDown.vue';
 
     const props = defineProps({
         modelValue: [String, Number, Array],
@@ -19,6 +21,10 @@
             type: [String, Number, Object],
             default: null,
         },
+        showImages: { type: Boolean, default: false },
+        imageKey: { type: String, default: 'image' },
+        imageSize: { type: String, default: 'sm' },
+        fallbackImage: { type: String, default: '' },
     });
 
     const emit = defineEmits(['update:modelValue', 'change']);
@@ -202,6 +208,16 @@
         });
     });
 
+    const getOptionData = option => {
+        if (!option) return { text: '', image: '' };
+        if (typeof option === 'string') return { text: option, image: '' };
+
+        return {
+            text: option.text ?? option.label ?? option,
+            image: option[props.imageKey] ?? '',
+        };
+    };
+
     const getOptionDisplay = option => {
         if (!option) return '';
         if (typeof option === 'string') return option;
@@ -215,7 +231,12 @@
         }
     }
 
-    function selectOption(option) {
+    function selectOption(option, event) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
         const optionValue = option.id ?? option.value ?? option;
         if (!props.multiple) {
             selectedValue.value = optionValue;
@@ -351,36 +372,67 @@
                             themeClasses.badgeText,
                         ]"
                     >
-                        {{ getOptionDisplay(option) }}
-                        <button
-                            type="button"
-                            :class="[
-                                'ml-1 focus:outline-none',
-                                themeClasses.badgeText,
-                                'hover:opacity-80',
-                            ]"
-                            @click.stop="removeBadge(option)"
-                            :disabled="disabled"
-                            aria-label="Eliminar opción"
-                        >
-                            ×
-                        </button>
+                        <div class="flex items-center">
+                            <Avatar
+                                v-if="showImages && getOptionData(option).image"
+                                :src="getOptionData(option).image"
+                                :size="imageSize"
+                                :fallback="fallbackImage"
+                                class="mr-2 flex-shrink-0"
+                            />
+                            <span>{{ getOptionDisplay(option) }}</span>
+                            <button
+                                type="button"
+                                :class="[
+                                    'ml-1 focus:outline-none',
+                                    themeClasses.badgeText,
+                                    'hover:opacity-80',
+                                ]"
+                                @click.stop="removeBadge(option)"
+                                :disabled="disabled"
+                                aria-label="Eliminar opción"
+                            >
+                                ×
+                            </button>
+                        </div>
                     </span>
                 </template>
                 <span v-else class="text-gray-400">{{ placeholder }}</span>
             </template>
             <template v-else>
-                <span v-if="selectedValue" :class="themeClasses.badgeText">
-                    {{
-                        getOptionDisplay(
-                            options.find(
-                                o =>
-                                    (o.id ?? o.value ?? o)?.toString() ===
-                                    selectedValue?.toString()
-                            ) ||
-                                getInitialOption || { text: '' }
-                        )
-                    }}
+                <span
+                    v-if="selectedValue"
+                    :class="[
+                        'flex items-center w-full',
+                        themeClasses.badgeText,
+                    ]"
+                >
+                    <Avatar
+                        v-if="showImages"
+                        :src="
+                            getOptionData(
+                                options.find(
+                                    o =>
+                                        (o.id ?? o.value ?? o)?.toString() ===
+                                        selectedValue?.toString()
+                                )
+                            ).image
+                        "
+                        :size="imageSize"
+                        :fallback="fallbackImage"
+                        class="mr-2 flex-shrink-0"
+                    />
+                    <span class="flex-grow">
+                        {{
+                            getOptionData(
+                                options.find(
+                                    o =>
+                                        (o.id ?? o.value ?? o)?.toString() ===
+                                        selectedValue?.toString()
+                                )
+                            ).text
+                        }}
+                    </span>
                 </span>
                 <span v-else class="text-gray-400">{{ placeholder }}</span>
             </template>
@@ -388,23 +440,13 @@
             <div
                 class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3"
             >
-                <svg
+                <ArrowDown
                     :class="[
                         'w-5 h-5 transition-transform duration-200',
                         themeClasses.arrow,
                         { 'rotate-180': showDropdown },
                     ]"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M19 9l-7 7-7-7"
-                    />
-                </svg>
+                />
             </div>
             <!-- Botón limpiar selección -->
             <button
@@ -423,7 +465,7 @@
             v-if="showDropdown"
             :id="'dropdown-' + _uid"
             :class="[
-                'absolute z-50 mt-1 w-full bg-white rounded-md shadow-lg max-h-60 overflow-auto select-dropdown',
+                'max-h-40 absolute z-50 mt-1 w-full bg-white rounded-md shadow-lg overflow-auto select-dropdown',
                 themeClasses.dropdownBorder,
             ]"
             role="listbox"
@@ -432,9 +474,9 @@
                 <li
                     v-for="(option, index) in options"
                     :key="option.id ?? option.value ?? option"
-                    @click="selectOption(option)"
+                    @click.stop="event => selectOption(option, event)"
                     :class="[
-                        'px-4 py-2 cursor-pointer transition-colors duration-150',
+                        'px-4 py-2 cursor-pointer transition-colors duration-150 flex items-center', // Añadido flex y items-center
                         isSelected(option) ? themeClasses.optionSelected : '',
                         focusedOptionIndex === index
                             ? themeClasses.optionFocus
@@ -444,7 +486,18 @@
                     role="option"
                     :aria-selected="isSelected(option)"
                 >
-                    {{ getOptionDisplay(option) }}
+                    <div class="flex items-center w-full">
+                        <Avatar
+                            v-if="showImages && getOptionData(option).image"
+                            :src="getOptionData(option).image"
+                            :size="imageSize"
+                            :fallback="fallbackImage"
+                            class="mr-2 flex-shrink-0"
+                        />
+                        <span class="flex-grow">{{
+                            getOptionDisplay(option)
+                        }}</span>
+                    </div>
                 </li>
                 <li
                     v-if="!options.length"

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PasswordVaultRequest;
 use App\Models\PasswordVault;
 use App\Services\Models\PasswordVaultService;
+use App\Services\Models\UserService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -12,9 +13,12 @@ class PasswordVaultController extends Controller
 {
     private $passwordVaultService;
 
-    public function __construct(PasswordVaultService $passwordVaultService)
+    private $userService;
+
+    public function __construct(PasswordVaultService $passwordVaultService, UserService $userService)
     {
         $this->passwordVaultService = $passwordVaultService;
+        $this->userService = $userService;
     }
 
     public function index()
@@ -27,6 +31,7 @@ class PasswordVaultController extends Controller
         $search = $request->input('search');
         $startDate = $request->input('start');
         $endDate = $request->input('end');
+        $users = $this->userService->getWithoutAuthUser();
         $passwordVaults = $this->passwordVaultService->getModel($search, $startDate, $endDate);
 
         return Inertia::render('PasswordVault/List', [
@@ -36,6 +41,7 @@ class PasswordVaultController extends Controller
                 'start' => $startDate,
                 'end' => $endDate,
             ],
+            'users' => $users,
         ]);
     }
 

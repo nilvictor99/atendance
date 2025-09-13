@@ -12,7 +12,7 @@ use App\Models\User;
 use App\Services\Auth\AuthService;
 use App\Services\Models\UbigeoService;
 use App\Services\Utils\IdentificationService;
-use App\Services\Utils\PasswordGenerator;
+use App\Services\Utils\PasswordGeneratorService;
 use Filament\Forms;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
@@ -82,7 +82,7 @@ class UserResource extends Resource
                                 Forms\Components\Actions\Action::make('generate')
                                     ->icon('heroicon-m-key')
                                     ->action(function ($set) {
-                                        $set('password', app(PasswordGenerator::class)->generate());
+                                        $set('password', app(PasswordGeneratorService::class)->generate());
                                     })
                             )
                             ->maxLength(255),
@@ -326,7 +326,7 @@ class UserResource extends Resource
                                 Forms\Components\Actions\Action::make('generate')
                                     ->icon('heroicon-m-key')
                                     ->action(function ($set) {
-                                        $password = app(PasswordGenerator::class)->generate();
+                                        $password = app(PasswordGeneratorService::class)->generate();
                                         $set('password', $password);
                                         $set('password_confirmation', $password);
                                     })
