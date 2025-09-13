@@ -22,14 +22,14 @@ class TimesheetRepository extends BaseRepository
         $this->userService = $userService;
     }
 
-    public function getModel($search = null, $startDate = null, $endDate = null, $staffId = null)
+    public function getModel($search = null, $startDate = null, $endDate = null, $staffId = null, $perPage = 5)
     {
         $query = $this->model->withStaffProfile();
         if ($search || $startDate || $endDate || $staffId) {
             $query->searchData($search, $startDate, $endDate, $staffId);
         }
 
-        return $query->latest()->paginate(5);
+        return $query->latest()->paginate($perPage)->withQueryString();
     }
 
     public function generateQrCode($data): array
