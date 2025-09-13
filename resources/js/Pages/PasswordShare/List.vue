@@ -171,10 +171,9 @@
                                             :roles="[
                                                 'super usuario',
                                                 'super_admin',
+                                                'Staff',
                                             ]"
-                                            :permissions="[
-                                                'update_password_share',
-                                            ]"
+                                            :permissions="[]"
                                             @click="
                                                 $inertia.visit(
                                                     route(

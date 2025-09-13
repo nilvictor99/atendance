@@ -112,4 +112,16 @@ class PasswordVault extends Model
 
         return $query;
     }
+
+    public function scopeFilterByUserAccess(Builder $query, $userId)
+    {
+        return $query->where(function ($query) use ($userId) {
+            $query->where('type', 'public')
+                ->orWhere('user_id', $userId)
+                ->orWhereHas('passwordShares', function ($query) use ($userId) {
+                    $query->where('shared_with', $userId)
+                        ->whereIn('permissions', ['view', 'edit']);
+                });
+        });
+    }
 }
