@@ -36,4 +36,50 @@ class PasswordShare extends Model
     {
         return $query->where('shared_by', $userId);
     }
+
+    public function scopeWithRelations(Builder $query)
+    {
+        return $query->with(['password', 'sharedBy', 'sharedWith']);
+    }
+
+    public function scopeSearchPassword(Builder $query, $search)
+    {
+        return $query->when($search, function ($query) use ($search) {
+            $query->where(function ($query) use ($search) {
+                $query->whereHas('password', function ($q) use ($search) {
+                    $q->where('name', 'ILIKE', "%{$search}%");
+                })
+                    ->orWhereHas('sharedBy', function ($q) use ($search) {
+                        $q->where('name', 'ILIKE', "%{$search}%");
+                    })
+                    ->orWhereHas('sharedWith', function ($q) use ($search) {
+                        $q->where('name', 'ILIKE', "%{$search}%");
+                    });
+            });
+        });
+    }
+
+    public function scopeFilterByDateRange(Builder $query, $startDate, $endDate)
+    {
+        if (! empty($startDate)) {
+            $query->whereDate('created_at', '>=', $startDate);
+        }
+        if (! empty($endDate)) {
+            $query->whereDate('created_at', '<=', $endDate);
+        }
+
+        return $query;
+    }
+
+    public function scopeSearchData(Builder $query, $search = null, $startDate = null, $endDate = null)
+    {
+        if (! empty($search)) {
+            $query->searchPassword($search);
+        }
+        if (! empty($startDate) || ! empty($endDate)) {
+            $query->filterByDateRange($startDate, $endDate);
+        }
+
+        return $query;
+    }
 }

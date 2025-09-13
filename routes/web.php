@@ -46,6 +46,11 @@ Route::middleware([
     });
 
     Route::controller(PasswordShareController::class)->group(function () {
+        Route::get('/password-share', 'index')->name('password-share');
+        Route::get('/password-share/list', 'list')->name('password-share.list');
         Route::post('/password-share/store', 'store')->name('password-share.store');
+        Route::get('/password-share/{id}/edit', 'edit')->name('password-share.edit');
+        Route::put('/password-share/{id}/update', 'update')->name('password-share.update');
+        Route::delete('/password-share/{id}/delete', 'destroy')->name('password-share.destroy');
     });
 });
