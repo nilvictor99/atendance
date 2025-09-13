@@ -94,4 +94,9 @@ class Timesheet extends Model
     {
         return $query->whereNull('day_out');
     }
+
+    public function scopeFilterByUserAccess(Builder $query, $userId)
+    {
+        return $query->where('staff_id', $userId);
+    }
 }

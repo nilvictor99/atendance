@@ -25,6 +25,11 @@ class TimesheetRepository extends BaseRepository
     public function getModel($search = null, $startDate = null, $endDate = null, $staffId = null, $perPage = 5)
     {
         $query = $this->model->withStaffProfile();
+
+        if ($this->userService->getAuthUser()->hasRole('Staff')) {
+            $query->filterByUserAccess($this->userService->getAuthUserId());
+        }
+
         if ($search || $startDate || $endDate || $staffId) {
             $query->searchData($search, $startDate, $endDate, $staffId);
         }
