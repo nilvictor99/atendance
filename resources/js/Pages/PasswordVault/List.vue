@@ -12,9 +12,10 @@
     import Delete from '@/Components/Buttons/Delete.vue';
     import ModalDelete from '@/Components/Modals/ModalDelete.vue';
     import SmartCheckbox from '@/Components/Inputs/SmartCheckbox.vue';
-    import ModalShare from '@/Components/PasswordVaults/ModalShare.vue';
+    import ModalShare from '@/Components/PasswordShares/ModalShare.vue';
     import Share from '@/Components/Icons/Share.vue';
     import Key from '@/Components/Icons/Key.vue';
+    import List from '@/Components/Icons/List.vue';
 
     const props = defineProps({
         passwordVaults: {
@@ -143,6 +144,17 @@
                             @search="handleSearch"
                             class="flex-1"
                         />
+                        <ClasicButton
+                            :roles="['super usuario', 'super_admin', 'Staff']"
+                            :permissions="['create_password::vault']"
+                            @click="$inertia.visit(route('password-share'))"
+                            class="flex-1 sm:flex-none w-full sm:w-auto flex justify-center"
+                        >
+                            <div class="flex flex-row items-center">
+                                <List class="h-5 w-5 mr-2" />
+                                Accesos compartidos
+                            </div>
+                        </ClasicButton>
                         <ClasicButton
                             :roles="['super usuario', 'super_admin', 'Staff']"
                             :permissions="['create_password::vault']"

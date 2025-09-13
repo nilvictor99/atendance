@@ -6,6 +6,7 @@ use App\Models\PasswordShare;
 use App\Services\Models\PasswordShareService;
 use App\Services\Models\UserService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PasswordShareController extends Controller
 {
@@ -19,25 +20,33 @@ class PasswordShareController extends Controller
         $this->userService = $userService;
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return Inertia::render('PasswordShare');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function list(Request $request)
+    {
+        $search = $request->input('search');
+        $startDate = $request->input('start');
+        $endDate = $request->input('end');
+        $passwordShares = $this->passwordShareService->getModel($search, $startDate, $endDate);
+
+        return Inertia::render('PasswordShare/List', [
+            'passwordShares' => $passwordShares,
+            'search' => $search,
+            'dateRange' => [
+                'start' => $startDate,
+                'end' => $endDate,
+            ],
+        ]);
+    }
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $this->passwordShareService->storeData($request->all());
@@ -45,35 +54,25 @@ class PasswordShareController extends Controller
         return redirect()->back()->banner('Contraseña compartida.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(PasswordShare $passwordShare)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(PasswordShare $passwordShare)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, PasswordShare $passwordShare)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(PasswordShare $passwordShare)
+    public function destroy(Request $request)
     {
-        //
+        $this->passwordShareService->deleteData($request->id);
+
+        return redirect()->back()->banner('Accesos compartido Eliminado');
     }
 }
